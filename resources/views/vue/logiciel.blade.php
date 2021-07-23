@@ -1,33 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
 <section class="dashboard section">
 	<!-- Container Start -->
-	<div class="container">
+	<div class="container-fluid">
 		<!-- Row Start -->
 		<div class="row">
 			<div class="col-lg-4">
 				<div class="sidebar">
-					<!-- User Widget -->
-					<div class="widget user-dashboard-profile">
-						<!-- User Image -->
-						<div class="profile-thumb">
-							<img src="images/user/user-thumb.jpg" alt="" class="rounded-circle">
-						</div>
-						<!-- User Name -->
 
-						<h5 class="text-center"> @auth 
-  {{Auth::user()->name}}
-@else
-
-@endauth </h5>
-						<p>Joined February 06, 2017</p>
-						<a href="user-profile.html" class="btn btn-main-sm">Edit Profile</a>
-
-
-					</div>
-					<!-- Dashboard Links -->
 					<div class="widget user-dashboard-menu">
 						<ul>
 							<li class="active">
@@ -49,6 +31,22 @@
 							</li>
 						</ul>
 					</div>
+
+					<!-- User Widget -->
+					<div class="widget user-dashboard-profile">
+						<!-- User Image -->
+						<div class="profile-thumb">
+							<img src="images/user/user-thumb.jpg" alt="" class="rounded-circle">
+						</div>
+						<!-- User Name -->
+
+
+						
+
+				<img src="{{ asset ('images/software.jpg')}}" alt="100" srcset="">
+					</div>
+					<!-- Dashboard Links -->
+					
 
 					<!-- delete-account modal -->
 					<!-- delete account popup modal start-->
@@ -99,55 +97,21 @@
 								<th>IMAGE</th>
 								<th> TITRE</th>
 								<th class="text-center">PRIX</th>
+								<th class="text-center">Added</th>
 								<th class="text-center">Action</th>
 							</tr>
 						</thead>
 						<tbody>
+						@foreach ($logiciel as $logiciel)
 							<tr>
 								<td class="product-thumb">
-									<img width="80px" height="auto" src="images/products/products-1.jpg" alt="image description"></td>
-								<td class="product-details">
-									<h3 class="title">Macbook Pro 15inch</h3>
-									<span class="add-id"><strong>Ad ID:</strong> ng3D5hAMHPajQrM</span>
-									<span><strong>Posted on: </strong><time>Jun 27, 2017</time> </span>
-									<span class="status active"><strong>Status</strong>Active</span>
-									<span class="location"><strong>Location</strong>Dhaka,Bangladesh</span>
+                					<img class="slider-img img-responsive rounded" width="100" src="{{asset ('storage/images/'.$logiciel->image_name)}}" alt="Chania">
+								<td class="product-category">
+									<span class="categories">{{$logiciel->titre}}</span>
 								</td>
-								<td class="product-category"><span class="categories">Laptops</span></td>
-								<td class="action" data-title="Action">
-									<div class="">
-										<ul class="list-inline justify-content-center">
-											<li class="list-inline-item">
-												<a data-toggle="tooltip" data-placement="top" title="View" class="view" href="category.html">
-													<i class="fa fa-eye"></i>
-												</a>
-											</li>
-											<li class="list-inline-item">
-												<a data-toggle="tooltip" data-placement="top" title="Edit" class="edit" href="dashboard-my-ads.html">
-													<i class="fa fa-pencil"></i>
-												</a>
-											</li>
-											<li class="list-inline-item">
-												<a data-toggle="tooltip" data-placement="top" title="Delete" class="delete" href="dashboard-my-ads.html">
-													<i class="fa fa-trash"></i>
-												</a>
-											</li>
-										</ul>
-									</div>
-								</td>
-							</tr>
-							<tr>
+								<td class="product-category"><span class="categories">{{$logiciel->prix}} fcfa</span></td>
+								<td class="product-category"><span class="categories">{{$logiciel->created_at}} </span></td>
 
-								<td class="product-thumb">
-									<img width="80px" height="auto" src="images/products/products-2.jpg" alt="image description"></td>
-								<td class="product-details">
-									<h3 class="title">Study Table Combo</h3>
-									<span class="add-id"><strong>Ad ID:</strong> ng3D5hAMHPajQrM</span>
-									<span><strong>Posted on: </strong><time>Feb 12, 2017</time> </span>
-									<span class="status active"><strong>Status</strong>Active</span>
-									<span class="location"><strong>Location</strong>USA</span>
-								</td>
-								<td class="product-category"><span class="categories">Laptops</span></td>
 								<td class="action" data-title="Action">
 									<div class="">
 										<ul class="list-inline justify-content-center">
@@ -162,7 +126,7 @@
 												</a>
 											</li>
 											<li class="list-inline-item">
-												<a data-toggle="tooltip" data-placement="top" title="Delete" class="delete" href="dashboard-my-ads.html">
+												<a   data-placement="top" title="Delete" class="delete" href="DeleteLogiciel/{{$logiciel->id_logiciel}}">
 													<i class="fa fa-trash"></i>
 												</a>
 											</li>
@@ -170,108 +134,7 @@
 									</div>
 								</td>
 							</tr>
-							<tr>
-
-								<td class="product-thumb">
-									<img width="80px" height="auto" src="images/products/products-3.jpg" alt="image description"></td>
-								<td class="product-details">
-									<h3 class="title">Macbook Pro 15inch</h3>
-									<span class="add-id"><strong>Ad ID:</strong> ng3D5hAMHPajQrM</span>
-									<span><strong>Posted on: </strong><time>Jun 27, 2017</time> </span>
-									<span class="status active"><strong>Status</strong>Active</span>
-									<span class="location"><strong>Location</strong>Dhaka,Bangladesh</span>
-								</td>
-								<td class="product-category"><span class="categories">Laptops</span></td>
-								<td class="action" data-title="Action">
-									<div class="">
-										<ul class="list-inline justify-content-center">
-											<li class="list-inline-item">
-												<a data-toggle="tooltip" data-placement="top" title="View" class="view" href="category.html">
-													<i class="fa fa-eye"></i>
-												</a>
-											</li>
-											<li class="list-inline-item">
-												<a data-toggle="tooltip" data-placement="top" title="Edit" class="edit" href="dashboard-my-ads.html">
-													<i class="fa fa-pencil"></i>
-												</a>
-											</li>
-											<li class="list-inline-item">
-												<a data-toggle="tooltip" data-placement="top" title="Delete" class="delete" href="dashboard-my-ads.html">
-													<i class="fa fa-trash"></i>
-												</a>
-											</li>
-										</ul>
-									</div>
-								</td>
-							</tr>
-							<tr>
-
-								<td class="product-thumb">
-									<img width="80px" height="auto" src="images/products/products-4.jpg" alt="image description"></td>
-								<td class="product-details">
-									<h3 class="title">Macbook Pro 15inch</h3>
-									<span class="add-id"><strong>Ad ID:</strong> ng3D5hAMHPajQrM</span>
-									<span><strong>Posted on: </strong><time>Jun 27, 2017</time> </span>
-									<span class="status active"><strong>Status</strong>Active</span>
-									<span class="location"><strong>Location</strong>Dhaka,Bangladesh</span>
-								</td>
-								<td class="product-category"><span class="categories">Laptops</span></td>
-								<td class="action" data-title="Action">
-									<div class="">
-										<ul class="list-inline justify-content-center">
-											<li class="list-inline-item">
-												<a data-toggle="tooltip" data-placement="top" title="View" class="view" href="category.html">
-													<i class="fa fa-eye"></i>
-												</a>
-											</li>
-											<li class="list-inline-item">
-												<a data-toggle="tooltip" data-placement="top" title="Edit" class="edit" href="dashboard-my-ads.html">
-													<i class="fa fa-pencil"></i>
-												</a>
-											</li>
-											<li class="list-inline-item">
-												<a data-toggle="tooltip" data-placement="top" title="Delete" class="delete" href="dashboard-my-ads.html">
-													<i class="fa fa-trash"></i>
-												</a>
-											</li>
-										</ul>
-									</div>
-								</td>
-							</tr>
-							<tr>
-
-								<td class="product-thumb">
-									<img width="80px" height="auto" src="images/products/products-1.jpg" alt="image description"></td>
-								<td class="product-details">
-									<h3 class="title">Macbook Pro 15inch</h3>
-									<span class="add-id"><strong>Ad ID:</strong> ng3D5hAMHPajQrM</span>
-									<span><strong>Posted on: </strong><time>Jun 27, 2017</time> </span>
-									<span class="status active"><strong>Status</strong>Active</span>
-									<span class="location"><strong>Location</strong>Dhaka,Bangladesh</span>
-								</td>
-								<td class="product-category"><span class="categories">Laptops</span></td>
-								<td class="action" data-title="Action">
-									<div class="">
-										<ul class="list-inline justify-content-center">
-											<li class="list-inline-item">
-												<a data-toggle="tooltip" data-placement="top" title="View" class="view" href="category.html">
-													<i class="fa fa-eye"></i>
-												</a>
-											</li>
-											<li class="list-inline-item">
-												<a data-toggle="tooltip" data-placement="top" title="Edit" class="edit" href="dashboard-my-ads.html">
-													<i class="fa fa-pencil"></i>
-												</a>
-											</li>
-											<li class="list-inline-item">
-												<a data-toggle="tooltip" data-placement="top" title="Delete" class="delete" href="dashboard-my-ads.html">
-													<i class="fa fa-trash"></i>
-												</a>
-											</li>
-										</ul>
-									</div>
-								</td>
-							</tr>
+						@endforeach
 						</tbody>
 					</table>
 
@@ -321,7 +184,7 @@
         </button>
       </div>
       <div class="modal-body">
-         <form action="/newsoftware" method="POST">
+         <form action="/newsoftware" method="POST" enctype="multipart/form-data">
          @csrf
                     <div class="form-group">   
                         <label for="Titre" class="text-black">Titre</label>
@@ -335,18 +198,23 @@
 
                     
             <div class="form-group">
-                                <div class="input-group input-file" name="Fichier1">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-primary btn-choose" type="button">Choose <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
-                        </button>
-                                    </span>
-                                    <input type="text" name="image_name" class="form-control" placeholder='Choose a file...' />
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-secondary btn-reset" type="button">Reset <i class="fa fa-trash" aria-hidden="true"></i>
-                        </button>
-                                    </span>
-                                </div>
-                </div>
+                     	<div class="box">
+			<input type="file" name="image_name" id="file-input">
+				</div>
+				<!-- leftbox -->
+				<div class="box-2">
+					<div class="result"></div>
+				</div>
+				<!--rightbox-->
+				<div class="box-2 img-result hide">
+					<!-- result of crop -->
+					<img class="cropped" src="" alt="">
+				</div>
+				<!-- input file -->
+				
+							</div>
+
+
                 <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Nouveau</button>
@@ -358,24 +226,9 @@
   </div>
 </div>
 
+<!-----Modal 2-->
 
   
 
- <script>
-     @if(Session::has('success'))
-      <script>
-          toastr.success("{!! Session::get('success') !!}");
-      </script>
-      @endif
- </script>
-
-<script>
-     @if(Session::has('success'))
-      <script>
-          swal("great job","{!! Session::get('success') !!}","success",{
-            button:"OK",
-          });
-      </script>
-      @endif
- </script>
+  
 @endsection

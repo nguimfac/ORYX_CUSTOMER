@@ -21,3 +21,4 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/software',[HomeController::class,'ManageSoft']);
 Route::post('/newsoftware',[HomeController::class,'AddSoftware']);
+Route::get('DeleteLogiciel/{id_logiciel}',[HomeController::class,'DeleteLogiciel']);
