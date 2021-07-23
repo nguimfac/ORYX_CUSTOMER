@@ -31,7 +31,7 @@ class HomeController extends Controller
 
     public function ManageSoft()
     {
-        $data = logiciel::orderBy('id_logiciel','desc')->paginate(4);
+        $data = logiciel::orderBy('id','desc')->paginate(4);
         return view('vue.logiciel',['logiciel'=>$data]);
     }
 
@@ -65,6 +65,7 @@ class HomeController extends Controller
 
 public function DeleteLogiciel($id_logiciel)
 {
+    logiciel::destroy($id_logiciel);
     Alert::success('Do you want to delete this record','Confirmation');
     //permet de supprimer un element du panier avec id passe en paramatre
         return back(); 

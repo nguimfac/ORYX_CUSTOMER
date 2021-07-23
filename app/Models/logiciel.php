@@ -9,5 +9,5 @@ class logiciel extends Model
 {
     use HasFactory;
     public $table="logiciel";
-    protected $fillable = ["id_logiciel","titre", "prix","image_name"];
+    protected $fillable = ["id","titre", "prix","image_name"];
 }

@@ -66,6 +66,8 @@
 <link rel="stylesheet" href="https://demo.themefisher.com/classimax/plugins/slick/slick-theme.css">
 <link rel="stylesheet" href="https://demo.themefisher.com/classimax/plugins/jquery-nice-select/css/nice-select.css">
  <link rel="stylesheet" href="https://demo.themefisher.com/classimax/css/style.css">    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+
 <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
