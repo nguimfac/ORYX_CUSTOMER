@@ -22,3 +22,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/software',[HomeController::class,'ManageSoft']);
 Route::post('/newsoftware',[HomeController::class,'AddSoftware']);
 Route::get('DeleteLogiciel/{id_logiciel}',[HomeController::class,'DeleteLogiciel']);
+Route::post('updatesoftware', [HomeController::class, 'EditLogiciel']);

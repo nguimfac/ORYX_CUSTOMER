@@ -1,7 +1,31 @@
 @extends('layouts.app')
 
 @section('content')
+<div id="cover"> <span class="glyphicon glyphicon-refresh w3-spin preloader-Icon"></span>Please Wait, Loading <img src="{{asset('images/preloader.gif')}}" alt=""></div>
+  <h1>Dom Loaded</h1>
+  <style>
+	#cover {
+		position: fixed;
+		height: 100%;
+		width: 100%;
+		top: 0;
+		left: 0;
+		background: #141526;
+		z-index: 9999;
+		font-size: 65px;
+		text-align: center;
+		padding-top: 200px;
+		color: #fff;
+		font-family:tahoma;
+	  }
+  </style>
 
+  <script>
+  $('h1').hide();
+	$(window).on('load', function () {
+		$("#cover").fadeOut(1750);
+	  })
+  </script>
 
 <section class="hero-area bg-1 text-center overly"  style="background-image: url('{{ asset('images/hero.jpg') }}');">
 	<!-- Container Start -->

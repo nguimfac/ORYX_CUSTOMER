@@ -17,7 +17,7 @@ class CreateLogicielTable extends Migration
             $table->Increments('id')->unsigned();
             $table->string('titre',30);
             $table->double('prix');
-            $table->string('image_name',64);
+            $table->string('image_name',64)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

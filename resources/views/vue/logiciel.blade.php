@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
+
+
 <div class="container-fluid">
 <section class="dashboard section">
 	<!-- Container Start -->
@@ -13,9 +19,9 @@
 					<div class="widget user-dashboard-menu">
 						<ul>
 							<li class="active">
-								<a href="dashboard-my-ads.html" class="link-unstyled"><i class="fa fa-user "></i> My Ads</a></li>
+								<a href="dashboard-my-ads.html" class="link-unstyled"><i class="fa fa-user "></i>LOGICIELS</a></li>
 							<li>
-								<a href="dashboard-favourite-ads.html"><i class="fa fa-bookmark-o"></i> Favourite Ads <span>5</span></a>
+								<a href="dashboard-favourite-ads.html"><i class="fa fa-bookmark-o"></i> SOUSCRIPTION<span>5</span></a>
 							</li>
 							<li>
 								<a href="dashboard-archived-ads.html"><i class="fa fa-file-archive-o"></i>Archeved Ads <span>12</span></a>
@@ -79,7 +85,11 @@
 					<h3 class="widget-header">
                         <div class="row">
                             <div class="col-md-9">
-                               <strong>NOS LOGICIELS</strong>
+                               <strong>NOS LOGICIELS</strong><br>
+							   <div  class="p-0" >
+								
+							</div>
+							
                             </div>
                             <div class="col-md-3">
                                 <button class="btn btn-primary" type="button"  data-toggle="modal" data-target="#staticBackdrop"  >Add logiciel <i class="fa fa-plus-square" aria-hidden="true"></i></button>
@@ -89,6 +99,7 @@
 					<table class="table table-responsive product-dashboard-table" id="myTable">
 						<thead>
 							<tr>
+								<th>NUMERO</th>
 								<th>IMAGE</th>
 								<th> TITRE</th>
 								<th class="text-center">PRIX</th>
@@ -97,15 +108,17 @@
 							</tr>
 						</thead>
 						<tbody>
-						@foreach ($logiciel as $logiciel)
+						@foreach ($logiciel as $logiciels)
 							<tr>
+								
+								<td class="product-category" id="id_logiciel"><span class="categories">{{$logiciels->id}} </span></td>
+
 								<td class="product-thumb">
-                					<img class="slider-img img-responsive rounded" width="100" src="{{asset ('storage/images/'.$logiciel->image_name)}}" alt="Chania">
-								<td class="product-category">
-									<span class="categories">{{$logiciel->titre}}</span>
-								</td>
-								<td class="product-category"><span class="categories">{{$logiciel->prix}} fcfa</span></td>
-								<td class="product-category"><span class="categories">{{$logiciel->created_at}} </span></td>
+									<input type="hidden" value="{{$logiciels->image_name}}" name="image_name" id="image_name">
+                					<img class="slider-img img-responsive rounded" width="100" src="{{asset ('storage/images/'.$logiciels->image_name)}}" alt="Chania">
+								<td class="product-category text-left" id="titre_logiciel"><span class="categories"></span>{{$logiciels->titre}}</span></td>
+								<td class="product-category" id="prix_logiciel"><span class="categories">{{$logiciels->prix}} fcfa</span></td>
+								<td class="product-category" id="date_creation"><span class="categories">{{$logiciels->created_at}} </span></td>
 
 								<td class="action" data-title="Action">
 									<div class="">
@@ -116,13 +129,13 @@
 												</a>
 											</li>
 											<li class="list-inline-item">
-												<a data-toggle="tooltip" data-placement="top" title="Edit" class="edit" href="dashboard-my-ads.html">
+												<a id="edit" data-placement="top" type="button"  data-toggle="modal" data-target="#staticBackdropEdit" title="Edit"  class="edit">
 													<i class="fa fa-pencil"></i>
 												</a>
 											</li>
 											<li class="list-inline-item">
 											
-												<form method="get" action="DeleteLogiciel/{{$logiciel->id}}">
+												<form method="get" action="DeleteLogiciel/{{$logiciels->id}}">
 													@csrf
 													<input name="_method" type="hidden" value="DELETE">
 													<a type="submit"  data-placement="top" title="Delete show_confirm "  class="delete show_confirm" href="">
@@ -137,29 +150,13 @@
 						@endforeach
 						</tbody>
 					</table>
+					<div class="float-right"> {!!$logiciel->links()!!}</div>
 
 				</div>
 
 				<!-- pagination -->
 				<div class="pagination justify-content-center">
 					<nav aria-label="Page navigation example">
-						<ul class="pagination">
-							<li class="page-item">
-								<a class="page-link" href="dashboard-my-ads.html" aria-label="Previous">
-									<span aria-hidden="true">&laquo;</span>
-									<span class="sr-only">Previous</span>
-								</a>
-							</li>
-							<li class="page-item"><a class="page-link" href="dashboard-my-ads.html">1</a></li>
-							<li class="page-item active"><a class="page-link" href="dashboard-my-ads.html">2</a></li>
-							<li class="page-item"><a class="page-link" href="dashboard-my-ads.html">3</a></li>
-							<li class="page-item">
-								<a class="page-link" href="dashboard-my-ads.html" aria-label="Next">
-									<span aria-hidden="true">&raquo;</span>
-									<span class="sr-only">Next</span>
-								</a>
-							</li>
-						</ul>
 					</nav>
 				</div>
 				<!-- pagination -->
@@ -172,7 +169,7 @@
 </section>
 </div>
 
-<!------Modal 1------>
+<!------Modal 1 for save------>
 
 <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -225,34 +222,63 @@
   </div>
 </div>
 
-<!-----Modal 2-->
-<main class="page">
-	<h2>Upload ,Crop and save.</h2>
-	<!-- input file -->
-	<div class="box">
-		<input type="file" id="file-input">
-	</div>
-	<!-- leftbox -->
-	<div class="box-2">
-		<div class="result"></div>
-	</div>
-	<!--rightbox-->
-	<div class="box-2 img-result hide">
-		<!-- result of crop -->
-		<img class="cropped" src="" alt="">
-	</div>
-	<!-- input file -->
-	<div class="box">
-		<div class="options hide">
-			<label> Width</label>
-			<input type="number" class="img-w" value="300" min="100" max="1200" />
+<!-----Modal 2 for edti-->
+<div class="modal fade" id="staticBackdropEdit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelEdit" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="staticBackdropLabel">Modifier un Logiciel <img width="100" src="{{  asset('images/software.jpg') }}" alt="" srcset=""></h5>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
 		</div>
-		<!-- save btn -->
-		<button class="btn save hide">Save</button>
-		<!-- download btn -->
-		<a href="" class="btn download hide">Download</a>
+		<div class="modal-body">
+		   <form class="text-left" action="/updatesoftware" method="POST" enctype="multipart/form-data">
+		   @csrf
+				<div class="form-group">   
+					<input type="hidden" id="id" name="id" class="form-control p-4" required  placeholder="titre of the software">
+				</div>
+					<div class="form-group">   
+						<label for="Titre"class="text-black" >Titre</label>
+						<input type="text" id="titre" name="titre" class="form-control p-4" required  placeholder="titre of the software">
+					</div>
+					  <div class="form-group">   
+						  <label for="Titre"class="text-black" >Prix</label>
+						  <input type="text" id="prix" name="prix" class="form-control p-4"required  placeholder="Price of the software">
+					  </div>
+					  <div class="form-group">   
+						<label for="created_at"class="text-black" >created_at</label>
+						<input type="text"  id="created_at" name="created_at" class="form-control p-4" required  placeholder="date of the software">
+					</div>
+					  	  
+			  <div class="form-group">
+						   <div class="box">
+			  <input type="file" name="image_name" value="optimus cash" id="file-input" >
+				  </div>
+				  <!-- leftbox -->
+				  <div class="box-2">
+					  <div class="result"></div>
+				  </div>
+				  <!--rightbox-->
+				  <div class="box-2 img-result hide">
+					  <!-- result of crop -->
+					  <img class="cropped" src="" alt="">
+				  </div>
+				  <!-- input file -->
+							  </div>
+  
+  
+				  <div class="modal-footer">
+						  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						  <button type="submit" class="btn btn-primary">Nouveau</button>
+				  </div>
+		   </form>
+		</div>
+		
+	  </div>
 	</div>
-</main>
+  </div>
+
 <style>
 	
 .page {
@@ -306,7 +332,15 @@ img {
 	} );
 </script>
 
-
+<script>
+    $(document).on('click', '#edit', function() {
+        var _this = $(this).parents('tr');
+		$('#id').val(_this.find('#id_logiciel').text());
+        $('#titre').val(_this.find('#titre_logiciel').text());
+        $('#prix').val(_this.find('#prix_logiciel').text());
+        $('#created_at').val(_this.find('#date_creation').text());
+    });
+</script>
 
 
 @endsection

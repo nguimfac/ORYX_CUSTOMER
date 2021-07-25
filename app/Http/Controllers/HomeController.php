@@ -39,7 +39,7 @@ class HomeController extends Controller
         $validatedData = $request->validate([
             'titre' => ['required', 'string', 'min:3','unique:logiciel,titre'],
             'prix' => ['required', 'integer'],
-            "image_name" => "mimes:png,jpg"
+            "image_name" => "sometimes|mimes:png,jpg"
         ], [
             'titre.required' => 'titre is required',
             'prix.required' => 'prix is required'
@@ -55,6 +55,7 @@ class HomeController extends Controller
                 $logiciel->save();        
                 Alert::success('success', 'Ce logiciel a étét enregistré avec success');
                 return redirect()->back();
+    
         }
         else if(((logiciel::where('titre', $request->titre)->exists()))){
             Alert::success('success', 'Ce logiciel existe deja!');
@@ -63,11 +64,33 @@ class HomeController extends Controller
         }
 }
 
-public function DeleteLogiciel($id_logiciel)
-{
-    logiciel::destroy($id_logiciel);
-    Alert::success('Do you want to delete this record','Confirmation');
-    //permet de supprimer un element du panier avec id passe en paramatre
-        return back(); 
-}
+        public function DeleteLogiciel($id_logiciel)
+        {
+            logiciel::destroy($id_logiciel);
+            Alert::success('Do you want to delete this record','Confirmation');
+            //permet de supprimer un element du panier avec id passe en paramatre
+                return back(); 
+        }
+
+        public function EditLogiciel(Request $request)
+        {
+          if($request->image_name){
+            $imgname=$request->file('image_name')->getClientOriginalName();
+            $request->file('image_name')->storeAs('public/images/', $imgname);
+            $logiciel=logiciel::find($request->id);
+            $logiciel->titre=$request->titre;
+            $logiciel->prix=$request->prix;
+            $logiciel->created_at=$request->created_at;
+            $logiciel->image_name=$request->image_name->getClientOriginalName();
+            $logiciel->save();
+          }
+          else{
+            $logiciel=logiciel::find($request->id);
+            $logiciel->titre=$request->titre;
+            $logiciel->prix=$request->prix;
+            $logiciel->created_at=$request->created_at;
+            $logiciel->save();
+          }
+        }
+
 }
