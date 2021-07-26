@@ -14,7 +14,7 @@ class CreateLogicielTable extends Migration
     public function up()
     {
         Schema::create('logiciel', function (Blueprint $table) {
-            $table->Increments('id')->unsigned();
+            $table->id();
             $table->string('titre',30);
             $table->double('prix');
             $table->string('image_name',64)->nullable();

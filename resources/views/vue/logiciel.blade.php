@@ -13,21 +13,21 @@
 	<div class="container-fluid">
 		<!-- Row Start -->
 		<div class="row">
-			<div class="col-lg-4">
+			<div class="col-lg-3">
 				<div class="sidebar">
 
 					<div class="widget user-dashboard-menu">
 						<ul>
 							<li class="active">
-								<a href="dashboard-my-ads.html" class="link-unstyled"><i class="fa fa-user "></i>LOGICIELS</a></li>
+								<a href="{{url('software/')}}" class=""><i class="fa fa-user "></i> LOGICIELS <span>1</span></a></li>
 							<li>
-								<a href="dashboard-favourite-ads.html"><i class="fa fa-bookmark-o"></i> SOUSCRIPTION<span>5</span></a>
+								<a href="{{url('souscription/')}}"><i class="fa fa-bookmark-o"></i> Souscription<span>2</span></a>
 							</li>
 							<li>
-								<a href="dashboard-archived-ads.html"><i class="fa fa-file-archive-o"></i>Archeved Ads <span>12</span></a>
+								<a href="dashboard-archived-ads.html"><i class="fa fa-file-archive-o"></i>Service Apres vente<span>3</span></a>
 							</li>
 							<li>
-								<a href="dashboard-pending-ads.html"><i class="fa fa-bolt"></i> Pending Approval<span>23</span></a>
+								<a href="dashboard-pending-ads.html"><i class="fa fa-bolt"></i>User<span>4</span></a>
 							</li>
 							<li>
 								<a href="index.html"><i class="fa fa-cog"></i> Logout</a>
@@ -79,12 +79,12 @@
 
 				</div>
 			</div>
-			<div class="col-lg-8">
+			<div class="col-lg-9">
 				<!-- Recently Favorited -->
 				<div class="widget dashboard-container my-adslist">
 					<h3 class="widget-header">
                         <div class="row">
-                            <div class="col-md-9">
+                            <div class="col-md-9 mt-4">
                                <strong>NOS LOGICIELS</strong><br>
 							   <div  class="p-0" >
 								
@@ -96,8 +96,8 @@
                             </div>
                         </div>
                     </h3>
-					<table class="table table-responsive product-dashboard-table" id="myTable">
-						<thead>
+					<table class="table table-hover table-responsive table-striped product-dashboard-table" id="myTable">
+						<thead class="bg-primary text-white">
 							<tr>
 								<th>NUMERO</th>
 								<th>IMAGE</th>
@@ -112,13 +112,12 @@
 							<tr>
 								
 								<td class="product-category" id="id_logiciel"><span class="categories">{{$logiciels->id}} </span></td>
-
-								<td class="product-thumb">
+								<td class="product-thumb font">
 									<input type="hidden" value="{{$logiciels->image_name}}" name="image_name" id="image_name">
                 					<img class="slider-img img-responsive rounded" width="100" src="{{asset ('storage/images/'.$logiciels->image_name)}}" alt="Chania">
-								<td class="product-category text-left" id="titre_logiciel"><span class="categories"></span>{{$logiciels->titre}}</span></td>
-								<td class="product-category" id="prix_logiciel"><span class="categories">{{$logiciels->prix}} fcfa</span></td>
-								<td class="product-category" id="date_creation"><span class="categories">{{$logiciels->created_at}} </span></td>
+								<td class="product-category text-left" id="titre_logiciel"><span class="categories font">{{$logiciels->titre}}</span></span></td>
+								<td class="product-category" id="prix_logiciel"><span class="categories font">{{$logiciels->prix}} fcfa</span></td>
+								<td class="product-category" id="date_creation"><span class="categories font">{{$logiciels->created_at}} </span></td>
 
 								<td class="action" data-title="Action">
 									<div class="">

@@ -1,9 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use DateTime;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\logiciel;
+use Illuminate\Support\Facades\DB;
+use App\Models\subscription;
+use App\Models\client;
 use Illuminate\Support\Facades\Input;
 use RealRashid\SweetAlert\Facades\Alert;
 class HomeController extends Controller
@@ -74,6 +78,15 @@ class HomeController extends Controller
 
         public function EditLogiciel(Request $request)
         {
+            $validatedData = $request->validate([
+                'titre' => ['required', 'string', 'min:3','unique:logiciel,titre'],
+                'prix' => ['required', 'integer'],
+                "image_name" => "sometimes|mimes:png,jpg"
+            ], [
+                'titre.required' => 'titre is required',
+                'prix.required' => 'prix is required'
+            ]);
+
           if($request->image_name){
             $imgname=$request->file('image_name')->getClientOriginalName();
             $request->file('image_name')->storeAs('public/images/', $imgname);
@@ -91,6 +104,82 @@ class HomeController extends Controller
             $logiciel->created_at=$request->created_at;
             $logiciel->save();
           }
+          Alert::success('success', 'Ce logiciel a étét Modifié avec success');
+          return redirect()->back();
         }
+
+        public function Souscription()
+        {
+            $subscription  = DB::table('subscription')
+                             ->select('subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
+                             ->join('client','subscription.client_id',"=","client.id")
+                             ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
+                             ->get();
+            $logiciel=logiciel::all();
+            return view('vue.souscription',['logiciel'=>$logiciel,'subscription'=>$subscription]);
+        }
+
+        public function NewSouscription(Request $request){
+            $html = "<ul style='list-style: none;'>";
+
+            $current_date = date('Y-m-d H:i:s');
+            $id = DB::table('client')->insertGetId(
+                ['nom' => $request->nom_client, 
+                'civilite' => $request->civilite_client,
+                'email' => $request->email_client,
+                'address' => $request->address_client,
+                'code_postal' => $request->codepostal_client,
+                'telephone' => $request->telephone_client,
+                'ville' => $request->ville_client,
+                'created_at'=>$current_date
+                ]
+        );
+       //dd($id);
+                $subcript=new subscription();
+                $subcript->client_id=$id;
+                $subcript->logiciel_id=$request->logiciel;
+                $subcript->date_debut=$current_date;
+                $subcript->date_fin=$request->date_fin;
+                $subcript->type_payement=$request->type_payement;
+                $subcript->paye=$request->paye;
+                $subcript->save();
+                Alert::html('Subscription realisé avec success!', $html, 'sucess');
+                return redirect()->back();
+                }
+                
+                 function compareDate()
+                {
+                    $current_date = date('Y-m-d');
+                    $subscription  = DB::table('subscription')
+                             ->select('email as client_email','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
+                             ->join('client','subscription.client_id',"=","client.id")
+                             ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
+                             ->get();
+                      foreach($subscription as $subscriptions){
+                            $start_time = Carbon::parse($subscriptions->date_fin);
+                            $finish_time = Carbon::parse($current_date);
+                            $result = $start_time->diffInDays($finish_time, false);
+                            if($result==5)
+                            echo $result,($subscriptions->client_email);
+                        }   
+
+
+                }
+
+                public function UpdateSubscription(Request $request)
+                {
+                    $validatedData = $request->validate([
+                        'date_debut' => ['required', 'date'],
+                        'date_fin' => ['required', 'date'],
+                    ]
+
+                    $subs = subscription::find($request->id_subscription)
+                    $subs->date_debut=$request->date_debut;
+                    $subs->date_fin=$request->date_fin;
+                    $subs->save();
+                    Alert::html('Subscription realisé avec success!', $html, 'sucess');
+                    return redirect()->back();
+                }
+
 
 }

@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\subscription;
-class logiciel extends Model
+class client extends Model
 {
     use HasFactory;
-    public $table="logiciel";
-    protected $fillable = ["id","titre", "prix","image_name"];
-
+    public $table="client";
+    protected $fillable = ["id","nom", "civilite","email","address","code_postal","ville","telephone"];
 
     public function subscription(){
         return $this->hasMany(subscription::class);
     }
+
 }

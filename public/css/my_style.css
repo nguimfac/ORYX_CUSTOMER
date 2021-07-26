@@ -147,6 +147,15 @@ h2 {
           vertical-align: inherit;
         }
 
+        .size{
+          width: 12px;
+        }
+
+        .font{
+          font-size: 16px;
+          font-family:  serif ;
+        }
+
     .searchbar:hover > .search_icon{
     background: white;
     color: #e74c3c;

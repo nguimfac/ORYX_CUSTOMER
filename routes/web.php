@@ -23,3 +23,9 @@ Route::get('/software',[HomeController::class,'ManageSoft']);
 Route::post('/newsoftware',[HomeController::class,'AddSoftware']);
 Route::get('DeleteLogiciel/{id_logiciel}',[HomeController::class,'DeleteLogiciel']);
 Route::post('updatesoftware', [HomeController::class, 'EditLogiciel']);
+Route::get('/souscription',[HomeController::class,'Souscription']);
+Route::post('/newsouscription',[HomeController::class,'NewSouscription']);
+Route::get('/comparedate',[HomeController::class,'compareDate']);
+Route::post('/updatesubscription',[HomeController::class,'UpdateSubscription']);
+
+

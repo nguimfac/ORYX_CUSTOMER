@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div id="cover"> <span class="glyphicon glyphicon-refresh w3-spin preloader-Icon"></span>Please Wait, Loading <img src="{{asset('images/preloader.gif')}}" alt=""></div>
+<div id="cover"> <span class="glyphicon glyphicon-refresh w3-spin preloader-Icon"></span>Please Wait, Loading <img width="150" src="{{asset('images/preloader.gif')}}" alt=""></div>
   <h1>Dom Loaded</h1>
   <style>
 	#cover {
