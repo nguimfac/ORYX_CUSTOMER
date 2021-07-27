@@ -27,5 +27,7 @@ Route::get('/souscription',[HomeController::class,'Souscription']);
 Route::post('/newsouscription',[HomeController::class,'NewSouscription']);
 Route::get('/comparedate',[HomeController::class,'compareDate']);
 Route::post('/updatesubscription',[HomeController::class,'UpdateSubscription']);
+Route::post('/updatepayement',[HomeController::class,'UpdatePayement']);
+Route::get('/sendmail',[HomeController::class,'SendMail']);
 
 

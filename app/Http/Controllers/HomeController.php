@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use DateTime;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use App\Models\logiciel;
 use Illuminate\Support\Facades\DB;
@@ -10,6 +11,8 @@ use App\Models\subscription;
 use App\Models\client;
 use Illuminate\Support\Facades\Input;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Mail\TestMail;
+
 class HomeController extends Controller
 {
     /**
@@ -116,7 +119,8 @@ class HomeController extends Controller
                              ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
                              ->get();
             $logiciel=logiciel::all();
-            return view('vue.souscription',['logiciel'=>$logiciel,'subscription'=>$subscription]);
+            $number_subs = subscription::count();
+            return view('vue.souscription',['logiciel'=>$logiciel,'subscription'=>$subscription,'number_subs'=>$number_subs]);
         }
 
         public function NewSouscription(Request $request){
@@ -143,7 +147,7 @@ class HomeController extends Controller
                 $subcript->type_payement=$request->type_payement;
                 $subcript->paye=$request->paye;
                 $subcript->save();
-                Alert::html('Subscription realisé avec success!', $html, 'sucess');
+                Alert::html('Subscription realisé avec success!', $html, 'success');
                 return redirect()->back();
                 }
                 
@@ -159,8 +163,8 @@ class HomeController extends Controller
                             $start_time = Carbon::parse($subscriptions->date_fin);
                             $finish_time = Carbon::parse($current_date);
                             $result = $start_time->diffInDays($finish_time, false);
-                            if($result==5)
-                            echo $result,($subscriptions->client_email);
+                           
+                            echo $result."<br>";
                         }   
 
 
@@ -168,18 +172,48 @@ class HomeController extends Controller
 
                 public function UpdateSubscription(Request $request)
                 {
+                    $html = "<ul style='list-style: none;'>";
                     $validatedData = $request->validate([
                         'date_debut' => ['required', 'date'],
                         'date_fin' => ['required', 'date'],
-                    ]
+                    ]);
 
-                    $subs = subscription::find($request->id_subscription)
-                    $subs->date_debut=$request->date_debut;
-                    $subs->date_fin=$request->date_fin;
-                    $subs->save();
-                    Alert::html('Subscription realisé avec success!', $html, 'sucess');
+                    $start_time = Carbon::parse($request->date_debut);
+                    $finish_time = Carbon::parse($request->date_fin);
+                    $result = $start_time->diffInDays($finish_time, false);
+                    if($result>0){
+                        $subs = subscription::find($request->id_subscription);
+                        $subs->date_debut=$request->date_debut;
+                        $subs->date_fin=$request->date_fin;
+                        $subs->save();
+                        Alert::html('Subscription realisé avec success!', $html, 'success');
+                    }else{
+                        Alert::html('Erreur survenue durant cette operation', $html, 'error');
+
+                    }
                     return redirect()->back();
                 }
 
+                public function UpdatePayement(Request $request){
+                        $html = "<ul style='list-style: none;'>";
+                        $subs = subscription::find($request->id_subscription);
+                        $subs->paye=$subs->paye+$request->montant;
+                        $subs->save();
+                        Alert::html('Payement réalisé avec success!', $html, 'success');
+                   
+                    return redirect()->back();
+                }
+
+                public function SendMail(){
+
+                    $details =[
+                           'title'=>"Notification de souscription",
+                           'body'=> "Votre periode d'expiration arrive deja a echeance"
+                    ];
+
+                    Mail::to('nguimfackjunior2@gmail.com')->send(new TestMail($details));
+                    return "email envoyé";
+
+                }
 
 }

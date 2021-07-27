@@ -91,11 +91,11 @@ $current_date = date('y-m-d');
 							</div>
                             </div>
                             <div class="col-md-3">
-                                <button class="btn btn-primary" type="button"  data-toggle="modal" data-target="#staticBackdrop"  >Add logiciel <i class="fa fa-plus-square" aria-hidden="true"></i></button>
+                                <button class="btn btn-primary" type="button"  data-toggle="modal" data-target="#staticBackdrop"  > Souscription <i class="fa fa-plus-square" aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </h3>
-
+					
 					<div>
 						<table class="table table-striped table-hover table-borderless">
 							<thead  class="bg-primary text-white">
@@ -108,32 +108,35 @@ $current_date = date('y-m-d');
 								<th scope="col"> Debut</th>
 								<th scope="col">D Fin</th>
 								<th scope="col">Payement</th>
-								<th scope="col">Action</th>
+								<th >Reste</th>
+								<th scope="col text-left">Action</th>
 								</tr>
 							</thead>
-							<tbody>
-							
+							<tbody class="jsTableBody">
 								@foreach ($subscription as $subscriptions)
 									<tr>
 										<td class="font p-3" id="id_subs" >{{$subscriptions->subscription_id}}</td>
 										<td class="font p-3">{{$subscriptions->client_name}}</td>
 										<td class="font p-3 ">{{$subscriptions->logiciel_name}}</td>
-										<td class="font p-3">{{$subscriptions->prix_logiciel}}</td>
-										<td class="font p-3" >{{$subscriptions->payement}}</td>
+										<td class="font p-3 col1" id="montant">{{$subscriptions->prix_logiciel}}</td>
+										<td class="font p-3 col2" >{{$subscriptions->payement}}</td>
 										<td class="font w" >{{$subscriptions->date_debut}}</td>
 										<td class="font" >
-										<?php $origin = new Datetime($subscriptions->date_fin);
-											  $target = new Datetime(date('y-m-d'));
-											  $difference = $target->diff($origin);
-											   $val=$difference->d;
-											   if($val==5){
-												   echo '<div class="text-danger text-center">'.$subscriptions->date_fin.'<br>(expiration)</div>';
-											   }else{
-											   echo $subscriptions->date_fin;
-											   }?>
+											<?php $origin = new Datetime($subscriptions->date_fin);
+												$target = new Datetime(date('y-m-d'));
+												$difference = $target->diff($origin);
+												$val=$difference->d;
+												if($val<=5){
+													echo '<div class="text-danger text-center">'.$subscriptions->date_fin.'<br>(expiration)</div>';
+												}else{
+												echo $subscriptions->date_fin;
+												}
+											?>
 										</td>
-												<td class="font p-3">{{$subscriptions->type_payement}}</td>
-								<td class="action" data-title="Action">
+											<td class="font p-3">{{$subscriptions->type_payement}}</td>
+											<td><span class="subtract font"></span> </td>
+
+											<td class="action" data-title="Action">
 											<div class="">
 												<ul class="list-inline justify-content-center">
 													<li class="list-inline-item">
@@ -147,7 +150,6 @@ $current_date = date('y-m-d');
 														</a>
 													</li>
 													<li class="list-inline-item">
-													
 														<form method="get" action="DeleteLogiciel/{{$subscriptions->subscription_id}}">
 															@csrf
 															<input name="_method" type="hidden" value="DELETE">
@@ -159,13 +161,13 @@ $current_date = date('y-m-d');
 												</ul>
 											</div>
 										</td>
-
 									</tr>
 								@endforeach
-
 							</tbody>
 							</table>
-
+							<hr>
+							<div class="text-black " style="">Souscription realisée <span class=" badge badge-primary">{{$number_subs}}</span> </div>
+                            
 					
 					</div>
 
@@ -329,33 +331,64 @@ $current_date = date('y-m-d');
 		  </button>
 		</div>
 		<div class="modal-body">
-		   <form class="text-left" action="/updatesubscription" method="POST" enctype="multipart/form-data">
-		   @csrf
-		   <div class="form-group">   
-			<label for="date_exp"class="text-black" >Date debut</label>
-			<input type="text"  id="id_subscription" name="id_subscription" class="form-control p-4" required  placeholder="date of the software">
-		</div>
 
-				   <div class="row">
-					   <div class="col-md-6">
-						<div class="form-group">   
-							<label for="date_exp"class="text-black" >Date debut</label>
-							<input type="date"  id="date_debut" name="date_debut" class="form-control p-4" required  placeholder="date of the software">
-						</div>
-					   </div>
-					   <div class="col-md-6">
-						<div class="form-group">   
-							<label for="date_exp"class="text-black" >Date expiration</label>
-							<input type="date"  id="date_expiration" name="date_fin" class="form-control p-4" required  placeholder="date of the software">
-						</div>
-					   </div>
-				   </div>
-				</div>	 
-				  <div class="modal-footer">
-						  <button type="button"  class="btn btn-danger" data-dismiss="modal">Close</button>
-						  <button type="submit" class="btn btn-primary">Nouveau</button>
-				  </div>
-		   </form>
+	
+						<div class="modal-body">
+							<div>
+								<div class="tab">
+									<button class="tablinks" onclick="openSubscription(event, 'renewSubs')">Renouveller</button>
+									<button class="tablinks" onclick="openSubscription(event, 'payement')">Payement</button>
+								</div>
+							</div>
+							<div id="renewSubs" class="tabcontent">
+								<form class="text-left" action="/updatesubscription" method="POST" enctype="multipart/form-data">
+									@csrf
+									<div class="form-group">   
+										<input type="hidden"  id="id_subscription" name="id_subscription" class="form-control p-4" required  placeholder="date of the software">
+									</div>
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">   
+														<label for="date_exp"class="text-black" >Date debut</label>
+														<input type="date"  id="date_debut" name="date_debut" class="form-control p-4" required  placeholder="date of the software">
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">   
+														<label for="date_exp"class="text-black" >Date expiration</label>
+														<input type="date"  id="date_expiration" name="date_fin" class="form-control p-4" required  placeholder="date of the software">
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button"  class="btn btn-danger" data-dismiss="modal">Close</button>
+												<button type="submit" class="btn btn-primary">Nouveau</button>
+										</div>
+										</div>	 
+												
+							   </form>
+							   <div id="payement" class="tabcontent">
+								<form class="text-left" action="/updatepayement" method="POST" enctype="multipart/form-data">
+									@csrf
+												<div class="form-group">   
+													<input type="hidden"  id="id_montant" name="id_subscription" class="form-control p-4" required  placeholder="date of the software">
+												</div>
+												<div class="form-group">   
+													<input type="hidden"  id="a_payer" name="a_payer" class="form-control p-4" required  placeholder="date of the software">
+												</div>
+												<div class="">
+													<div class="form-group">   
+														<label for="Montant" class="text-black" >Nouveau Montant</label>
+														<input type="text"  id="montant_paye" name="montant" class="form-control p-4" required  placeholder="entrez le nouveu montant">
+													</div>
+												</div>
+											<div class="modal-footer">
+												<button type="submit" class="btn btn-block btn-primary">Enregistrer</button>
+										</div>
+										</div>	 			
+							   </form>
+							  </div>
+							</div>
 		</div>
 		
 	  </div>
@@ -410,6 +443,21 @@ img {
 
 
 <script>
+	$(document).ready(function(){
+        $(".jsTableBody tr").each(function(){
+			col1=$(this).find('.col1').text();
+			col2=$(this).find('.col2').text();
+			subtract= parseInt(col1)-parseInt(col2);
+			$(this).find(".subtract").html(subtract);
+	})
+	})
+</script>
+
+<script>
+	
+
+
+
 	$(document).ready( function () {
 		$('#myTable').DataTable();
 	} );
@@ -419,8 +467,44 @@ img {
     $(document).on('click', '#edit', function() {
         var _this = $(this).parents('tr');
 		$('#id_subscription').val(_this.find('#id_subs').text());
-       
+		$('#id_montant').val(_this.find('#id_subs').text());
+        $('#a_payer').val(_this.find('#montant').text());
     });
+/*a revoir */
+	$(document).ready(function(){
+		var a_payer = parseInt($("#a_payer").val());
+		var payer = parseInt($('#montant_paye'))
+		$('#montant_paye').keyup(function(){
+            if(payer>a_payer)
+			{
+				alert('sdsdsdsdssd');
+			}
+		});
+	})
+
+	$(document).ready(function(){
+		$('#payement').hide();
+	})
+	function openSubscription(evt, subscriptionvalue) {	
+	  var i, tabcontent, tablinks;
+	  tabcontent = document.getElementsByClassName("tabcontent");
+	  for (i = 0; i < tabcontent.length; i++) {
+		tabcontent[i].style.display = "none";
+	  }
+	  tablinks = document.getElementsByClassName("tablinks");
+	  for (i = 0; i < tablinks.length; i++) {
+		tablinks[i].className = tablinks[i].className.replace(" active", "");
+	  }
+	  document.getElementById(subscriptionvalue).style.display = "block";
+	  evt.currentTarget.className += " active";
+	  $('.tablinks').click(function(){
+           $('.tablinks').css('color','white');
+	  });
+	}
+
+
+
+
 </script>
 
 
