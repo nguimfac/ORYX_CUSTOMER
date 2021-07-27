@@ -85,19 +85,22 @@ $current_date = date('y-m-d');
 				<div class="widget dashboard-container my-adslist">
 					<h3 class="widget-header">
                         <div class="row">
-                            <div class="col-md-9 mt-4">
+                            <div class="col-md-8 mt-4">
                                <strong>SUBSCRIPTION REALISE</strong><br>
 							   <div  class="p-0" >
 							</div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <button class="btn btn-primary" type="button"  data-toggle="modal" data-target="#staticBackdrop"  > Souscription <i class="fa fa-plus-square" aria-hidden="true"></i></button>
+                            </div>
+							<div class="col-md-2">
+                                <button class="btn btn-success" type="button"  data-toggle="modal" data-target="#staticBackdrop"  > Notification <i class="fa fa-bullhorn" aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </h3>
 					
 					<div>
-						<table class="table table-striped table-hover table-borderless">
+						<table id="myTable" class="table-responsive table table-striped table-hover table-borderless">
 							<thead  class="bg-primary text-white">
 								<tr>
 								<th scope="col" >Numero</th>
@@ -141,7 +144,7 @@ $current_date = date('y-m-d');
 												<ul class="list-inline justify-content-center">
 													<li class="list-inline-item">
 														<a data-toggle="tooltip" data-placement="top" title="View" class="view" href="category.html">
-															<i class="fa fa-eye"></i>
+															<i class="fa fa-print"></i>
 														</a>
 													</li>
 													<li class="list-inline-item">
@@ -454,10 +457,6 @@ img {
 </script>
 
 <script>
-	
-
-
-
 	$(document).ready( function () {
 		$('#myTable').DataTable();
 	} );

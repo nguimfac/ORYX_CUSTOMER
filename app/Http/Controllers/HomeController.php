@@ -151,8 +151,14 @@ class HomeController extends Controller
                 return redirect()->back();
                 }
                 
-                 function compareDate()
+                 function SendMail()
                 {
+
+                    $details =[
+                        'title'=>"Notification de souscription",
+                        'body'=> "Votre periode d'expiration arrive deja a echeance"
+                    ];
+
                     $current_date = date('Y-m-d');
                     $subscription  = DB::table('subscription')
                              ->select('email as client_email','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
@@ -160,14 +166,14 @@ class HomeController extends Controller
                              ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
                              ->get();
                       foreach($subscription as $subscriptions){
-                            $start_time = Carbon::parse($subscriptions->date_fin);
-                            $finish_time = Carbon::parse($current_date);
+                            $start_time = Carbon::parse($current_date);
+                            $finish_time = Carbon::parse($subscriptions->date_fin);
                             $result = $start_time->diffInDays($finish_time, false);
-                           
-                            echo $result."<br>";
-                        }   
-
-
+                            if($result>=0 && $result<=5){
+                                Mail::to($subscriptions->client_email)->send(new TestMail($details));    
+                            }
+                        }
+                                   
                 }
 
                 public function UpdateSubscription(Request $request)
@@ -204,16 +210,8 @@ class HomeController extends Controller
                     return redirect()->back();
                 }
 
-                public function SendMail(){
-
-                    $details =[
-                           'title'=>"Notification de souscription",
-                           'body'=> "Votre periode d'expiration arrive deja a echeance"
-                    ];
-
-                    Mail::to('nguimfackjunior2@gmail.com')->send(new TestMail($details));
+             /*   public function SendMail(){
+                    
                     return "email envoyé";
-
-                }
-
+                }*/
 }

@@ -37,6 +37,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU"></script>
     <script src="https://demo.themefisher.com/classimax/plugins/google-map/map.js"></script>
     <script src="https://demo.themefisher.com/classimax/js/script.js"></script>
+    <script src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -56,7 +57,7 @@
     <link href="{{ asset('css/my_style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/fileinput.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/fileinput-rtl.min.css') }}" rel="stylesheet">
-
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
     <!-- Styles -->
 
 <link rel="stylesheet" href="https://demo.themefisher.com/classimax/plugins/bootstrap/bootstrap.min.css">
