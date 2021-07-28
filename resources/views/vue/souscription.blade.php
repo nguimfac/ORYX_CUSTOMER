@@ -94,7 +94,7 @@ $current_date = date('y-m-d');
                                 <button class="btn btn-primary" type="button"  data-toggle="modal" data-target="#staticBackdrop"  > Souscription <i class="fa fa-plus-square" aria-hidden="true"></i></button>
                             </div>
 							<div class="col-md-2">
-                                <button class="btn btn-success" type="button"  data-toggle="modal" data-target="#staticBackdrop"  > Notification <i class="fa fa-bullhorn" aria-hidden="true"></i></button>
+                                <a class="btn btn-success" type="button" href="/sendmail"> Notification <i class="fa fa-bullhorn" aria-hidden="true"></i></a>
                             </div>
                         </div>
                     </h3>
@@ -285,7 +285,7 @@ $current_date = date('y-m-d');
 								</div>
 								<div class="form-group payeform mt-4">   
 									<label for="date_fin" class="text-black" >Somme à payer</label>
-									<input type="number" name="paye" class="form-control p-4" required>
+									<input type="number" name="paye" class="form-control p-4" >
 								</div>
 								
 							</div>

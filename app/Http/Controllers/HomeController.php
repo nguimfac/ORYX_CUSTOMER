@@ -23,6 +23,8 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        Alert::success('success', 'Ce logiciel existe deja!');
+
     }
 
     /**
@@ -161,7 +163,7 @@ class HomeController extends Controller
 
                     $current_date = date('Y-m-d');
                     $subscription  = DB::table('subscription')
-                             ->select('email as client_email','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
+                             ->select('alert as notification','email as client_email','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
                              ->join('client','subscription.client_id',"=","client.id")
                              ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
                              ->get();
@@ -169,10 +171,15 @@ class HomeController extends Controller
                             $start_time = Carbon::parse($current_date);
                             $finish_time = Carbon::parse($subscriptions->date_fin);
                             $result = $start_time->diffInDays($finish_time, false);
-                            if($result>=0 && $result<=5){
-                                Mail::to($subscriptions->client_email)->send(new TestMail($details));    
+                            if($result>=0 && $result<=5 && $subscriptions->notification==0){
+                                Mail::to($subscriptions->client_email)->send(new TestMail($details));
+                                 $update_alert_status=subscription::find($subscriptions->subscription_id);
+                                 $update_alert_status->alert=1;
+                                 $update_alert_status->save();   
                             }
+                            Alert::html('Vos client on recus leurs mail de notification', $html, 'success');
                         }
+                        return redirect()->back();
                                    
                 }
 

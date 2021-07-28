@@ -22,7 +22,8 @@ class CreateSubscriptionTable extends Migration
             $table->date('date_debut');
             $table->date('date_fin');
             $table->string('type_payement');
-            $table->double('paye');
+            $table->double('paye')->default('0')->nullable();;
+            $table->boolean('alert')->default(false);
             $table->timestamps();
         });
     }
