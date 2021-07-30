@@ -12,16 +12,16 @@
                     <img     src="{{asset ('images/my_back.png')}}" alt="">
                     </div>
                     <div class="col-md-6">
-                    <img height="100" class="offset-md-5 offset-xs-5 offset-md-5" width="100" src="{{asset ('images/logo_oryx.jpg')}}" alt=""><br><br>
+                    <img height="100" class="offset-md-5 offset-xs-5 offset-md-5" width="100" src="{{asset ('images/optimusclient.jpg')}}" alt=""><br><br>
                     <span class="login100-form-title p-b-43">
 						Login to continue
 					</span>
                     <form class="container " method="POST" action="{{ route('login') }}">
                     @csrf
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input  readonly onfocus="this.removeAttribute('readonly');" class="input100 @error('email') is-invalid @enderror" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+						<input id="email"  readonly onfocus="this.removeAttribute('readonly');" class="input100 @error('email') is-invalid @enderror" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 						<span class="focus-input100"></span>
-						<span class="label-input100">Email</span>
+						<span class="label-input100" id="Labemail">Email</span>
                         @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -31,9 +31,9 @@
 					
 					
 					<div class="wrap-input100 validate-input" data-validate="Password is required">
-						<input class="input100  @error('password') is-invalid @enderror"  type="password"  name="password" required autocomplete="current-password">
+						<input class="input100   @error('password') is-invalid @enderror"  id="password" type="password"  name="password" required autocomplete="current-password">
 						<span class="focus-input100"></span>
-						<span class="label-input100">Password</span>
+						<span class="label-input100" id="Labpassword">Password</span>
 
                         
 					</div>
@@ -97,7 +97,17 @@
 		</div>
 	</div>
 	
-
+<script>
+   
+   $(document).ready(function(){
+      $('#email').keyup(function(){
+		$("#Labemail").hide();
+	  })
+	  $('#password').keyup(function(){
+		$("#Labpassword").hide();
+	  })
+   })
+</script>
 
 
 @endsection

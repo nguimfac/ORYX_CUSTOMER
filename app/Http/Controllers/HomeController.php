@@ -12,6 +12,13 @@ use App\Models\client;
 use Illuminate\Support\Facades\Input;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Mail\TestMail;
+use Dompdf\Dompdf;
+use Vonage\Client\Credentials\Basic;
+use Nexmo\Laravel\Facade\Nexmo;
+use PDF;
+use Vonage\SMS\Message\SMS;
+use PhpParser\Node\Stmt\TryCatch;
+use App\Services\PayUService\Exception;
 
 class HomeController extends Controller
 {
@@ -23,7 +30,8 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        Alert::success('success', 'Ce logiciel existe deja!');
+       // $this->notifyAdmin();
+       
 
     }
 
@@ -35,6 +43,24 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+    }
+
+    
+    public function SAV(){
+        $message="Vous venez de gagner une somme de 1millions de fcfa a mtn tapez *121# pour verifier\n";
+        $name="OPTIMUS CLIENT";
+        $basic  = new Basic("59524904", "NR2Y2NBXb9StuHhJ");
+        $client = new \Vonage\Client($basic);
+        $response = $client->sms()->send(
+            new SMS("237652027456", $name,  $message)
+        );
+        $message = $response->current();
+        
+        if ($message->getStatus() == 0) {
+            echo "The message was sent successfully\n";
+        } else {
+            echo "The message failed with status: " . $message->getStatus() . "\n";
+        }
     }
 
 
@@ -75,9 +101,15 @@ class HomeController extends Controller
 
         public function DeleteLogiciel($id_logiciel)
         {
-            logiciel::destroy($id_logiciel);
-            Alert::success('Do you want to delete this record','Confirmation');
-            //permet de supprimer un element du panier avec id passe en paramatre
+            try {
+                 logiciel::destroy($id_logiciel);
+                 Alert::success('Do you want to delete this record','Confirmation');
+                //permet de supprimer un element du panier avec id passe en paramatre
+              } catch (\Exception $e) {
+              
+                Alert::error('error', 'Ce logiciel est utilisé pour une souscription');
+              }
+           
                 return back(); 
         }
 
@@ -153,14 +185,42 @@ class HomeController extends Controller
                 return redirect()->back();
                 }
                 
+
+              public function notifyAdmin(){
+                $html = "<ul style='list-style: none;'>";
+                try {
+                    $details1 =[
+                        'title'=>"Notification de souscription",
+                        'body'=> "La periode d'expiration de certain client arrive deja a expiration veillez consulter  les souscriptions clientes pour les notifiers"
+                    ];
+                    $current_date = date('Y-m-d');
+                    $subscription  = DB::table('subscription')
+                             ->select('alert as notification','email as client_email','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
+                             ->join('client','subscription.client_id',"=","client.id")
+                             ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
+                             ->get();
+                      foreach($subscription as $subscriptions){
+                            $start_time = Carbon::parse($current_date);
+                            $finish_time = Carbon::parse($subscriptions->date_fin);
+                            $result = $start_time->diffInDays($finish_time, false);
+                            if($result>=0 && $result<=5 && $subscriptions->notification==0){
+                                Mail::to("nguimfackjunior2@gmail.com")->send(new TestMail($details1));     
+                            }
+                        }
+                  } catch (\Exception $e) {
+                      Alert::html('Une erreur a  ete rencontre durant cette opartion', $html, 'error');
+                  }
+                    return redirect()->back();
+                }
+
                  function SendMail()
                 {
-
+                    $html = "<ul style='list-style: none;'>";
                     $details =[
                         'title'=>"Notification de souscription",
                         'body'=> "Votre periode d'expiration arrive deja a echeance"
                     ];
-
+                    
                     $current_date = date('Y-m-d');
                     $subscription  = DB::table('subscription')
                              ->select('alert as notification','email as client_email','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
@@ -186,20 +246,21 @@ class HomeController extends Controller
                 public function UpdateSubscription(Request $request)
                 {
                     $html = "<ul style='list-style: none;'>";
-                    $validatedData = $request->validate([
+                   /* $validatedData = $request->validate([
                         'date_debut' => ['required', 'date'],
                         'date_fin' => ['required', 'date'],
-                    ]);
-
-                    $start_time = Carbon::parse($request->date_debut);
+                    ]);*/
+                    $current_date= date('Y-m-d');
+                    $start_time = Carbon::parse($current_date);
                     $finish_time = Carbon::parse($request->date_fin);
                     $result = $start_time->diffInDays($finish_time, false);
                     if($result>0){
                         $subs = subscription::find($request->id_subscription);
-                        $subs->date_debut=$request->date_debut;
+                        $subs->date_debut=$current_date;
                         $subs->date_fin=$request->date_fin;
+                        $subs->paye=$request->Mpaye;
                         $subs->save();
-                        Alert::html('Subscription realisé avec success!', $html, 'success');
+                        Alert::html('Subscription Renouvelle avec success!', $html, 'success');
                     }else{
                         Alert::html('Erreur survenue durant cette operation', $html, 'error');
 
@@ -213,12 +274,33 @@ class HomeController extends Controller
                         $subs->paye=$subs->paye+$request->montant;
                         $subs->save();
                         Alert::html('Payement réalisé avec success!', $html, 'success');
-                   
                     return redirect()->back();
                 }
 
-             /*   public function SendMail(){
-                    
-                    return "email envoyé";
-                }*/
+
+                public function PrintInvoice($id)
+                {
+                    $curent_date= date("Y-m-d");
+                    $subscription  = DB::table('subscription')
+                    ->select('ville','address as client_address','alert as notification','email as client_email','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
+                    ->join('client','subscription.client_id',"=","client.id")
+                    ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
+                    ->where('subscription.id',$id)
+                    ->get();
+                    // instantiate and use the dompdf class
+                     foreach($subscription as $subscriptions){
+                        $data = ['title' => 'nguimfack',
+                        'client_name'=>$subscriptions->client_name,
+                        'client_address'=>$subscriptions->client_address,
+                        'client_ville'=>$subscriptions->ville,
+                        'client_email'=>$subscriptions->client_email,
+                        'invoice_date'=>$curent_date,
+                        'logiciel'=>$subscriptions->logiciel_name,
+                        'paye'=>$subscriptions->payement
+                    ];
+                     }                      
+                      $pdf = PDF::loadView('myPDF', $data);
+                    return $pdf->download("facture ".$subscriptions->client_name.".pdf");
+                }
+
 }

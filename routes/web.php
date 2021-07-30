@@ -16,7 +16,6 @@ use App\Http\Controllers\HomeController;
 Route::get('/', function () {
     return view('auth.login');
 });
-
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/software',[HomeController::class,'ManageSoft']);
@@ -29,5 +28,9 @@ Route::get('/comparedate',[HomeController::class,'compareDate']);
 Route::post('/updatesubscription',[HomeController::class,'UpdateSubscription']);
 Route::post('/updatepayement',[HomeController::class,'UpdatePayement']);
 Route::get('/sendmail',[HomeController::class,'SendMail']);
+Route::get('/printinvoice/{id}',[HomeController::class,'PrintInvoice']);
+Route::get('/pdf',[HomeController::class,'PDF']);
+Route::get('/sav',[HomeController::class,'SAV']);
+
 
 
