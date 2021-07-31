@@ -19,6 +19,7 @@ use PDF;
 use Vonage\SMS\Message\SMS;
 use PhpParser\Node\Stmt\TryCatch;
 use App\Services\PayUService\Exception;
+use App\Http\Controllers\NexmoSMSController;
 
 class HomeController extends Controller
 {
@@ -30,7 +31,7 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-       // $this->notifyAdmin();
+        $this->notifyAdmin();
        
 
     }
@@ -46,23 +47,31 @@ class HomeController extends Controller
     }
 
     
-    public function SAV(){
-        $message="Vous venez de gagner une somme de 1millions de fcfa a mtn tapez *121# pour verifier\n";
-        $name="OPTIMUS CLIENT";
-        $basic  = new Basic("59524904", "NR2Y2NBXb9StuHhJ");
-        $client = new \Vonage\Client($basic);
-        $response = $client->sms()->send(
-            new SMS("237652027456", $name,  $message)
-        );
-        $message = $response->current();
-        
-        if ($message->getStatus() == 0) {
-            echo "The message was sent successfully\n";
-        } else {
-            echo "The message failed with status: " . $message->getStatus() . "\n";
-        }
+    public function NotifyPayement($id){
+   
+    try
+    {
+        $cl= client::find($id);
+        $details =[
+         'title'=>"Notification de souscription",
+         'body'=> "Vous venez d'effectuer un payement a oryx consulting pour votre souscription"
+     ];
+ 
+     Mail::to($cl->email)->send(new TestMail($details));     
+ 
+    }catch(\Exception $e){
+        Alert::error('error', 'Veillez verifier votre connexion internet');
     }
 
+    return redirect()->back();
+
+    }
+
+   public function SAV(){
+    return view('vue.sav');
+
+   }
+     
 
     public function ManageSoft()
     {
@@ -148,7 +157,7 @@ class HomeController extends Controller
         public function Souscription()
         {
             $subscription  = DB::table('subscription')
-                             ->select('subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
+                             ->select('client.id as client_id','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
                              ->join('client','subscription.client_id',"=","client.id")
                              ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
                              ->get();
@@ -208,39 +217,43 @@ class HomeController extends Controller
                             }
                         }
                   } catch (\Exception $e) {
-                      Alert::html('Une erreur a  ete rencontre durant cette opartion', $html, 'error');
+                      Alert::html('Veillez verifier Votre connexion internet', $html, 'error');
                   }
                     return redirect()->back();
                 }
 
                  function SendMail()
                 {
-                    $html = "<ul style='list-style: none;'>";
-                    $details =[
-                        'title'=>"Notification de souscription",
-                        'body'=> "Votre periode d'expiration arrive deja a echeance"
-                    ];
-                    
-                    $current_date = date('Y-m-d');
-                    $subscription  = DB::table('subscription')
-                             ->select('alert as notification','email as client_email','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
-                             ->join('client','subscription.client_id',"=","client.id")
-                             ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
-                             ->get();
-                      foreach($subscription as $subscriptions){
-                            $start_time = Carbon::parse($current_date);
-                            $finish_time = Carbon::parse($subscriptions->date_fin);
-                            $result = $start_time->diffInDays($finish_time, false);
-                            if($result>=0 && $result<=5 && $subscriptions->notification==0){
-                                Mail::to($subscriptions->client_email)->send(new TestMail($details));
-                                 $update_alert_status=subscription::find($subscriptions->subscription_id);
-                                 $update_alert_status->alert=1;
-                                 $update_alert_status->save();   
+                    try{
+                        $html = "<ul style='list-style: none;'>";
+                        $details =[
+                            'title'=>"Notification de souscription",
+                            'body'=> "Votre periode d'expiration arrive deja a echeance"
+                        ];
+                        
+                        $current_date = date('Y-m-d');
+                        $subscription  = DB::table('subscription')
+                                 ->select('alert as notification','email as client_email','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
+                                 ->join('client','subscription.client_id',"=","client.id")
+                                 ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
+                                 ->get();
+                          foreach($subscription as $subscriptions){
+                                $start_time = Carbon::parse($current_date);
+                                $finish_time = Carbon::parse($subscriptions->date_fin);
+                                $result = $start_time->diffInDays($finish_time, false);
+                                if($result>=0 && $result<=5 && $subscriptions->notification==0){
+                                    Mail::to($subscriptions->client_email)->send(new TestMail($details));
+                                     $update_alert_status=subscription::find($subscriptions->subscription_id);
+                                     $update_alert_status->alert=1;
+                                     $update_alert_status->save();   
+                                }
+                                Alert::html('Vos client on recus leurs mail de notification', $html, 'success');
                             }
-                            Alert::html('Vos client on recus leurs mail de notification', $html, 'success');
-                        }
-                        return redirect()->back();
-                                   
+                    }catch (\Exception $e){
+                        Alert::html('Veillez verifier Votre connexion internet', $html, 'error');
+                    }
+                    return redirect()->back();
+         
                 }
 
                 public function UpdateSubscription(Request $request)
@@ -302,5 +315,11 @@ class HomeController extends Controller
                       $pdf = PDF::loadView('myPDF', $data);
                     return $pdf->download("facture ".$subscriptions->client_name.".pdf");
                 }
+
+                 public function DeleteSubscriptions($id){
+                    subscription::destroy($id);
+                    //Alert::success('Voulez-vous supprimer cette souscription?','Confirmation');
+                    return redirect()->back();
+                 }
 
 }

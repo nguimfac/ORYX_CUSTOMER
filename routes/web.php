@@ -30,7 +30,10 @@ Route::post('/updatepayement',[HomeController::class,'UpdatePayement']);
 Route::get('/sendmail',[HomeController::class,'SendMail']);
 Route::get('/printinvoice/{id}',[HomeController::class,'PrintInvoice']);
 Route::get('/pdf',[HomeController::class,'PDF']);
+Route::get('/deletesouscription/{id}',[HomeController::class,'DeleteSubscriptions']);
+Route::get('/send_toclient/{id}',[HomeController::class,'NotifyPayement']);
 Route::get('/sav',[HomeController::class,'SAV']);
+
 
 
 

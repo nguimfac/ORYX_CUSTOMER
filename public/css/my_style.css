@@ -373,3 +373,7 @@ footer p {
     color: #fff;
     font-family: tahoma;
 }
+
+td::hover {
+    background: blue;
+}

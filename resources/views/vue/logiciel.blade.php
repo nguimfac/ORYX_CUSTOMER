@@ -81,7 +81,7 @@
                                 </div>
                             </div>
                         </h3>
-                        <table class="table table-hover table-responsive table-striped product-dashboard-table" id="myTable">
+                        <table class="table table-hover  table-striped product-dashboard-table" id="myTable">
                             <thead class="bg-primary text-white">
                                 <tr>
                                     <th>NUMERO</th>
@@ -324,8 +324,6 @@
         $('#created_at').val(_this.find('#date_creation').text());
     });
 </script>
-
-
 
 
 @endsection

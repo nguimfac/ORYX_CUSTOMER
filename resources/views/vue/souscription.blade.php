@@ -20,8 +20,8 @@
                                 <li class="active">
                                     <a href="{{url('souscription/')}}" class="souscription"><i class="fa fa-bookmark-o"></i> Souscription<span>2</span></a>
                                 </li>
-                                <li>
-                                    <a href="dashboard-archived-ads.html" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente<span>3</span></a>
+								<li class="">
+                                    <a href="{{url('sav/')}}" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente<span>3</span></a>
                                 </li>
 
                             </ul>
@@ -141,7 +141,7 @@
                                                         </a>
                                                     </li>
                                                     <li class="list-inline-item">
-                                                        <form method="get" action="DeleteLogiciel/{{$subscriptions->subscription_id}}">
+                                                        <form method="get" action="deletesouscription/{{$subscriptions->subscription_id}}">
                                                             @csrf
                                                             <input name="_method" type="hidden" value="DELETE">
                                                             <a type="submit" data-placement="top" title="Delete show_confirm " class="delete show_confirm" href="">
@@ -150,7 +150,7 @@
                                                         </form>
                                                     </li>
 													<li class="list-inline-item">
-                                                        <a id="notify" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEdit" title="Edit" class="edit">
+                                                        <a id="notify" data-placement="top" href="send_toclient/{{$subscriptions->client_id}}"  type="button"  title="Edit" class="view">
                                                             <i class="fa fa-bell"></i>
                                                         </a>
                                                     </li>
@@ -480,7 +480,17 @@
             }
         });
     })
-
+/*
+	$(document).ready(function(){
+	 $("td").hover(function(){
+		 $('.notify').css('background-color', 'blue')
+	 })
+	 $("td").mouseout(function(){
+		 $('.notify').css('background-color', '')
+	 })	
+	
+	})
+*/
     $(document).ready(function() {
         $('#payement').hide();
     })
