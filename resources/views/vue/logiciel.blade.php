@@ -76,7 +76,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-3  offset-md-10">
                                     <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop">Add logiciel <i class="fa fa-plus-square" aria-hidden="true"></i></button>
                                 </div>
                             </div>

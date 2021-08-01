@@ -161,7 +161,7 @@
     <div class="modal-dialog modal-xl  modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Nouvelle subscription <img width="80" src="{{  asset('images/subscription.png') }}" alt="" srcset=""></h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Creez une Reclammation <img width="80" src="{{  asset('images/sav.jpg') }}" alt="" srcset=""></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -173,85 +173,35 @@
                         <div class="col-md-6">
 
                             <div class="form-group">
-                                <label for="nom" class="text-black">Nom du client</label>
-                                <input type="text" name="nom_client" class="form-control p-4" required placeholder="Name of the client">
+                                <label for="nom" class="text-black">Client Concerné</label>
+                                <select name="client_name" class="form-control p-4" id="client_name">
+                                    <option value=""></option>
+                                </select>
                             </div>
 
                             <div class="form-group">
-                                <label for="civilite" class="text-black">Civilité</label>
-                                <input type="text" name="civilite_client" class="form-control p-4" required placeholder="Civilité">
+                                <label for="probleme" class="text-black">Titre du Probleme</label>
+                                <input type="text" name="titrepb" class="form-control p-4" required placeholder="titre ce probleme">
                             </div>
 
                             <div class="form-group">
-                                <label for="email" class="text-black">Email</label>
-                                <input type="email" name="email_client" class="form-control p-4" required placeholder="email du client">
+                                <label for="email" class="text-black">Description du probleme</label>
+                                <textarea name="descpd" id="descpb"  class="form-control " placeholder="Decrivez le probleme de votre client"></textarea>
                             </div>
-
-
-                            <div class="form-group">
-                                <label for="address" class="text-black">Address</label>
-                                <input type="text" name="address_client" class="form-control p-4" required placeholder="address du client">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="ville" class="">Ville</label>
-                                <input type="text" list="browsers" class="form-control p-4" name="ville_client">
-                                <datalist id="browsers">
-									<option value="Douala">
-									<option value="Yaoundé">
-									<option value="Limbe">
-									<option value="Edea">
-									<option value="Kribi">
-									<option value="Dschand">
-							</datalist>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="address" class="text-black">Telephone</label>
-                                <input type="number" name="telephone_client" class="form-control p-4" placeholder="telephone du client">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="address" class="text-black">Code Postal</label>
-                                <input type="text" name="codepostal_client" class="form-control p-4" placeholder="code postal du client">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="logiciel" class="text-black">Logiciel</label>
-                                <select type="text" name="logiciel" class="form-control  text-black" style="height:46px">
-							
-							</select>
-                            </div>
-                            <div class="form-group ">
-                                <label for="date_fin" class="text-black">Date fin</label>
-                                <input type="date" name="date_fin" class="form-control p-4" required>
-                            </div>
+                            <label for="email" class="text-black">Avez vous une solution a proposé</label><br>
                             <div class="row ">
-                                <div class="col md-4 mt-4 ">
-                                    <span>Orange money</span><br><input class="ml-4" id="method1" type="radio" value="OM" name="type_payement">
+                                <div class="col-md-2 ">
+                                    <span class="ml-3">Oui</span><br><input class="ml-4" id="method1" type="radio" value="OM" name="type_payement">
                                 </div>
-
-                                <div class="col-md-4 mt-4">
-                                    <span>Mtn money<br></span><input type="radio" id="method2" class="ml-4" value="MM" name="type_payement"><br>
-                                </div>
-                                <div class="col-md-4 mt-4">
-                                    <span>Non payé<br></span><input type="radio" id="NPmethod" class="ml-4" value="NP" name="type_payement"><br>
+                                <div class="col-md-3">
+                                    <span class="ml-4">Non<br></span><input type="radio" id="NPmethod" class="ml-4" value="NP" name="type_payement"><br>
                                 </div> 
                             </div><br>
-							<div class="row">
-								<div class="col-md-4 mt-4">
-                                    <span>Cash<br></span><input type="radio" id="cash" class="ml-4" value="CASH" name="type_payement"><br>
-                                </div>
-                                <div class="col-md-4 mt-4">
-                                    <span>virement</span><br><input type="radio" id="method3" value="V" class="ml-4" name="type_payement"><br>
-                                </div>
-							</div>
-                            <div class="form-group payeform mt-4">
-                                <label for="date_fin" class="text-black">Somme à payer</label>
-                                <input type="number" name="paye" class="form-control p-4">
-                            </div>
 
+                            <div class="form-group payeform">
+                                <label for="date_fin" class="text-black">Entrez votre solution</label>
+                                 <textarea name=""  class="form-control "></textarea>
+                            </div>    
                         </div>
 
                         <script>

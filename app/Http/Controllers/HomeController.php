@@ -31,7 +31,7 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->notifyAdmin();
+        //$this->notifyAdmin();
        
 
     }
@@ -247,8 +247,8 @@ class HomeController extends Controller
                                      $update_alert_status->alert=1;
                                      $update_alert_status->save();   
                                 }
-                                Alert::html('Vos client on recus leurs mail de notification', $html, 'success');
                             }
+                    Alert::html('Vos client on recus leurs mail de notification', $html, 'success');
                     }catch (\Exception $e){
                         Alert::html('Veillez verifier Votre connexion internet', $html, 'error');
                     }
