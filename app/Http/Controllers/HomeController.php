@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\subscription;
 use App\Models\client;
 use App\Models\reclammation;
+use App\Models\suggestion;
 use App\Models\intervention;
 use Illuminate\Support\Facades\Input;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -454,7 +455,7 @@ class HomeController extends Controller
             }
 
             else{
-                  
+                   
             }
         }
 }

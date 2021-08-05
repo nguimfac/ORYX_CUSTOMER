@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class suggestion extends Model
 {
     use HasFactory;
+    public $table="suggestion";
+    protected $fillable = ["id","titre_sugg", "description_pb",'logiciel_id',"client_id","etat"];
+
 }
