@@ -33,6 +33,19 @@ Route::get('/pdf',[HomeController::class,'PDF']);
 Route::get('/deletesouscription/{id}',[HomeController::class,'DeleteSubscriptions']);
 Route::get('/send_toclient/{id}',[HomeController::class,'NotifyPayement']);
 Route::get('/sav',[HomeController::class,'SAV']);
+Route::post('/sav/fetch', [App\Http\Controllers\HomeController::class, 'fetch'])->name('sav.fetch');
+Route::post('/savereclammation',[HomeController::class,'Savereclammation']);
+Route::get('/deletereclammation/{id}',[HomeController::class,'DeleteReclammation']);
+Route::get('/intervention/{id}',[HomeController::class,'Intervention']);
+Route::post('/updatereclammtion',[HomeController::class,'UpdateReclammation']);
+Route::post('/{id}/saveintervention',[HomeController::class,'SaveIntervention']);
+Route::get('deleteintervention/{id}',[HomeController::class,'DeleteIntervention']);
+
+
+
+
+
+
 
 
 

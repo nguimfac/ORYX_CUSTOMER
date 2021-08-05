@@ -30,14 +30,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://demo.themefisher.com/classimax/plugins/bootstrap/popper.min.js"></script>
     <script src="https://demo.themefisher.com/classimax/plugins/bootstrap/bootstrap.min.js"></script>
-    <script src="https://demo.themefisher.com/classimax/plugins/bootstrap/bootstrap-slider.js"></script>
-    <script src="https://demo.themefisher.com/classimax/plugins/tether/js/tether.min.js"></script>
-    <script src="https://demo.themefisher.com/classimax/plugins/raty/jquery.raty-fa.js"></script>
-    <script src="https://demo.themefisher.com/classimax/plugins/slick/slick.min.js"></script>
-    <script src="https://demo.themefisher.com/classimax/plugins/jquery-nice-select/js/jquery.nice-select.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU"></script>
-    <script src="https://demo.themefisher.com/classimax/plugins/google-map/map.js"></script>
-    <script src="https://demo.themefisher.com/classimax/js/script.js"></script>
+
     <script src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -61,13 +54,11 @@
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
     <!-- Styles -->
 
-    <link rel="stylesheet" href="https://demo.themefisher.com/classimax/plugins/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="https://demo.themefisher.com/classimax/plugins/bootstrap/bootstrap-slider.css">
-    <link rel="stylesheet" href="https://demo.themefisher.com/classimax/plugins/font-awesome/css/font-awesome.min.css">
+    <link href=https://demo.themefisher.com/classimax/plugins/font-awesome/css/font-awesome.min.css "" rel="stylesheet">
+
     <link rel="stylesheet" href="https://demo.themefisher.com/classimax/plugins/slick/slick.css">
     <link rel="stylesheet" href="https://demo.themefisher.com/classimax/plugins/slick/slick-theme.css">
-    <link rel="stylesheet" href="https://demo.themefisher.com/classimax/plugins/jquery-nice-select/css/nice-select.css">
-    <link rel="stylesheet" href="https://demo.themefisher.com/classimax/css/style.css">
+    <link rel="stylesheet" href="{{asset('css/Style.css')}}">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -102,7 +93,6 @@
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
                         @endif @else
-
                         <li class="nav-item active">
                             <a class="nav-link" href="home">Home</a>
                         </li>

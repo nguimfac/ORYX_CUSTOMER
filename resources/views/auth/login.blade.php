@@ -3,6 +3,7 @@
 @section('content')
 
 <div class="">
+	
 		<div class="container col-md-10">
 			<div class="bg-white mb-4 shadow p-3 mb-5 bg-white rounded">
                 <div class="container">
@@ -34,8 +35,6 @@
 						<input class="input100   @error('password') is-invalid @enderror"  id="password" type="password"  name="password" required autocomplete="current-password">
 						<span class="focus-input100"></span>
 						<span class="label-input100" id="Labpassword">Password</span>
-
-                        
 					</div>
                     @error('password')
                                     <span class="invalid-feedback" role="alert">

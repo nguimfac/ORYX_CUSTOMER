@@ -137,7 +137,7 @@
                                                     </li>
                                                     <li class="list-inline-item">
                                                         <a id="edit" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEdit" title="Edit" class="edit">
-                                                            <i class="fa fa-pencil"></i>
+                                                            <i class="fa fa-refresh"></i>
                                                         </a>
                                                     </li>
                                                     <li class="list-inline-item">

@@ -9,9 +9,16 @@ use App\Models\logiciel;
 use Illuminate\Support\Facades\DB;
 use App\Models\subscription;
 use App\Models\client;
+use App\Models\reclammation;
+use App\Models\intervention;
 use Illuminate\Support\Facades\Input;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Mail\TestMail;
+use Illuminate\Support\Facades\Validator;
+
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+
 use Dompdf\Dompdf;
 use Vonage\Client\Credentials\Basic;
 use Nexmo\Laravel\Facade\Nexmo;
@@ -42,8 +49,15 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
-    {
-        return view('home');
+    {        
+        $role =Auth::user()->is_admin;
+         if($role ==1){
+            return view('home');
+         }else{
+            Auth::logout();
+             return view('auth.login')->with('message','Verifier vos information svp');        
+         }
+        
     }
 
     
@@ -68,10 +82,33 @@ class HomeController extends Controller
     }
 
    public function SAV(){
-    return view('vue.sav');
-
+        $logiciel=logiciel::all();
+        $reclammation  = DB::table('reclammation')
+        ->select('titre as titre_logiciel','reclammation.created_at as created_at','reclammation.id as reclam_id','titre_rec','description_pb','nom as client_name','solution','etat')
+        ->join('client','reclammation.client_id',"=","client.id")
+        ->join('logiciel','reclammation.logiciel_id','=','logiciel.id')
+        ->get();
+    return view('vue.sav',['reclammation'=>$reclammation,'software'=>$logiciel]);
    }
      
+   function fetch(Request $request)
+   {
+    if($request->get('query'))
+    {
+     $query = $request->get('query');
+     $data = DB::table('client')
+       ->where('nom', 'LIKE', "%{$query}%")
+       ->get();
+     $output = '<ul class="list-group  " style="display:block; position:relative">';
+     foreach($data as $row)
+     {
+      $output .= '<li><a href="#" class="list-group-item">'.$row->nom.'</a></li>
+      ';
+     }
+     $output .= '</ul>';
+     echo $output;
+    }
+   }
 
     public function ManageSoft()
     {
@@ -275,7 +312,7 @@ class HomeController extends Controller
                         $subs->save();
                         Alert::html('Subscription Renouvelle avec success!', $html, 'success');
                     }else{
-                        Alert::html('Erreur survenue durant cette operation', $html, 'error');
+                        Alert::html('La date de renouvellation  doit etre superieure a la date courante. Ressayez', $html, 'error');
 
                     }
                     return redirect()->back();
@@ -321,5 +358,103 @@ class HomeController extends Controller
                     //Alert::success('Voulez-vous supprimer cette souscription?','Confirmation');
                     return redirect()->back();
                  }
+                 public function Savereclammation(Request $request){
+                    $html = '<ul style="list-style: none;">';
+                  
+                  /* $this->validate($request, [
+                        'titre_rec' => 'required',
+                        'description_pb' => 'required|email',
+                     ]);*/
+                   try{
+                    $id = client::where('nom', $request->client_name)->first()->id;
+                    $recl = new reclammation();
+                    $recl->titre_rec = $request->titrepb;
+                    $recl->description_pb = $request->descpd;
+                    $recl->logiciel_id = $request->logiciel_id;
+                    $recl->client_id = $id;
+                    $recl->solution = $request->solution;
+                    $recl->etat = $request->etat;
+                    $recl->save();
+                    Alert::html('Reclammation enregistré avec success!', $html, 'success');  
+                   }catch(\Exception $e){
+                    Alert::warning('Le client que vous avez selectionner n existe pas ', 'veillez juste selectionner un client', 'warning');  
+                   }
+                   return redirect()->back();
 
+                 }
+
+                 public function DeleteReclammation($id) {
+                     reclammation::destroy($id);
+                     return redirect()->back();
+                 }
+                 
+                 public function DeleteIntervention($id){
+                    intervention::destroy($id);
+                    return redirect()->back();
+                 }
+
+                 public function UpdateReclammation(Request $request){
+                    $html = "<ul style='list-style: none;'>";
+                    $recl =reclammation::find($request->id_reclammation);
+                     if($request->reponse==1){
+                         $recl->description_pb = $request->solution;
+                         $recl->etat =1;
+                         $recl->save();
+                         Alert::html('Bravo vous avez finalement resolution ce probleme!', $html, 'success');  
+                     }
+                     else{
+                        $recl->description_pb = $request->solution;
+                        $recl->etat =0;
+                        Alert::html('Vous avez changez de solution mais ce problemeexiste toujours!', $html, 'warning');  
+
+                     }
+
+                     return redirect()->back();
+                 }
+
+    public function Intervention($id){
+        //$depense = DB::table('intervention')->where('id' '=' $id)->sum('balance');
+        $depense = DB::table('intervention')->where('reclammation_id', $id)->sum('cout');
+        $intervention = intervention::where('reclammation_id', $id)->get();
+        $reclammation  = reclammation::find($id);
+        $user =User::all();
+        return view('vue.intervention',['intervent'=>$reclammation,'users'=>$user,'interv_info'=>$intervention,'depense'=>$depense]);
+    }
+
+    
+
+
+        public function SaveIntervention(Request $request){
+            //$id = client::where('nom', $request->client_name)->first()->id;
+            $reclammation=reclammation::find($request->id_reclammation);
+            if($request->reponse==1){
+                $reclammation->solution=$request->tache;
+                $reclammation->etat=1;
+                $reclammation->save();
+            }
+            $inter = new intervention();
+            $inter->tache =$request->tache;
+            $inter->reclammation_id =$request->id_reclammation;
+            $inter->cout =$request->cout;
+            $inter->intervenant= $request->input('agent');
+            $inter->save();
+            return redirect()->back();
+        }
+
+        public function  savesuggestion(Request $request){
+            $validator = Validator::make($request->all(), [
+                'title' => 'required|unique:posts|max:255',
+                'body' => 'required',
+            ]);
+    
+            if ($validator->fails()) {
+                return redirect()->back()
+                            ->withErrors($validator)
+                            ->withInput();
+            }
+
+            else{
+                  
+            }
+        }
 }

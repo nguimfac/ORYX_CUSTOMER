@@ -1,4 +1,5 @@
 @extends('layouts.app') @section('content')
+
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> {{View::make('vue.links')}}
 <div class="container-fluid mb-4">
     <section class="dashboard section">
@@ -61,197 +62,152 @@
 
                     </div>
                 </div>
+
                 <div class="col-lg-9">
                     <!-- Recently Favorited -->
                     <div class="widget dashboard-container my-adslist">
-                        <div id="tsum-tabs">
-                            <main>
-                                <input id="tab1" class="inputs" type="radio" name="tabs" checked>
-                                <label for="tab1"><strong>RECLAMMATION</strong></label>
+                     <div class="row">
+                         <div class="col-md-7">
+                            <form action="saveintervention" method="POST">
+                                @csrf
+                                <div class="form-group">
+                                    <input type="hidden"  name="id_reclammation" value={{$intervent->id}} class="form-control shadow-lg p-3 mb-5 bg-white rounded p-4 " name="reclammation_id" id="reclammation" >
+                                </div>
 
-                                <input id="tab2" class="inputs" type="radio" name="tabs">
-                                <label for="tab2"><strong>SUGGESTION</strong></label>
+                                <div class="form-group">
+                                    <label for="email" class="text-black"> RECLAMMATION <i class="fa fa-exclamation-circle" aria-hidden="true"></i> : <span class="text-primary">{{$intervent->titre_rec}}</span></label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Tache effectuée</label>
+                                    <textarea name="tache" required  class="form-control shadow-lg p-3 mb-5 bg-white rounded" id="tache"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email">Cout</label>
+                                    <input type="number" class="form-control shadow-lg p-3 mb-5 bg-white rounded p-4 " name="cout" id="cout" >
+                                </div>
 
-                                <input id="tab3" class="inputs" type="radio" name="tabs">
-                                <label for="tab3"><strong>SOLUTION</strong></label>
+                                <label for="email" class="text-black">Est-elle effective</label><br>
+                                <div class="row ">
+                                    <div class="col-md-2 ">
+                                        <span class="ml-3">Oui</span><br><input class="ml-4" id="method1" type="radio" value="1" name="reponse">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span class="ml-4">Non<br></span><input type="radio" id="NPmethod" class="ml-4" value="0" name="reponse"><br>
+                                    </div>
+                                </div><br>
 
-                                <input id="tab4" class="inputs"type="radio" name="tabs">
-                                <label for="tab4">Drupal</label>
-                                <section id="content1"><br>
-
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop"> Add Reclammation <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel">Choisissez Les agents intervenants</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
                                         </div>
-                                       
-                                    </div>
-                                    <br>
-                                    <div>
-                                        <table id="myTable" class="table-responsive table table-striped table-hover table-borderless">
-                                            <thead class="bg-primary text-white">
-                                                <tr>
-                                                    <th scope="col">Numero</th>
-                                                    <th scope="col">Probleme</th>
-                                                    <th scope="col">Description</th>
-                                                    <th scope="col">Logiciel</th>
-                                                    <th scope="col">Client</th>
-                                                    <th scope="col">Solution Adoptée </th>
-                                                    <th scope="col"> Statut</th>
-                                                    <th scope="col"> Date soumise</th>
-                                                    <th scope="col text-right">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="jsTableBody">
-                                            @foreach ($reclammation as $reclammations)
-                                                    <tr>
-                                                        <td class="font p-3" id="id_reclam">{{$reclammations->reclam_id}}</td>
-                                                        <td class="font p-3" id="">{{$reclammations->titre_rec}}</td>
-
-                                                        <td class="font p-3" id="contain_reclam">{{$reclammations->description_pb}}</td>
-                                                        <td class="font p-3 ">{{$reclammations->titre_logiciel}}</td>
-
-                                                        <td class="font p-3 ">{{$reclammations->client_name}}</td>
-                                                        <td class="font p-3 col1">@if ($reclammations->solution==null) 
-                                                             en attente solution...
-                                                             @else
-                                                             {{$reclammations->solution}}
-                                                        @endif</td>
-                                                        <td class="font p-3 col2">
-                                                        @if ($reclammations->etat==2)
-                                                            <span class="">Ouvert</span>
-                                                        @elseif($reclammations->etat==1) 
-                                                        <span class="text-success">Resolu</span>
-                                                        @elseif($reclammations->etat==0)
-                                                        <span class="text-danger">Non resolu</span>
-                                                        @endif
-                                                        </td>
-                                                        <td class="font w">{{$reclammations->created_at}}</td>
-                                                        <td class="action" data-title="Action">
-                                                            <div class="">
-                                                                <ul class="list-inline justify-content-center">
-                                                                   
-                                                                    <li class="list-inline-item">
-                                                                        <a id="edit" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEdit" title="Edit" class="edit">
-                                                                            <i class="fa fa-pencil-square"></i>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li class="list-inline-item">
-                                                                        <form method="get" action="deletereclammation/{{$reclammations->reclam_id}}">
-                                                                            @csrf
-                                                                            <input name="_method" type="hidden" value="DELETE">
-                                                                            <a type="submit" data-placement="top" title="Delete show_confirm " class="delete show_confirm" href="">
-                                                                                <i class="fa fa-trash"></i>
-                                                                            </a>
-                                                                        </form>
-                                                                    </li>
-                                                                    <li class="list-inline-item">
-                                                                        <a id="notify" data-placement="top" href="intervention/{{$reclammations->reclam_id}}" type="button" title="Creer un intervention externe" class="view">
-                                                                            <i class="fa fa-external-link-square"></i>
-                                                                        </a>
-                                                                    </li>
-
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    @endforeach
-                                            </tbody>
-                                        </table>
-
-
-
-                                    </div>
-                                </section>
-
-                                <section  id="content2">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop"> Add Reclammation <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
-                                        </div>
-                                       
-                                    </div>
-                                    <br>
-
-                                    <div>
-                                        <table id="myTable" class="table-responsive table table-striped table-hover table-borderless">
-                                            <thead class="bg-primary text-white">
-                                                <tr>
-                                                    <th scope="col">Numero</th>
-                                                    <th scope="col">Probleme</th>
-                                                    <th scope="col">Description</th>
-                                                    <th scope="col">Logiciel</th>
-                                                    <th scope="col">Client</th>
-                                                    <th scope="col">Solution Adoptée </th>
-                                                    <th scope="col"> Statut</th>
-                                                    <th scope="col"> Date soumise</th>
-                                                    <th scope="col text-right">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="jsTableBody">
-                                                    <tr>
-                                                        <td class="font p-3" id="id_reclam"></td>
-                                                        <td class="font p-3" id=""></td>
-
-                                                        <td class="font p-3" id="contain_reclam"></td>
-                                                        <td class="font p-3 "></td>
-
-                                                        <td class="font p-3 "></td>
-                                                        <td class="font p-3 col1"></td>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <table  class="table table-striped table-borderless">
+                                                    <thead>
+                                                        <tr>
+                                                            <td>Agent</td>
+                                                            <td>Action</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($users as $user)
+                                                           <tr>
+                                                               <td>{{$user->name}}</td>
+                                                               <td><label><input required type="checkbox" name="agent[]" value="{{$user->name}}"></label><br></td>
+                                                           </tr>
                                                        
-                                                        <td class="font w"></td>
-                                                        <td class="action" data-title="Action">
-                                                            <div class="">
-                                                                <ul class="list-inline justify-content-center">
-                                                                   
-                                                                    <li class="list-inline-item">
-                                                                        <a id="edit" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEdit" title="Edit" class="edit">
-                                                                            <i class="fa fa-pencil-square"></i>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li class="list-inline-item">
-                                                                        <form method="get" action="deletereclammation/">
-                                                                            @csrf
-                                                                            <input name="_method" type="hidden" value="DELETE">
-                                                                            <a type="submit" data-placement="top" title="Delete show_confirm " class="delete show_confirm" href="">
-                                                                                <i class="fa fa-trash"></i>
-                                                                            </a>
-                                                                        </form>
-                                                                    </li>
-                                                                    <li class="list-inline-item">
-                                                                        <a id="notify" data-placement="top" href="intervention/" type="button" title="Creer un intervention externe" class="view">
-                                                                            <i class="fa fa-external-link-square"></i>
-                                                                        </a>
-                                                                    </li>
+                                                        @endforeach
 
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                            </tbody>
-                                        </table>
-
-
-
+                                                    </tbody>
+                                                </table>
+                                            </div>  
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="submit" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                      </div>
                                     </div>
-                                        
-                               
-                                </section>
+                                  </div>
+                                
 
-                                <section id="content3">
-                                    <p>
-                                        CONTENT FIR TAB 3
-                                    </p>
-                                </section>
+                                <div class="modal-footer">
+                                    <button type="button"  class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal"  class=" btn btn-primary btn-block">Choisissez des agents</button>
+                                    
+                                </div>
+                            </form>
+     
+                         </div>
+                         <div class="col-md-5">
+                            <img class="offset-md-2 offset-md-2 offset-sm-2  mt-4" src="{{asset('images/view2.png')}}" alt=""><br><br>
+                            <span class="mr-4 btn btn-dark" id="interventionView">Afficher les interventions pour ce probleme  <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
+                            </span>
+                         </div>
 
-                                <section id="content4">
-                                    <p>
-                                        CONTENT FIR TAB 4
-                                    </p>
-                                </section>
+                        @if ($interv_info->isNotEmpty())
+                        <div id="showIntervention" class="col-md-12 w-100">
+                            <hr>
+                            <table id="myTable" class=" table table-striped table-borderless ">
+                                <thead class="bg-dark text-white">
+                                    <tr>
+                                        <td>id</td> 
+                                        <td>Tache effectuée</td> 
+                                        <td>Cout Engendré</td>
+                                        <td>Agent intervenue</td>
+                                        <td>Date intervention</td>
+                                        <td>Action</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  @foreach ($interv_info as $info)
+                                  <tr>
+                                    <td>{{$info->id}}</td>
+                                    <td>{{$info->tache}}</td>
+                                    <td>{{$info->cout}}fcfa</td>  
+                                    <td>
+                                    @foreach($info->intervenant as $value)
+                                                    {{$value}},
+                                    @endforeach
+                                    </td>
+                                    <td>{{$info->created_at}}</td>      
+                                    <td>
+                                        <li class="list-inline-item">
+                                            <form method="get" action="/deleteintervention/{{$info->id}}">
+                                                @csrf
+                                                <input name="_method" type="hidden" value="DELETE">
+                                                <a type="submit" data-placement="top" title="Delete show_confirm " class="delete show_confirm btn btn-danger " href="">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </form>
+                                        </li>
+                                    </td>
+                                </tr>
+                                  @endforeach
 
-                            </main>
+                                </tbody><br>
+                            </table><br><br>
+                            <span class="float-right">Total des depenses effectuée pour cette reclammation <strong class="text-primary">{{$depense}} fcfa</strong></span>
+
                         </div>
+
+                        @else
+                        <div class="w-100 offset-md-4"><br><br><br>
+                            <span class=" float-left alert-success p-4">Il y'a pas eu d'intervention  pour cette reclammation<strong class="text-primary"></strong></span>
+
+                        </div>
+                        @endif
+                     </div> 
+                     
+            
                     </div>
+
+
+                    
 
                 </div>
 
@@ -314,24 +270,14 @@
             </div>
 
             <div class="modal-body">
-                <form action="/savesuggestion" autocomplete="off" method="POST" enctype="multipart/form-data">
+                <form action="/savereclammation" autocomplete="off" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="">
                         <div class="form-group">
                             <label for="nom" class="text-black">Client Concerné</label>
                             <input type="text" id="client_name" name="client_name" class="form-control p-4" required placeholder="titre ce probleme">
-                            <div id="clientList"></div>
+                            <div id="clientList"></div><br>
                         </div>
-
-                    <div class="form-group">
-                        <label for="nom"  class="text-black">Selectionnez le logiciel</label>
-                        <select  name="etat"  required id="etat" class="form-control" style="height:46px">
-                           @foreach ($software as $softwares)
-                           <option value="{{$softwares->id}}"  name="logiciel_id">{{$softwares->titre}}</option>
-                           @endforeach
-                        </select>
-                    </div>
-                                        
 
                         <div class="form-group">
                             <label for="probleme" class="text-black">Titre du Probleme</label>
@@ -340,9 +286,31 @@
 
                         <div class="form-group">
                             <label for="email" class="text-black">Description du probleme</label>
-                            <textarea name="descpd" required id="descpb" class="form-control " placeholder="Decrivez le probleme de votre client"></textarea>
+                            <textarea name="descpd" id="descpb" class="form-control " placeholder="Decrivez le probleme de votre client"></textarea>
                         </div>
-                       
+                        <label for="email" class="text-black">Avez vous une solution a proposé</label><br>
+                        <div class="row ">
+                            <div class="col-md-2 ">
+                                <span class="ml-3">Oui</span><br><input class="ml-4" id="method1" type="radio" value="1" name="reponse">
+                            </div>
+                            <div class="col-md-3">
+                                <span class="ml-4">Non<br></span><input type="radio" id="NPmethod" class="ml-4" value="0" name="reponse"><br>
+                            </div>
+                        </div><br>
+                        <div class="form-group payeform">
+                            <label for="date_fin" class="text-black">Entrez votre solution</label>
+                            <textarea name="solution" class="form-control "></textarea>
+
+                        </div>
+
+                        <select name="etat" id="etat" class="form-control" style="height:46px">
+                                <option value="2">ouvert</option>
+                                <option value="1">Resolu</option>
+                                <option value="0">Non resolu</option>
+                            </select>
+
+
+
                         <script>
                             $(document).ready(function() {
                                 $(".payeform").hide()
@@ -400,8 +368,10 @@
                     <div id="renewSubs" class="tabcontent">
                         <form class="text-left" action="/updatereclammtion" method="POST" enctype="multipart/form-data">
                             @csrf
+
+                            
                             <div class="form-group">
-                                <input type="hidden" id="id_reclammation" name="id_reclammation" class="form-control p-4" required placeholder="date of the software">
+                                <input type="hidden" id="id_reclammation" name="reclammation" class="form-control p-4" required placeholder="date of the software">
                             </div>
                                     <div class="form-group">
                                         <label for="date_exp" class="text-black">Nouvelle Solution</label>
@@ -505,11 +475,16 @@
     $(document).ready(function() {
         $('#myTable').DataTable();
     });
-    $(document).ready(function() {
-        $('.myTable1').DataTable();
-    });
-</script>
 
+    $(document).ready(function() {
+        $('#showIntervention').hide();
+        $('#interventionView').click(function() {
+            $('#showIntervention').fadeIn(); 
+        })
+
+    })
+</script>
+<!--
 <script>
     $(document).on('click', '#edit', function() {
         var _this = $(this).parents('tr');
@@ -558,7 +533,7 @@
             $('.tablinks').css('color', 'white');
         });
     }
-</script>
+</script>!-->
 
 
 
