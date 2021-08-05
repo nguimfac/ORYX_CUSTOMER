@@ -103,39 +103,35 @@
 
                             <!-- Dropdown list -->
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item @@dashboardPage" href="dashboard.html">Dashboard</a></li>
-                                <li><a class="dropdown-item @@dashboardMyAds" href="dashboard-my-ads.html">Dashboard My Ads</a></li>
-                                <li><a class="dropdown-item @@dashboardFavouriteAds" href="dashboard-favourite-ads.html">Dashboard Favourite Ads</a></li>
-                                <li><a class="dropdown-item @@dashboardArchivedAds" href="dashboard-archived-ads.html">Dashboard Archived Ads</a></li>
-                                <li><a class="dropdown-item @@dashboardPendingAds" href="dashboard-pending-ads.html">Dashboard Pending Ads</a></li>
+                                <li><a class="dropdown-item @@dashboardPage" href="{{url('software')}}">Logiciel</a></li>
+                                <li><a class="dropdown-item @@dashboardMyAds" href="{{url('souscription')}}">Souscription</a></li>
 
                                 <li class="dropdown dropdown-submenu dropright">
-                                    <a class="dropdown-item dropdown-toggle" href="#!" id="dropdown0501" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sub Menu</a>
+                                    <a class="dropdown-item dropdown-toggle" href="#!" id="dropdown0501" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Service apres ventes</a>
 
                                     <ul class="dropdown-menu" aria-labelledby="dropdown0501">
-                                        <li><a class="dropdown-item" href="index.html">Submenu 01</a></li>
-                                        <li><a class="dropdown-item" href="index.html">Submenu 02</a></li>
+                                        <li><a class="dropdown-item" href="{{url('sav')}}">Reclammation</a></li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{url('sav')}}">Suggestion</a>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>
                         </li>
 
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
+                        <li class="dropdown dropdown-slide @@dashboard ">
+                            <a class="nav-link dropdown-toggle" data-toggle="" href="">{{Auth::user()->name}} </span>
+                                <span class="fa fa-user-circle fa-x"></span>	</a>
 
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+                            <!-- Dropdown list -->
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item @@dashboardPage" href="destroysesssion">Logout</a></li>
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                            </div>
+
+                            </ul>
                         </li>
+
+
 
 
                         @endguest

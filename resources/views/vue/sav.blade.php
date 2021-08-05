@@ -118,7 +118,7 @@
                                                         @endif</td>
                                                         <td class="font p-3 col2">
                                                         @if ($reclammations->etat==2)
-                                                            <span class="">Ouvert</span>
+                                                            <span class="text-primary">Ouvert</span>
                                                         @elseif($reclammations->etat==1) 
                                                         <span class="text-success">Resolu</span>
                                                         @elseif($reclammations->etat==0)
@@ -162,7 +162,7 @@
 
                                     </div>
                                 </section>
-
+                                
                                 <section  id="content2">
                                     <div class="row">
                                         <div class="col-md-3">
@@ -173,32 +173,38 @@
                                     <br>
 
                                     <div>
-                                        <table id="myTable" class="table-responsive table table-striped table-hover table-borderless">
+                                        <table id="myTable1" class="table-responsive table table-striped table-hover table-borderless">
                                             <thead class="bg-primary text-white">
                                                 <tr>
                                                     <th scope="col">Numero</th>
                                                     <th scope="col">Probleme</th>
                                                     <th scope="col">Description</th>
                                                     <th scope="col">Logiciel</th>
-                                                    <th scope="col">Client</th>
-                                                    <th scope="col">Solution Adoptée </th>
-                                                    <th scope="col"> Statut</th>
+                                                    <th scope="col">Client</th>                                                   
+                                                     <th scope="col"> Statut</th>
                                                     <th scope="col"> Date soumise</th>
                                                     <th scope="col text-right">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="jsTableBody">
                                                     <tr>
-                                                        <td class="font p-3" id="id_reclam"></td>
-                                                        <td class="font p-3" id=""></td>
+                                                        @foreach ($suggestion as $suggestions)
+                                                        <td class="font p-3" id="id_reclam">{{$suggestions->suggestions_id}}</td>
+                                                        <td class="font p-3" id="">{{$suggestions->titre_sugg}}</td>
+                                                        <td class="font p-3" id="contain_reclam">{{$suggestions->description_pb}}</td>
+                                                        <td class="font p-3" id="contain_reclam">{{$suggestions->titre}}</td>
+                                                        <td class="font p-3" id="contain_reclam">{{$suggestions->nom}}</td>
+                                                        <td class="font p-3 col2">
+                                                            @if ($suggestions->etat==2)
+                                                                <span class="text-primary">Ouvert</span>
+                                                            @elseif($suggestions->etat==1) 
+                                                            <span class="text-success">Resolu</span>
+                                                            @elseif($suggestions->etat==0)
+                                                            <span class="text-danger">Non resolu</span>
+                                                            @endif
+                                                            </td>
+                                                        <td class="font p-3" id="contain_reclam">{{$suggestions->created_at}}</td>
 
-                                                        <td class="font p-3" id="contain_reclam"></td>
-                                                        <td class="font p-3 "></td>
-
-                                                        <td class="font p-3 "></td>
-                                                        <td class="font p-3 col1"></td>
-                                                       
-                                                        <td class="font w"></td>
                                                         <td class="action" data-title="Action">
                                                             <div class="">
                                                                 <ul class="list-inline justify-content-center">
@@ -227,6 +233,8 @@
                                                             </div>
                                                         </td>
                                                     </tr>
+                                                    @endforeach
+   
                                             </tbody>
                                         </table>
 
@@ -303,8 +311,9 @@
 </script>
 <!------Modal 1 for save------>
 
-<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg  modal-dialog-centered">
+
+<div  class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div  class="modal-dialog modal-lg  modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Creez une Reclammation <img width="80" src="{{  asset('images/sav.jpg') }}" alt="" srcset=""></h5>
@@ -316,18 +325,19 @@
             <div class="modal-body">
                 <form action="/savesuggestion" autocomplete="off" method="POST" enctype="multipart/form-data">
                     @csrf
+
                     <div class="">
                         <div class="form-group">
                             <label for="nom" class="text-black">Client Concerné</label>
-                            <input type="text" id="client_name" name="client_name" class="form-control p-4" required placeholder="titre ce probleme">
+                            <input type="text" id="client_name" value="{{ old('client_name') }}"  name="client_name" class="form-control p-4" required placeholder="titre ce probleme">
                             <div id="clientList"></div>
                         </div>
 
                     <div class="form-group">
                         <label for="nom"  class="text-black">Selectionnez le logiciel</label>
-                        <select  name="etat"  required id="etat" class="form-control" style="height:46px">
+                        <select  name="id_logiciel"  required id="etat" class="form-control" style="height:46px">
                            @foreach ($software as $softwares)
-                           <option value="{{$softwares->id}}"  name="logiciel_id">{{$softwares->titre}}</option>
+                           <option    value="{{$softwares->id}}"  >{{$softwares->titre}}</option>
                            @endforeach
                         </select>
                     </div>
@@ -335,12 +345,12 @@
 
                         <div class="form-group">
                             <label for="probleme" class="text-black">Titre du Probleme</label>
-                            <input type="text" name="titrepb" class="form-control p-4" required placeholder="titre ce probleme">
+                            <input type="text" name="titresugg" value="{{ old('titresugg') }}" class="form-control p-4" required placeholder="titre ce probleme">
                         </div>
 
                         <div class="form-group">
                             <label for="email" class="text-black">Description du probleme</label>
-                            <textarea name="descpd" required id="descpb" class="form-control " placeholder="Decrivez le probleme de votre client"></textarea>
+                            <textarea name="descpd"  id="descpb" value="{{ old('descpd') }}" class="form-control " placeholder="Decrivez le probleme de votre client"></textarea>
                         </div>
                        
                         <script>
@@ -378,6 +388,9 @@
     </div>
 </div>
 </div>
+
+
+
 
 <!-----Modal 2 for edti-->
 <div class="modal fade" id="staticBackdropEdit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelEdit" aria-hidden="true">
@@ -498,8 +511,18 @@
     }
 </style>
 
+<span class="test">
+  sdsdssd
+</span>
 
-
+@if(count($errors) > 0)
+<script>
+    $(document).ready(function(){
+        $('#staticBackdrop').modal('open');
+    })
+    $('.test').html('il y erreur');
+</script>
+@endif 
 
 <script>
     $(document).ready(function() {

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\subscription;
 use App\Models\client;
 use App\Models\reclammation;
-use App\Models\suggestion;
+use App\Models\suggestions;
 use App\Models\intervention;
 use Illuminate\Support\Facades\Input;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -39,7 +39,7 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        //$this->notifyAdmin();
+       // $this->notifyAdmin();
        
 
     }
@@ -83,13 +83,23 @@ class HomeController extends Controller
     }
 
    public function SAV(){
+    //SELECT `id`, `titre_sugg`, `description_pb`, `logiciel_id`, `client_id`, `etat`, `created_at`, `updated_at` FROM `suggestions` WHERE 1
+
         $logiciel=logiciel::all();
+
+        $suggest  = DB::table('suggestions')
+        ->select('suggestions.created_at','etat','titre_sugg','description_pb','titre','nom','suggestions.id as suggestions_id')
+        ->join('client','suggestions.client_id',"=","client.id")
+        ->join('logiciel','suggestions.logiciel_id','=','logiciel.id')
+        ->get();
+
         $reclammation  = DB::table('reclammation')
         ->select('titre as titre_logiciel','reclammation.created_at as created_at','reclammation.id as reclam_id','titre_rec','description_pb','nom as client_name','solution','etat')
         ->join('client','reclammation.client_id',"=","client.id")
         ->join('logiciel','reclammation.logiciel_id','=','logiciel.id')
         ->get();
-    return view('vue.sav',['reclammation'=>$reclammation,'software'=>$logiciel]);
+
+    return view('vue.sav',['reclammation'=>$reclammation,'software'=>$logiciel,'suggestion'=>$suggest]);
    }
      
    function fetch(Request $request)
@@ -262,7 +272,7 @@ class HomeController extends Controller
 
                  function SendMail()
                 {
-                    try{
+                    
                         $html = "<ul style='list-style: none;'>";
                         $details =[
                             'title'=>"Notification de souscription",
@@ -279,20 +289,17 @@ class HomeController extends Controller
                                 $start_time = Carbon::parse($current_date);
                                 $finish_time = Carbon::parse($subscriptions->date_fin);
                                 $result = $start_time->diffInDays($finish_time, false);
-                                if($result>=0 && $result<=5 && $subscriptions->notification==0){
+                                if($result<=5 && $subscriptions->notification==0){
                                     Mail::to($subscriptions->client_email)->send(new TestMail($details));
-                                     $update_alert_status=subscription::find($subscriptions->subscription_id);
-                                     $update_alert_status->alert=1;
-                                     $update_alert_status->save();   
-                                }
+                                    $update_alert_status=subscription::find($subscriptions->subscription_id);
+                                    $update_alert_status->alert=1;
+                                    $update_alert_status->save();   
                             }
                     Alert::html('Vos client on recus leurs mail de notification', $html, 'success');
-                    }catch (\Exception $e){
-                        Alert::html('Veillez verifier Votre connexion internet', $html, 'error');
-                    }
-                    return redirect()->back();
+                    
+                   return redirect()->back();
          
-                }
+                }}
 
                 public function UpdateSubscription(Request $request)
                 {
@@ -442,10 +449,11 @@ class HomeController extends Controller
             return redirect()->back();
         }
 
-        public function  savesuggestion(Request $request){
+        public function  SaveSuggestion(Request $request){
+
             $validator = Validator::make($request->all(), [
-                'title' => 'required|unique:posts|max:255',
-                'body' => 'required',
+                'titresugg' => 'required',
+                'descpd' => 'required',
             ]);
     
             if ($validator->fails()) {
@@ -453,9 +461,24 @@ class HomeController extends Controller
                             ->withErrors($validator)
                             ->withInput();
             }
-
             else{
-                   
+                $id = client::where('nom', $request->client_name)->first()->id;
+                $suggest = new suggestions();
+
+               $suggest->titre_sugg= $request->titresugg;
+               $suggest->description_pb=$request->descpd;
+               $suggest->logiciel_id=$request->id_logiciel;
+
+               $suggest->client_id=$id;
+
+               $suggest->etat = 2;
+               $suggest->save();
+               return redirect()->back();
             }
+            return redirect()->back()->withErrors($validator);                
+
+
+                   
+            
         }
 }

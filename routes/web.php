@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,6 +16,11 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', function () {
+    return view('auth.login');
+});
+
+Route::get('/destroysesssion', function () {
+    Auth::logout();
     return view('auth.login');
 });
 Auth::routes();
@@ -40,6 +47,8 @@ Route::get('/intervention/{id}',[HomeController::class,'Intervention']);
 Route::post('/updatereclammtion',[HomeController::class,'UpdateReclammation']);
 Route::post('/{id}/saveintervention',[HomeController::class,'SaveIntervention']);
 Route::get('deleteintervention/{id}',[HomeController::class,'DeleteIntervention']);
+Route::post('/savesuggestion',[HomeController::class,'SaveSuggestion']);
+
 
 
 
