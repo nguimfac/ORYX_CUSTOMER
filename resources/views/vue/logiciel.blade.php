@@ -18,7 +18,7 @@
                                     <a href="{{url('souscription/')}}" class="souscription"><i class="fa fa-bookmark-o"></i> Souscription<span>2</span></a>
                                 </li>
                                 <li>
-                                    <a href="dashboard-archived-ads.html" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente<span>3</span></a>
+                                    <a href="{{url('sav')}}" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente<span>3</span></a>
                                 </li>
 
                             </ul>

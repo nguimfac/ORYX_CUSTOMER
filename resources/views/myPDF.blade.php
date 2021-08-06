@@ -16,57 +16,53 @@
         </div>
 
     </header>
-    <main>
+    <main class="margin-top:100em">
         <div id="details" class="clearfix">
             <div id="client">
                 <div class="to">INVOICE TO:</div>
-                <h4 class="name">CLient:{{$client_name}}</h4>
+                <span class="name">CLient:{{$client_name}}</span>
                 <div class="address">{{$client_address}}, {{$client_ville}}</div>
                 <div class="email"><a href="mailto:john@example.com">Email:{{$client_email}}</a></div>
                 <div class="date">Date : {{$invoice_date}}</div>
             </div>
         </div>
-        <table border="0" cellspacing="5" cellpadding="0">
-            <thead>
-                <tr>
-                    <th class="no">N°</th>
-                    <th class="desc">DESCRIPTION</th>
-                    <th class="unit">UNIT PRICE</th>
-                    <th class="total">TOTAL</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="no">01</td>
-                    <td class="desc">
-                        <h3>Logiciel</h3>{{$logiciel}}
-                    </td>
-                    <td class="unit">{{$paye}}</td>
-                    <td class="total">{{$paye}}</td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="2"></td>
-                    <td colspan="2">SUBTOTAL</td>
-                    <td>{{$paye}}</td>
-                </tr>
-                <tr>
-                    <td colspan="2"></td>
-                    <td colspan="2">TAX 19.5%</td>
-                    <td>$1,300.00</td>
-                </tr>
-                <tr>
-                    <td colspan="2"></td>
-                    <td colspan="2">GRAND TOTAL</td>
-                    <td>{{$paye}}</td>
-                </tr>
-            </tfoot>
-        </table>
-        <div id="thanks">Oryx Consulting</div>
+       
+         <div class="" style="width:50em">
+            <table border="0" cellspacing="5" cellpadding="0">
+                <thead>
+                    <tr>
+                        <th class="no">N°</th>
+                        <th class="desc">DESCRIPTION</th>
+                        <th class="unit">UNIT PRICE</th>
+                        <th class="total">TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="no">01</td>
+                        <td class="desc">
+                            <h3>Logiciel</h3>{{$logiciel}}
+                        </td>
+                        <td class="unit">{{$paye}}</td>
+                        <td class="total">{{$paye}}</td>
+                    </tr>
+                </tbody> 
+            </table>
+         </div>
+<br>
+         <div  style="float:right;margin-right:100px">
+          
+            <div>
+                <span colspan="2">GRAND TOTAL :</span>
+                <span style="font-size:20px"><strong>{{$paye}} fcfa</strong></span>
+                <hr style="color:green">
+            </span>
+        </div>
+         </div>
+<br><br><br><br><br><br>
         <div id="notices">
             <div>NOTICE:</div>
-            <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>
+            <div class="notice"><i>En cas de soucis l'ors de l'utilisation de l'application veillez appeller au <i>655469301</i></i></div>
         </div>
     </main>
     <footer>

@@ -39,7 +39,7 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-       // $this->notifyAdmin();
+         // $this->notifyAdmin();
        
 
     }
@@ -273,12 +273,12 @@ class HomeController extends Controller
                  function SendMail()
                 {
                     
-                        $html = "<ul style='list-style: none;'>";
+                       $html = "<ul style='list-style: none;'>";
                         $details =[
                             'title'=>"Notification de souscription",
                             'body'=> "Votre periode d'expiration arrive deja a echeance"
                         ];
-                        
+                        /*
                         $current_date = date('Y-m-d');
                         $subscription  = DB::table('subscription')
                                  ->select('alert as notification','email as client_email','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
@@ -291,15 +291,48 @@ class HomeController extends Controller
                                 $result = $start_time->diffInDays($finish_time, false);
                                 if($result<=5 && $subscriptions->notification==0){
                                     Mail::to($subscriptions->client_email)->send(new TestMail($details));
-                                    $update_alert_status=subscription::find($subscriptions->subscription_id);
+                                    $update_alert_status=subscription::find(5);
                                     $update_alert_status->alert=1;
                                     $update_alert_status->save();   
-                            }
+                                }
                     Alert::html('Vos client on recus leurs mail de notification', $html, 'success');
                     
                    return redirect()->back();
          
-                }}
+                }
+            */
+
+            $html = "<ul style='list-style: none;'>";
+            try {
+                $details1 =[
+                    'title'=>"Notification de souscription",
+                    'body'=> "La periode d'expiration de certain client arrive deja a expiration veillez consulter  les souscriptions clientes pour les notifiers"
+                ];
+                $current_date = date('Y-m-d');
+                $subscription  = DB::table('subscription')
+                         ->select('alert as notification','email as client_email','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
+                         ->join('client','subscription.client_id',"=","client.id")
+                         ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
+                         ->get();
+                  foreach($subscription as $subscriptions){
+                        $start_time = Carbon::parse($current_date);
+                        $finish_time = Carbon::parse($subscriptions->date_fin);
+                        $result = $start_time->diffInDays($finish_time, false);
+                        if($result>=0 && $result<=5 && $subscriptions->notification==0){
+                           // Mail::to("nguimfackjunior2@gmail.com")->send(new TestMail($details1)); 
+                            Mail::to($subscriptions->client_email)->send(new TestMail($details));
+                            $update_alert_status=subscription::find(5);
+                            $update_alert_status->alert=1;
+                            $update_alert_status->save();
+
+                        }
+                    }
+              } catch (\Exception $e) {
+                 // Alert::html('Veillez verifier Votre connexion internet', $html, 'error');
+              }
+
+              return redirect()->back();
+            }
 
                 public function UpdateSubscription(Request $request)
                 {
@@ -356,9 +389,11 @@ class HomeController extends Controller
                         'logiciel'=>$subscriptions->logiciel_name,
                         'paye'=>$subscriptions->payement
                     ];
-                     }                      
-                      $pdf = PDF::loadView('myPDF', $data);
+                     }  
+                                        
+                    $pdf = PDF::loadView('myPDF', $data);
                     return $pdf->download("facture ".$subscriptions->client_name.".pdf");
+                    
                 }
 
                  public function DeleteSubscriptions($id){
