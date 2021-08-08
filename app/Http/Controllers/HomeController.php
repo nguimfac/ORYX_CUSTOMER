@@ -52,7 +52,7 @@ class HomeController extends Controller
     public function index()
     {        
         $role =Auth::user()->is_admin;
-         if($role ==1){
+         if($role ==1 || $role ==2){
             return view('home');
          }else{
             Auth::logout();
@@ -85,21 +85,22 @@ class HomeController extends Controller
    public function SAV(){
     //SELECT `id`, `titre_sugg`, `description_pb`, `logiciel_id`, `client_id`, `etat`, `created_at`, `updated_at` FROM `suggestions` WHERE 1
 
-        $logiciel=logiciel::all();
+    $logiciel=logiciel::all();
 
-        $suggest  = DB::table('suggestions')
-        ->select('suggestions.created_at','etat','titre_sugg','description_pb','titre','nom','suggestions.id as suggestions_id')
-        ->join('client','suggestions.client_id',"=","client.id")
-        ->join('logiciel','suggestions.logiciel_id','=','logiciel.id')
-        ->get();
+    $suggest  = DB::table('suggestions')
+    ->select('suggestions.created_at','etat','titre_sugg','description_pb','titre','nom','suggestions.id as suggestions_id')
+    ->join('client','suggestions.client_id',"=","client.id")
+    ->join('logiciel','suggestions.logiciel_id','=','logiciel.id')
+    ->get();
 
-        $reclammation  = DB::table('reclammation')
-        ->select('titre as titre_logiciel','reclammation.created_at as created_at','reclammation.id as reclam_id','titre_rec','description_pb','nom as client_name','solution','etat')
-        ->join('client','reclammation.client_id',"=","client.id")
-        ->join('logiciel','reclammation.logiciel_id','=','logiciel.id')
-        ->get();
+    $reclammations  = DB::table('reclammation')
+    ->select('titre as titre_logiciel','reclammation.created_at as created_at','reclammation.id as reclam_id','titre_rec','description_pb','nom as client_name','solution','etat')
+    ->join('client','reclammation.client_id',"=","client.id")
+    ->join('logiciel','reclammation.logiciel_id','=','logiciel.id')
+    ->get();
 
-    return view('vue.sav',['reclammation'=>$reclammation,'software'=>$logiciel,'suggestion'=>$suggest]);
+
+    return view('vue.sav',['reclammation'=>$reclammations,'software'=>$logiciel,'suggestion'=>$suggest]);
    }
      
    function fetch(Request $request)
@@ -123,7 +124,7 @@ class HomeController extends Controller
 
     public function ManageSoft()
     {
-        $data = logiciel::orderBy('id','desc')->paginate(4);
+        $data = logiciel::orderBy('id','desc')->get();
         return view('vue.logiciel',['logiciel'=>$data]);
     }
 

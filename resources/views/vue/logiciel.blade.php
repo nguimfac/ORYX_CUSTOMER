@@ -14,13 +14,15 @@
                             <ul>
                                 <li class="active">
                                     <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-user "></i> LOGICIELS <span>1</span></a></li>
-                                <li>
+                                <li class="">
                                     <a href="{{url('souscription/')}}" class="souscription"><i class="fa fa-bookmark-o"></i> Souscription<span>2</span></a>
                                 </li>
-                                <li>
-                                    <a href="{{url('sav')}}" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente<span>3</span></a>
+								<li class="">
+                                    <a href="{{url('sav/')}}" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente<span>3</span></a>
                                 </li>
-
+                                <li class="">
+                                    <a href="{{url('user/')}}" class="sav"><i class="fa fa-user-circle"></i>User<span>3</span></a>
+                                </li>
                             </ul>
                         </div>
                         <!-- User Widget -->
@@ -135,7 +137,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div class="float-right"> {!!$logiciel->links()!!}</div>
+                        <div class="float-right"></div>
 
                     </div>
 

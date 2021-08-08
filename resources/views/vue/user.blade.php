@@ -2,8 +2,6 @@
 
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-
-
 <div class="container-fluid">
     <section class="dashboard section">
         <!-- Container Start -->
@@ -17,13 +15,15 @@
                             <ul>
                                 <li class="">
                                     <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-user "></i> LOGICIELS <span>1</span></a></li>
-                                <li class="active">
+                                <li class="">
                                     <a href="{{url('souscription/')}}" class="souscription"><i class="fa fa-bookmark-o"></i> Souscription<span>2</span></a>
                                 </li>
 								<li class="">
                                     <a href="{{url('sav/')}}" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente<span>3</span></a>
                                 </li>
-
+                                <li class="active">
+                                    <a href="{{url('user/')}}" class="sav"><i class="fa fa-user-circle"></i>User<span>3</span></a>
+                                </li>
                             </ul>
                         </div>
                         <!-- User Widget -->
@@ -40,27 +40,7 @@
                         <!-- delete-account modal -->
                         <!-- delete account popup modal start-->
                         <!-- Modal -->
-                        <div class="modal fade" id="deleteaccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header border-bottom-0">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-                                    </div>
-                                    <div class="modal-body text-center">
-                                        <img src="images/account/Account1.png" class="img-fluid mb-2" alt="">
-                                        <h6 class="py-2">Are you sure you want to delete your account?</h6>
-                                        <p>Do you really want to delete these records? This process cannot be undone.</p>
-                                        <textarea class="form-control" name="message" id="" cols="40" rows="4" class="w-100 rounded"></textarea>
-                                    </div>
-                                    <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
-                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                                        <button type="button" class="btn btn-danger">Delete</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                       
                         <!-- delete account popup modal end-->
                         <!-- delete-account modal -->
 
@@ -68,6 +48,8 @@
                 </div>
                 <div class="col-lg-9">
                     <!-- Recently Favorited -->
+                    @if (Auth::check() && Auth::user()->is_admin == 1) 
+                    
                     <div class="widget dashboard-container my-adslist">
                         <h3 class="widget-header">
                             <div class="row">
@@ -87,6 +69,7 @@
                             <table id="myTable" class="table table-striped table-hover table-borderless">
                                 <thead class="bg-primary text-white">
                                     <tr>
+                                        <th scope="col">Numero</th>
                                         <th scope="col">Nom</th>
                                         <th scope="col">email</th>
                                         <th scope="col">Role</th>
@@ -96,22 +79,21 @@
                                 <tbody class="jsTableBody">
                                     @foreach ($users as $user)
                                     <tr>
+                                        <td id="userid">{{$user->id}}</td> 
                                         <td>{{$user->name}}</td> 
                                         <td>{{$user->email}}</td>
                                         <td>
-                                            @if ($user->is_admin==0)
-                                                 Agent
+                                            @if ($user->is_admin==1)
+                                             Admin
+                                            @else
+                                            Agent
                                             @endif
                                             </td>
                                             <td class="action" data-title="Action">
                                                 
                                             <div class="">
                                                 <ul class="list-inline justify-content-center">
-                                                    <li class="list-inline-item">
-                                                        <a data-toggle="tooltip" data-placement="top" title="Generate invoice" class="view" href="printinvoice/">
-                                                            <i class="fa fa-print"></i>
-                                                        </a>
-                                                    </li>
+                                                   
                                                     <li class="list-inline-item">
                                                         <a id="edit" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEdit" title="Edit" class="edit">
                                                             <i class="fa fa-refresh"></i>
@@ -126,6 +108,14 @@
                                                             </a>
                                                         </form>
                                                     </li>
+                                                  
+                                                    @if ($user->is_admin==2)
+                                                    <li class="list-inline-item">
+                                                        <a id="edit" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEdit" title="Enlever les droits a cette utilisateur" class="edit">
+                                                            <i class="fa fa-user-times"></i>
+                                                        </a>
+                                                      </li>
+                                               @endif
 													
                                                 </ul>
                                             </div>
@@ -150,6 +140,17 @@
                         </nav>
                     </div>
                     <!-- pagination -->
+                    @else
+                    
+                    <div class="widget dashboard-container my-adslist">
+
+                     <div class="alert text-center alert-danger">
+                        <i class="fa fa-exclamation-triangle fa-5x" aria-hidden="true"></i>
+<br><br>
+                         Desolé Vous avez pas les droits d'access a cette espace  
+                     </div>
+                     </div>
+                    @endif
 
                 </div>
             </div>
@@ -300,70 +301,34 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Renouvelle la souscription<img width="100" src="{{  asset('images/software.jpg') }}" alt="" srcset=""></h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Attribution des droits d'access a d'autres utilisateurs<img width="100" src="{{  asset('images/software.jpg') }}" alt="" srcset=""></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 		  </button>
             </div>
             <div class="modal-body">
 
-
-                <div class="modal-body">
-                    <div>
-                        <div class="tab">
-                            <button class="tablinks" onclick="openSubscription(event, 'renewSubs')">Renouveller Souscription</button>
-                            <button class="tablinks" onclick="openSubscription(event, 'payement')">Continuer Payement</button>
+             <form action="accessRight" method="post">
+                 @csrf
+                <div>
+                    <input type="hidden" class="form-control" id="access" type="" name="userid">
+                    Voulez-vous Autoriser un autre agent d'Oryx Consulting d'avoir les  droits d'utilisateurs sur cette application ?
+                    <div class="row ">
+                        <div class="col-md-4 mt-4 ">
+                            <span>Autoriser</span><br><input class="ml-4" id="method1" type="radio" value="1" name="reponse">
                         </div>
-                    </div>
-                    <div id="renewSubs" class="tabcontent">
-                        <form class="text-left" action="/updatesubscription" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="form-group">
-                                <input type="hidden" id="id_subscription" name="id_subscription" class="form-control p-4" required placeholder="date of the software">
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="date_exp" class="text-black">Date expiration</label>
-                                        <input type="date" id="date_expiration" name="date_fin" class="form-control p-4" required placeholder="date of the software">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="date_exp" class="text-black">Montant payé</label>
-                                        <input type="number" id="Mpaye" name="Mpaye" class="form-control p-4" required placeholder="Entrez le montant payé">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Nouveau</button>
-                            </div>
-                    </div>
 
-                    </form>
-                    <div id="payement" class="tabcontent">
-                        <form class="text-left" action="/updatepayement" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="form-group">
-                                <input type="hidden" id="id_montant" name="id_subscription" class="form-control p-4" required placeholder="date of the software">
-                            </div>
-                            <div class="form-group">
-                                <input type="hidden" id="a_payer" name="a_payer" class="form-control p-4" required placeholder="date of the software">
-                            </div>
-                            <div class="">
-                                <div class="form-group">
-                                    <label for="Montant" class="text-black">Nouveau Montant</label>
-                                    <input type="text" id="montant_paye" name="montant" class="form-control p-4" required placeholder="entrez le nouveu montant">
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-block btn-primary">Enregistrer</button>
-                            </div>
+                        <div class="col-md-4 mt-4">
+                            <span>Decliner<br></span><input type="radio" id="method2" class="ml-4" value="0" name="reponse"><br>
+                        </div>
+                            <br>
+                            <hr>
+                        <button class="btn btn-primary btn-block" type="submit">Terminer</button>    
                     </div>
-                    </form>
+                    <br>
                 </div>
-            </div>
+             </form>
+            </div> 
         </div>
 
     </div>
@@ -438,7 +403,7 @@
 <script>
     $(document).on('click', '#edit', function() {
         var _this = $(this).parents('tr');
-        $('#id_subscription').val(_this.find('#id_subs').text());
+        $('#access').val(_this.find('#userid').text());
         $('#id_montant').val(_this.find('#id_subs').text());
         $('#a_payer').val(_this.find('#montant').text());
     });

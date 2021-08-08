@@ -119,7 +119,7 @@
                                                         @foreach ($users as $user)
                                                            <tr>
                                                                <td>{{$user->name}}</td>
-                                                               <td><label><input required type="checkbox" name="agent[]" value="{{$user->name}}"></label><br></td>
+                                                               <td><label><input  type="checkbox" name="agent[]" value="{{$user->name}}"></label><br></td>
                                                            </tr>
                                                        
                                                         @endforeach

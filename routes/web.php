@@ -50,6 +50,9 @@ Route::post('/{id}/saveintervention',[HomeController::class,'SaveIntervention'])
 Route::get('deleteintervention/{id}',[HomeController::class,'DeleteIntervention']);
 Route::post('/savesuggestion',[HomeController::class,'SaveSuggestion']);
 Route::get('/user',[UserController::class,'DisplayUser']);
+Route::post('accessRight',[UserController::class,'AccessRight']);
+
+
 
 
 

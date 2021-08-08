@@ -23,7 +23,9 @@
 								<li class="">
                                     <a href="{{url('sav/')}}" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente<span>3</span></a>
                                 </li>
-
+                                <li class="">
+                                    <a href="{{url('user/')}}" class="sav"><i class="fa fa-user-circle"></i>User<span>3</span></a>
+                                </li>
                             </ul>
                         </div>
                         <!-- User Widget -->
@@ -125,7 +127,7 @@
 											?>
                                         </td>
                                         <td class="font p-3">{{$subscriptions->type_payement}}</td>
-                                        <td><span class="subtract font"></span> </td>
+                                        <td><span class="subtract font"></span></td>
 
                                         <td class="action" data-title="Action">
                                             <div class="">

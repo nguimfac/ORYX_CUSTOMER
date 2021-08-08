@@ -13,13 +13,17 @@
                                 <li class="">
                                     <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-user "></i> LOGICIELS <span>1</span></a></li>
                                 <li class="">
-                                    <a href="{{url('souscription/')}}" class="souscription"><i class="fa fa-bookmark-o"></i> SOUSCRIPTION<span>2</span></a>
+                                    <a href="{{url('souscription/')}}" class="souscription"><i class="fa fa-bookmark-o"></i> Souscription<span>2</span></a>
                                 </li>
-                                <li class="active">
-                                    <a href="{{url('sav/')}}" class="sav"><i class="fa fa-file-archive-o"></i>SERVICE APRES VENTES<span>3</span></a>
+								<li class="active">
+                                    <a href="{{url('sav/')}}" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente<span>3</span></a>
                                 </li>
-
+                                <li class="">
+                                    <a href="{{url('user/')}}" class="sav"><i class="fa fa-user-circle"></i>User<span>3</span></a>
+                                </li>
                             </ul>
+
+                 
                         </div>
                         <!-- User Widget -->
                         <div class="widget user-dashboard-profile">
@@ -28,7 +32,7 @@
                                 <img src="images/user/user-thumb.jpg" alt="" class="rounded-circle">
                             </div>
                             <!-- User Name -->
-                            <img src="{{ asset ('images/sav.jpg')}}" alt="100" width="200" srcset="">
+                            <img src="{{ asset ('images/subscription.png')}}" alt="100" width="200" srcset="">
                         </div>
                         <!-- Dashboard Links -->
 
@@ -102,8 +106,59 @@
                                                 </tr>
                                             </thead>
                                             <tbody class="jsTableBody">
+                                            @foreach ($reclammation as $reclammations)
                                                     <tr>
+                                                        <td class="font p-3" id="id_reclam">{{$reclammations->reclam_id}}</td>
+                                                        <td class="font p-3" id="">{{$reclammations->titre_rec}}</td>
+
+                                                        <td class="font p-3" id="contain_reclam">{{$reclammations->description_pb}}</td>
+                                                        <td class="font p-3 ">{{$reclammations->titre_logiciel}}</td>
+
+                                                        <td class="font p-3 ">{{$reclammations->client_name}}</td>
+                                                        <td class="font p-3 col1">@if ($reclammations->solution==null) 
+                                                             en attente solution...
+                                                             @else
+                                                             {{$reclammations->solution}}
+                                                        @endif</td>
+                                                        <td class="font p-3 col2">
+                                                        @if ($reclammations->etat==2)
+                                                            <span class="text-primary">Ouvert</span>
+                                                        @elseif($reclammations->etat==1) 
+                                                        <span class="text-success">Resolu</span>
+                                                        @elseif($reclammations->etat==0)
+                                                        <span class="text-danger">Non resolu</span>
+                                                        @endif
+                                                        </td>
+                                                        <td class="font w">{{$reclammations->created_at}}</td>
+                                                        <td class="action" data-title="Action">
+                                                            <div class="">
+                                                                <ul class="list-inline justify-content-center">
+                                                                   
+                                                                    <li class="list-inline-item">
+                                                                        <a id="edit" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEdit" title="Edit" class="edit">
+                                                                            <i class="fa fa-pencil-square"></i>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="list-inline-item">
+                                                                        <form method="get" action="deletereclammation/{{$reclammations->reclam_id}}">
+                                                                            @csrf
+                                                                            <input name="_method" type="hidden" value="DELETE">
+                                                                            <a type="submit" data-placement="top" title="Delete show_confirm " class="delete show_confirm" href="">
+                                                                                <i class="fa fa-trash"></i>
+                                                                            </a>
+                                                                        </form>
+                                                                    </li>
+                                                                    <li class="list-inline-item">
+                                                                        <a id="notify" data-placement="top" href="intervention/{{$reclammations->reclam_id}}" type="button" title="Creer un intervention externe" class="view">
+                                                                            <i class="fa fa-external-link-square"></i>
+                                                                        </a>
+                                                                    </li>
+
+                                                                </ul>
+                                                            </div>
+                                                        </td>
                                                     </tr>
+                                                    @endforeach
                                             </tbody>
                                         </table>
 
