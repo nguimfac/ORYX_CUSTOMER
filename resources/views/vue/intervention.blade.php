@@ -14,12 +14,14 @@
                                 <li class="">
                                     <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-user "></i> LOGICIELS <span>1</span></a></li>
                                 <li class="">
-                                    <a href="{{url('souscription/')}}" class="souscription"><i class="fa fa-bookmark-o"></i> SOUSCRIPTION<span>2</span></a>
+                                    <a href="{{url('souscription/')}}" class="souscription"><i class="fa fa-bookmark-o"></i> Souscription<span>2</span></a>
                                 </li>
-                                <li class="active">
-                                    <a href="{{url('sav/')}}" class="sav"><i class="fa fa-file-archive-o"></i>SERVICE APRES VENTES<span>3</span></a>
+								<li class="active">
+                                    <a href="{{url('sav/')}}" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente (intervention)<span>3</span></a>
                                 </li>
-
+                                <li class="">
+                                    <a href="{{url('user/')}}" class="sav"><i class="fa fa-user-circle"></i>User<span>3</span></a>
+                                </li>
                             </ul>
                         </div>
                         <!-- User Widget -->

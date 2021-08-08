@@ -51,6 +51,8 @@ Route::get('deleteintervention/{id}',[HomeController::class,'DeleteIntervention'
 Route::post('/savesuggestion',[HomeController::class,'SaveSuggestion']);
 Route::get('/user',[UserController::class,'DisplayUser']);
 Route::post('accessRight',[UserController::class,'AccessRight']);
+Route::post('accessdenied',[UserController::class,'AccessDenied']);
+Route::get('/deleteuser/{id}',[UserController::class,'DeleteUser']);
 
 
 

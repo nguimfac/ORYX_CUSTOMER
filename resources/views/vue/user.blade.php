@@ -58,15 +58,15 @@
                                     <div class="p-0">
                                     </div>
                                 </div>
-                                <div class="col-md-4 offset-md-10">
-                                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop"> Add  User <i class="fa fa-user-circle" aria-hidden="true"></i></button>
-                                </div>
+                               <!-- <div class="col-md-4 offset-md-10">
+                                    <button cl ass="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop"> Add  User <i class="fa fa-user-circle" aria-hidden="true"></i></button>
+                                </div>  !--->
                                 
                             </div>
                         </h3>
 
                         <div>
-                            <table id="myTable" class="table table-striped table-hover table-borderless">
+                            <table id="myTable" class="table table-striped table-hover table-borderless table-responsive-sm">
                                 <thead class="bg-primary text-white">
                                     <tr>
                                         <th scope="col">Numero</th>
@@ -84,7 +84,9 @@
                                         <td>{{$user->email}}</td>
                                         <td>
                                             @if ($user->is_admin==1)
-                                             Admin
+                                             Agent / Admin
+                                            @elseif($user->is_admin==2)
+                                            Agent / Utilisateur
                                             @else
                                             Agent
                                             @endif
@@ -93,14 +95,16 @@
                                                 
                                             <div class="">
                                                 <ul class="list-inline justify-content-center">
-                                                   
+                                                    @if ($user->is_admin!=1 && $user->is_admin!=2)
                                                     <li class="list-inline-item">
                                                         <a id="edit" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEdit" title="Edit" class="edit">
                                                             <i class="fa fa-refresh"></i>
                                                         </a>
                                                     </li>
+                                                    @endif
+                                                  
                                                     <li class="list-inline-item">
-                                                        <form method="get" action="deletesouscription/">
+                                                        <form method="get" action="deleteuser/{{$user->id}}">
                                                             @csrf
                                                             <input name="_method" type="hidden" value="DELETE">
                                                             <a type="submit" data-placement="top" title="Delete show_confirm " class="delete show_confirm" href="">
@@ -111,7 +115,7 @@
                                                   
                                                     @if ($user->is_admin==2)
                                                     <li class="list-inline-item">
-                                                        <a id="edit" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEdit" title="Enlever les droits a cette utilisateur" class="edit">
+                                                        <a id="editdenied" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEditUser" title="Enlever les droits a cette utilisateur" class="edit">
                                                             <i class="fa fa-user-times"></i>
                                                         </a>
                                                       </li>
@@ -128,8 +132,6 @@
                             </table>
                             <hr>
                           <!--  <div class="text-black ">Souscription realisée <span class=" badge badge-primary"></span> </div>!------>
-
-
                         </div>
 
                     </div>
@@ -312,19 +314,18 @@
                  @csrf
                 <div>
                     <input type="hidden" class="form-control" id="access" type="" name="userid">
-                    Voulez-vous Autoriser un autre agent d'Oryx Consulting d'avoir les  droits d'utilisateurs sur cette application ?
-                    <div class="row ">
-                        <div class="col-md-4 mt-4 ">
-                            <span>Autoriser</span><br><input class="ml-4" id="method1" type="radio" value="1" name="reponse">
+                    Voulez-vous Autoriser un autre agent d'Oryx Consulting d'avoir les  droits d'utilisateurs sur cette application ?<br><br>
+                        <div class="form-group">
+                            <label for="nom"  class="text-black">Selectionnez l'état</label>
+                            <select  name="etat"  required id="etat" class="form-control" style="height:46px">
+                              <option value="1">Admin</option>
+                              <option value="2">utilisateur</option>
+                            </select>
                         </div>
-
-                        <div class="col-md-4 mt-4">
-                            <span>Decliner<br></span><input type="radio" id="method2" class="ml-4" value="0" name="reponse"><br>
-                        </div>
+                       
                             <br>
                             <hr>
                         <button class="btn btn-primary btn-block" type="submit">Terminer</button>    
-                    </div>
                     <br>
                 </div>
              </form>
@@ -333,6 +334,46 @@
 
     </div>
 </div>
+
+
+<div class="modal fade" id="staticBackdropEditUser" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelEdit" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Attribution des droits d'access a d'autres utilisateurs<img width="100" src="{{  asset('images/software.jpg') }}" alt="" srcset=""></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+            </div>
+            <div class="modal-body">
+
+             <form action="accessdenied" method="post">
+                 @csrf
+                <div>
+                    <input type="hidden" class="form-control" id="accesdenied" type="" name="userid">
+                    Voulez-vous enlever les droits d'utilisateur a cette utilsateur ?
+             
+                     <div class="row">
+                      <div class="col-md-2"> <button type="submit" class="btn btn-primary">
+                        Oui
+                     </button>
+                        
+                    </div>
+                      <div class="col-md-2">
+                        <button type="form" data-dismiss="modal"  class="btn btn-danger">
+                          Non
+                        </button>
+                      </div>
+                     </div>
+                    <br>
+                </div>
+             </form>
+            </div> 
+        </div>
+
+    </div>
+</div>
+
 </div>
 
 <style>
@@ -392,6 +433,8 @@
             $(this).find(".subtract").html(subtract);
         })
     })
+
+ 
 </script>
 
 <script>
@@ -404,8 +447,13 @@
     $(document).on('click', '#edit', function() {
         var _this = $(this).parents('tr');
         $('#access').val(_this.find('#userid').text());
-        $('#id_montant').val(_this.find('#id_subs').text());
-        $('#a_payer').val(_this.find('#montant').text());
+
+    });
+
+    $(document).on('click', '#editdenied', function() {
+        var _this = $(this).parents('tr');
+        $('#accesdenied').val(_this.find('#userid').text());
+
     });
     /*a revoir */
     $(document).ready(function() {

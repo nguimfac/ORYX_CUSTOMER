@@ -14,23 +14,31 @@ class UserController extends Controller
     }
 
     public function AccessRight(Request $request){
-      $validator = Validator::make($request->all(), [
-        'reponse' => 'required',
-    ]);
+  
 
-    if ($validator->fails()) {
-        return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
-    }
-    else{
       $user =User::find($request->userid);
-      if($request->reponse==1){
+      if($request->etat==1){
+        $user->is_admin = 1;
+        $user->save();
+      }else{
         $user->is_admin = 2;
         $user->save();
       }
 
        return redirect()->back();
     }
+    
+
+    public function AccessDenied(Request $request){
+      $user =User::find($request->userid);
+        $user->is_admin = 0;
+        $user->save();
+        return redirect()->back();
+
+    }
+
+    public function DeleteUser($id){
+      User::destroy($id);
+      return redirect()->back();
     }
 }

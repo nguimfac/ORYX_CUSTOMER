@@ -405,24 +405,41 @@ class HomeController extends Controller
                  public function Savereclammation(Request $request){
                     $html = '<ul style="list-style: none;">';
                   
-                  /* $this->validate($request, [
-                        'titre_rec' => 'required',
-                        'description_pb' => 'required|email',
-                     ]);*/
-                   try{
-                    $id = client::where('nom', $request->client_name)->first()->id;
-                    $recl = new reclammation();
-                    $recl->titre_rec = $request->titrepb;
-                    $recl->description_pb = $request->descpd;
-                    $recl->logiciel_id = $request->logiciel_id;
-                    $recl->client_id = $id;
-                    $recl->solution = $request->solution;
-                    $recl->etat = $request->etat;
-                    $recl->save();
-                    Alert::html('Reclammation enregistré avec success!', $html, 'success');  
-                   }catch(\Exception $e){
-                    Alert::warning('Le client que vous avez selectionner n existe pas ', 'veillez juste selectionner un client', 'warning');  
-                   }
+                  $this->validate($request, [
+                        'titrepb' => 'required',
+                        'descpb' => 'required',
+                        'id_logiciel' => 'required',
+                        'descpb' => 'required',
+                     ]);
+            
+                     try{
+                        if($request->reponse==1){
+                            $id = client::where('nom', $request->client_name)->first()->id;
+                            $recl = new reclammation();
+                            $recl->titre_rec = $request->titrepb;
+                            $recl->description_pb = $request->descpb;
+                            $recl->logiciel_id = $request->id_logiciel;
+                            $recl->client_id = $id;
+                            $recl->solution = $request->solution;
+                            $recl->etat = $request->etat;
+                            $recl->save();
+                           }
+                           else{
+                            $id = client::where('nom', $request->client_name)->first()->id;
+                            $recl = new reclammation();
+                            $recl->titre_rec = $request->titrepb;
+                            $recl->description_pb = $request->descpb;
+                            $recl->logiciel_id = $request->id_logiciel;
+                            $recl->client_id = $id;
+                            $recl->solution = "Pas de solution proposé";
+                            $recl->etat = 0;
+                            $recl->save();
+                           }
+                           Alert::html('Reclammation enregistré avec success!', $html, 'success');  
+
+                     }catch(\Exception $e) {
+                        Alert::html('Une erreur est survenue dans votre formulaire veille réessayer ', $html, 'success');  
+                     }
                    return redirect()->back();
 
                  }

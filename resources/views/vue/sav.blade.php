@@ -83,9 +83,11 @@
                                 <label for="tab4">Drupal</label>
                                 <section id="content1"><br>
 
+
+
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop"> Add Reclammation <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdropR"> Add Reclammations <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
                                         </div>
                                        
                                     </div>
@@ -313,7 +315,109 @@
         });
     });
 </script>
-<!------Modal 1 for save------>
+
+
+
+<div class="modal fade" id="staticBackdropR" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Creez une Reclammation <img width="80" src="{{  asset('images/sav.jpg') }}" alt="" srcset=""></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div class="modal-body">
+                <form autocomplete="off" action="/savereclammation" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <label class="text-black">Client Concerné</label>
+
+                                <div class="form-group">
+                                    <input type="text" id="client_name" value="{{ old('client_name') }}"  name="client_name" class="form-control p-4" required placeholder="titre ce probleme">
+                                    <div class="text-black" id="clientList"></div>
+                                </div>
+                            
+                                <div class="form-group">
+                                    <label for="nom"  class="text-black">Selectionnez le logiciel</label>
+                                    <select  name="id_logiciel"  required  class="form-control" style="height:46px">
+                                       @foreach ($software as $softwares)
+                                       <option    value="{{$softwares->id}}"  >{{$softwares->titre}}</option>
+                                       @endforeach
+                                    </select>
+                                </div>
+                                
+                            <div class="form-group">
+                                <label class="text-black">Titre du Probleme</label>
+                                <input type="text" name="titrepb" value="{{ old('titrepb') }}" class="form-control p-4" required placeholder="titre ce probleme">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="text-black"  for="email" class="text-black">Description du probleme</label>
+                                <textarea name="descpb" id="descpb"value="{{ old('descpb') }}"   class="form-control " placeholder="Decrivez le probleme de votre client"></textarea>
+                            </div>
+                            <label for="email" class="text-black">Avez vous une solution a proposé</label><br>
+                            <div class="row ">
+                                <div class="col-md-2 ">
+                                    <span class="ml-3">Oui</span><br><input class="ml-4" id="method1" type="radio" value="1" name="reponse">
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="ml-4">Non<br></span><input type="radio" id="NPmethod" class="ml-4" value="0" name="reponse"><br>
+                                </div> 
+                            </div><br>
+
+                            <div class="form-group payeform">
+                                <label for="date_fin" class="text-black">Entrez votre solution</label>
+                                 <textarea name="solution"  value="{{ old('solution') }}"  class="form-control "></textarea>
+
+                                 <br>
+                                 <div class="form-group">
+                                    <label for="nom"  class="text-black">Selectionnez l'état</label>
+                                    <select  name="etat"  required id="etat" class="form-control" style="height:46px">
+                                      <option value="1">Resolu</option>
+                                      <option value="0">Non resolu</option>
+                                      <option value="2">Ouvert</option>
+                                    </select>
+                                </div>
+                            </div>    
+
+                        <script>
+
+                            $(document).ready(function() {
+                                $(".payeform").hide()
+                                $("#method1").click(function() {
+                                    $(".payeform").fadeIn(250);
+                                })
+                                $("#method2").click(function() {
+                                    $(".payeform").fadeIn(250);
+                                })
+                                $("#method3").click(function() {
+                                    $(".payeform").fadeIn(250);
+                                })
+                                $("#cash").click(function() {
+                                    $(".payeform").fadeIn(250);
+                                })
+                                $("#NPmethod").click(function() {
+                                    $(".payeform").hide();
+                                })
+                            })
+                        </script>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Nouveau</button>
+            </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+
+<!------Modal 2 for save------>
 
 
 <div  class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
