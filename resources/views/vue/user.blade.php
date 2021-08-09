@@ -340,7 +340,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Attribution des droits d'access a d'autres utilisateurs<img width="100" src="{{  asset('images/software.jpg') }}" alt="" srcset=""></h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Destruction des droits d'access pour cette  utilisateur<img width="100" src="{{  asset('images/software.jpg') }}" alt="" srcset=""></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 		  </button>

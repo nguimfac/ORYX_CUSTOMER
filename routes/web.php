@@ -53,6 +53,9 @@ Route::get('/user',[UserController::class,'DisplayUser']);
 Route::post('accessRight',[UserController::class,'AccessRight']);
 Route::post('accessdenied',[UserController::class,'AccessDenied']);
 Route::get('/deleteuser/{id}',[UserController::class,'DeleteUser']);
+Route::post('updatesuggestion',[HomeController::class,'UpdateSuggestion']);
+Route::get('deletesuggestion/{id}',[HomeController::class,'DeleteSuggestion']);
+
 
 
 

@@ -79,8 +79,7 @@
                                 <input id="tab3" class="inputs" type="radio" name="tabs">
                                 <label for="tab3"><strong>SOLUTION</strong></label>
 
-                                <input id="tab4" class="inputs"type="radio" name="tabs">
-                                <label for="tab4">Drupal</label>
+                              
                                 <section id="content1"><br>
 
 
@@ -172,7 +171,7 @@
                                 <section  id="content2">
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop"> Add Reclammation <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop"> Add Suggestion <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
                                         </div>
                                        
                                     </div>
@@ -186,20 +185,22 @@
                                                     <th scope="col">Probleme</th>
                                                     <th scope="col">Description</th>
                                                     <th scope="col">Logiciel</th>
-                                                    <th scope="col">Client</th>                                                   
+                                                    <th scope="col">Client</th>  
+                                                    <th scope="col">Solution</th>                                               
                                                      <th scope="col"> Statut</th>
                                                     <th scope="col"> Date soumise</th>
                                                     <th scope="col text-right">Action</th>
                                                 </tr>
                                             </thead>
-                                            <tbody class="jsTableBody">
+                                            <tbody class="jsTableBody1">
                                                     <tr>
                                                         @foreach ($suggestion as $suggestions)
-                                                        <td class="font p-3" id="id_reclam">{{$suggestions->suggestions_id}}</td>
+                                                        <td class="font p-3" id="id_suggestions">{{$suggestions->suggestions_id}}</td>
                                                         <td class="font p-3" id="">{{$suggestions->titre_sugg}}</td>
-                                                        <td class="font p-3" id="contain_reclam">{{$suggestions->description_pb}}</td>
-                                                        <td class="font p-3" id="contain_reclam">{{$suggestions->titre}}</td>
-                                                        <td class="font p-3" id="contain_reclam">{{$suggestions->nom}}</td>
+                                                        <td class="font p-3" id="contain_solution">{{$suggestions->description_pb}}</td>
+                                                        <td class="font p-3" id="">{{$suggestions->titre}}</td>
+                                                        <td class="font p-3" id="">{{$suggestions->nom}}</td>
+                                                        <td class="font p-3" id="">{{$suggestions->solution}}</td>
                                                         <td class="font p-3 col2">
                                                             @if ($suggestions->etat==2)
                                                                 <span class="text-primary">Ouvert</span>
@@ -209,19 +210,19 @@
                                                             <span class="text-danger">Non resolu</span>
                                                             @endif
                                                             </td>
-                                                        <td class="font p-3" id="contain_reclam">{{$suggestions->created_at}}</td>
+                                                        <td class="font p-3" id="">{{$suggestions->created_at}}</td>
 
                                                         <td class="action" data-title="Action">
                                                             <div class="">
                                                                 <ul class="list-inline justify-content-center">
                                                                    
                                                                     <li class="list-inline-item">
-                                                                        <a id="edit" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEdit" title="Edit" class="edit">
+                                                                        <a id="editSugg" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEditSugg" title="Edit" class="edit">
                                                                             <i class="fa fa-pencil-square"></i>
                                                                         </a>
                                                                     </li>
                                                                     <li class="list-inline-item">
-                                                                        <form method="get" action="deletereclammation/">
+                                                                        <form method="get" action="deletesuggestion/{{$suggestions->suggestions_id}}">
                                                                             @csrf
                                                                             <input name="_method" type="hidden" value="DELETE">
                                                                             <a type="submit" data-placement="top" title="Delete show_confirm " class="delete show_confirm" href="">
@@ -229,11 +230,7 @@
                                                                             </a>
                                                                         </form>
                                                                     </li>
-                                                                    <li class="list-inline-item">
-                                                                        <a id="notify" data-placement="top" href="intervention/" type="button" title="Creer un intervention externe" class="view">
-                                                                            <i class="fa fa-external-link-square"></i>
-                                                                        </a>
-                                                                    </li>
+                                                                   
 
                                                                 </ul>
                                                             </div>
@@ -286,7 +283,6 @@
 
 <script>
     $(document).ready(function() {
-
         $('#client_name').keyup(function() {
             var query = $(this).val();
             if (query != '') {
@@ -309,10 +305,38 @@
             }
         });
 
+        
+      $(document).ready(function() {
+        $('#client_names').keyup(function() {
+            var query = $(this).val();
+            if (query != '') {
+                var _token = $('input[name="_token"]').val();
+                $.ajax({
+                    url: "{{ route('sav.fetch') }}",
+                    method: "POST",
+                    data: {
+                        query: query,
+                        _token: _token
+                    },
+                    success: function(data) {
+                        $('#clientLists').fadeIn();
+                        $('#clientLists').html(data);
+                    }
+                });
+            } else {
+                $('#clientLists').fadeOut();
+
+            }
+        });
+      })
+
+
         $(document).on('click', 'li', function() {
             $('#client_name').val($(this).text());
+            $('#client_names').val($(this).text());
             $('#clientList').fadeOut();
-        });
+            $('#clientLists').fadeOut();
+        }); 
     });
 </script>
 
@@ -437,8 +461,8 @@
                     <div class="">
                         <div class="form-group">
                             <label for="nom" class="text-black">Client Concerné</label>
-                            <input type="text" id="client_name" value="{{ old('client_name') }}"  name="client_name" class="form-control p-4" required placeholder="titre ce probleme">
-                            <div id="clientList"></div>
+                            <input type="text" id="client_names"   name="client_name" class="form-control p-4" required placeholder="titre ce probleme">
+                            <div id="clientLists"></div>
                         </div>
 
                     <div class="form-group">
@@ -526,7 +550,8 @@
                             </div>
                                     <div class="form-group">
                                         <label for="date_exp" class="text-black">Nouvelle Solution</label>
-                                        <textarea name="solution"  id="contain_reclammation" class="form-control" placeholder="Modifier l'ancienne solution"></textarea>                                    
+                                        <textarea name="solution" required id="contain_reclammation" class="form-control" placeholder="Modifier l'ancienne solution"></textarea> 
+                                           
                                     </div>
 
                                     <label for="email" class="text-black">Est-elle effective</label><br>
@@ -540,6 +565,61 @@
                                     </div><br>
                                 
                            
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Nouveau</button>
+                            </div>
+                    </div>
+
+                  
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="staticBackdropEditSugg" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelEdit" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Renouvelle Votre solution<img width="100" src="{{  asset('images/sav.jpg') }}" alt="" srcset=""></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <div>
+                       <!-- <div class="tab">
+                            <button class="tablinks" onclick="openSubscription(event, 'renewSubs')">Modifier La solution precedente</button>
+                            <button class="tablinks" onclick="openSubscription(event, 'payement')">Continuer Payement</button>
+                        </div>-!-->
+                    </div>
+                    <div id="renewSubs" class="tabcontent">
+                        <form class="text-left" action="/updatesuggestion" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group">
+                                <input type="hidden" id="id_suggestion" name="id_suggestion" class="form-control p-4" required placeholder="date of the software">
+                            </div>
+                                    <div class="form-group">
+                                        <label for="date_exp" class="text-black">Solution pour  cette reclammation</label>
+                                        <textarea name="solution" required  id="contain_suggestion" class="form-control" placeholder="Modifier l'ancienne solution"></textarea>                                    
+                                    </div>
+
+                                    <label for="email" class="text-black">Est-elle effective</label><br>
+                                    <div class="row ">
+                                        <div class="col-md-2 ">
+                                            <span class="ml-3">Oui</span><br><input class="ml-4" id="method1" type="radio" value="1" name="reponse">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <span class="ml-4">Non<br></span><input type="radio" id="NPmethod" class="ml-4" value="0" name="reponse"><br>
+                                        </div>
+                                    </div><br>
+                            
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Nouveau</button>
@@ -573,6 +653,7 @@
 
     </div>
 </div>
+
 </div>
 
 <style>
@@ -637,7 +718,7 @@
         $('#myTable').DataTable();
     });
     $(document).ready(function() {
-        $('.myTable1').DataTable();
+        $('#myTable1').DataTable();
     });
 </script>
 
@@ -647,6 +728,12 @@
         $('#id_reclammation').val(_this.find('#id_reclam').text());
         $('#contain_reclammation').val(_this.find('#contain_reclam').text());
         $('#a_payer').val(_this.find('#montant').text());
+    });
+    $(document).on('click', '#editSugg', function() {
+        var _this = $(this).parents('tr');
+        $('#id_suggestion').val(_this.find('#id_suggestions').text());contain_reclammation
+        $('#contain_suggestion').val(_this.find('#contain_solution').text());
+     
     });
     /*a revoir */
     $(document).ready(function() {

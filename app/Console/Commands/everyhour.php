@@ -61,7 +61,7 @@ class everyhour extends Command
                    $start_time = Carbon::parse($current_date);
                    $finish_time = Carbon::parse($subscriptions->date_fin);
                    $result = $start_time->diffInDays($finish_time, false);
-                   if($result>=0 && $result<=5 && $subscriptions->notification==0){
+                   if($result<=5 && $subscriptions->notification==0){
                        Mail::to("nguimfackjunior2@gmail.com")->send(new TestMail($details1));     
                    }
                }

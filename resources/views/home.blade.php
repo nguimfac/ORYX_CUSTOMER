@@ -1,5 +1,5 @@
 @extends('layouts.app') @section('content')
-<div id="cover"> <span class="glyphicon glyphicon-refresh w3-spin preloader-Icon"></span>Please Wait, Loading... <img width="150" src="{{asset('images/preloader.gif')}}" alt=""></div>
+<div id="cover"> <span class="glyphicon glyphicon-refresh w3-spin preloader-Icon"></span>Please Wait, Loading... <img width="150" src="{{asset('images/load5.gif')}}" alt=""></div>
 <h1>Dom Loaded</h1>
 <style>
 
@@ -65,11 +65,13 @@
                             <div class="advance-search ad-listing-content ">
                                 <div class="container">
                                     <div class="row justify-content-center">
-                                        <div class="col-lg-12 col-md-12 align-content-center">
-                                            <img src="{{ asset ('images/sav.jpg')}}" width="120" alt=""><br>
-                                            <strong class="text-primary">SERVICE APRES VENTE</strong>
-
-                                        </div>
+                                        <a href="{{url('sav')}}">
+                                            <div class="col-lg-12 col-md-12 align-content-center">
+                                                <img src="{{ asset ('images/sav.jpg')}}" width="120" alt=""><br>
+                                                <strong class="text-primary">SERVICE APRES VENTE</strong>
+    
+                                            </div>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

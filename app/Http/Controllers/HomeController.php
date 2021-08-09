@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Input;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Mail\TestMail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Console\Scheduling\Schedule;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -36,10 +37,15 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Schedule  $schedule)
     {
         $this->middleware('auth');
-         // $this->notifyAdmin();
+        $schedule->call(function()
+        {
+                      $this->notifyAdmin();
+
+        
+        })->everyMinute();
        
 
     }
@@ -88,7 +94,7 @@ class HomeController extends Controller
     $logiciel=logiciel::all();
 
     $suggest  = DB::table('suggestions')
-    ->select('suggestions.created_at','etat','titre_sugg','description_pb','titre','nom','suggestions.id as suggestions_id')
+    ->select('solution','suggestions.created_at','etat','titre_sugg','description_pb','titre','nom','suggestions.id as suggestions_id')
     ->join('client','suggestions.client_id',"=","client.id")
     ->join('logiciel','suggestions.logiciel_id','=','logiciel.id')
     ->get();
@@ -261,7 +267,7 @@ class HomeController extends Controller
                             $start_time = Carbon::parse($current_date);
                             $finish_time = Carbon::parse($subscriptions->date_fin);
                             $result = $start_time->diffInDays($finish_time, false);
-                            if($result>=0 && $result<=5 && $subscriptions->notification==0){
+                            if($result<=5 && $subscriptions->notification==0){
                                 Mail::to("nguimfackjunior2@gmail.com")->send(new TestMail($details1));     
                             }
                         }
@@ -273,67 +279,30 @@ class HomeController extends Controller
 
                  function SendMail()
                 {
+                    $html = "<ul style='list-style: none;'>";
+                    $details =[
+                        'title'=>"Notification de souscription",
+                        'body'=> "Votre periode d'expiration arrive deja a echeance"
+                    ];
                     
-                       $html = "<ul style='list-style: none;'>";
-                        $details =[
-                            'title'=>"Notification de souscription",
-                            'body'=> "Votre periode d'expiration arrive deja a echeance"
-                        ];
-                        /*
-                        $current_date = date('Y-m-d');
-                        $subscription  = DB::table('subscription')
-                                 ->select('alert as notification','email as client_email','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
-                                 ->join('client','subscription.client_id',"=","client.id")
-                                 ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
-                                 ->get();
-                          foreach($subscription as $subscriptions){
-                                $start_time = Carbon::parse($current_date);
-                                $finish_time = Carbon::parse($subscriptions->date_fin);
-                                $result = $start_time->diffInDays($finish_time, false);
-                                if($result<=5 && $subscriptions->notification==0){
-                                    Mail::to($subscriptions->client_email)->send(new TestMail($details));
-                                    $update_alert_status=subscription::find(5);
-                                    $update_alert_status->alert=1;
-                                    $update_alert_status->save();   
-                                }
-                    Alert::html('Vos client on recus leurs mail de notification', $html, 'success');
-                    
-                   return redirect()->back();
-         
-                }
-            */
-
-            $html = "<ul style='list-style: none;'>";
-            try {
-                $details1 =[
-                    'title'=>"Notification de souscription",
-                    'body'=> "La periode d'expiration de certain client arrive deja a expiration veillez consulter  les souscriptions clientes pour les notifiers"
-                ];
-                $current_date = date('Y-m-d');
-                $subscription  = DB::table('subscription')
-                         ->select('alert as notification','email as client_email','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
-                         ->join('client','subscription.client_id',"=","client.id")
-                         ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
-                         ->get();
-                  foreach($subscription as $subscriptions){
-                        $start_time = Carbon::parse($current_date);
-                        $finish_time = Carbon::parse($subscriptions->date_fin);
-                        $result = $start_time->diffInDays($finish_time, false);
-                        if($result>=0 && $result<=5 && $subscriptions->notification==0){
-                           // Mail::to("nguimfackjunior2@gmail.com")->send(new TestMail($details1)); 
-                            Mail::to($subscriptions->client_email)->send(new TestMail($details));
-                            $update_alert_status=subscription::find(5);
-                            $update_alert_status->alert=1;
-                            $update_alert_status->save();
-
+                    $current_date = date('Y-m-d');
+                    $subscription  = DB::table('subscription')
+                             ->select('alert as notification','email as client_email','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
+                             ->join('client','subscription.client_id',"=","client.id")
+                             ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
+                             ->get();
+                      foreach($subscription as $subscriptions){
+                            $start_time = Carbon::parse($current_date);
+                            $finish_time = Carbon::parse($subscriptions->date_fin);
+                            $result = $start_time->diffInDays($finish_time, false);
+                            if($result<=5 && $subscriptions->notification==0){
+                                Mail::to($subscriptions->client_email)->send(new TestMail($details));
+                                $update_alert_status=subscription::find($subscriptions->subscription_id);
+                                $update_alert_status->alert=1;
+                                $update_alert_status->save();                               }
                         }
-                    }
-              } catch (\Exception $e) {
-                 // Alert::html('Veillez verifier Votre connexion internet', $html, 'error');
-              }
-
-              return redirect()->back();
-            }
+                        return redirect()->back();
+                }
 
                 public function UpdateSubscription(Request $request)
                 {
@@ -461,17 +430,38 @@ class HomeController extends Controller
                          $recl->description_pb = $request->solution;
                          $recl->etat =1;
                          $recl->save();
+                         $recl->save();
                          Alert::html('Bravo vous avez finalement resolution ce probleme!', $html, 'success');  
                      }
                      else{
                         $recl->description_pb = $request->solution;
                         $recl->etat =0;
                         Alert::html('Vous avez changez de solution mais ce problemeexiste toujours!', $html, 'warning');  
-
                      }
 
                      return redirect()->back();
                  }
+
+                 public function UpdateSuggestion(Request $request){
+                    $html = "<ul style='list-style: none;'>";
+                    $recl =suggestions::find($request->id_suggestion);
+                     if($request->reponse==1){
+                         $recl->description_pb = $request->solution;
+                         $recl->etat =1;
+                         $recl->save();
+                         Alert::html('Bravo vous avez finalement resolution ce probleme!', $html, 'success');  
+                     }
+                     else{
+                        $recl->description_pb = $request->solution;
+                        $recl->etat =0;
+                        $recl->save();
+                        Alert::html('Vous avez changez de solution mais ce probleme existe toujours!', $html, 'warning');  
+                     }
+
+                     return redirect()->back();
+                 }
+             
+   
 
     public function Intervention($id){
         //$depense = DB::table('intervention')->where('id' '=' $id)->sum('balance');
@@ -529,9 +519,10 @@ class HomeController extends Controller
                return redirect()->back();
             }
             return redirect()->back()->withErrors($validator);                
-
-
-                   
             
         }
+        public function DeleteSuggestion($id){
+            suggestions::destroy($id);
+            return redirect()->back();
+        }  
 }
