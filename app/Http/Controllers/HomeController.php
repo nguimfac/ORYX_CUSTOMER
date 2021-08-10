@@ -212,7 +212,7 @@ class HomeController extends Controller
         public function Souscription()
         {
             $subscription  = DB::table('subscription')
-                             ->select('client.id as client_id','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
+                             ->select('a_payer','client.id as client_id','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
                              ->join('client','subscription.client_id',"=","client.id")
                              ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
                              ->get();
@@ -223,7 +223,6 @@ class HomeController extends Controller
 
         public function NewSouscription(Request $request){
             $html = "<ul style='list-style: none;'>";
-
             $current_date = date('Y-m-d H:i:s');
             $id = DB::table('client')->insertGetId(
                 ['nom' => $request->nom_client, 
@@ -243,8 +242,11 @@ class HomeController extends Controller
                 $subcript->date_debut=$current_date;
                 $subcript->date_fin=$request->date_fin;
                 $subcript->type_payement=$request->type_payement;
+                $subcript->a_payer=$request->montant_p;
                 $subcript->paye=$request->paye;
                 $subcript->save();
+
+
                 Alert::html('Subscription realisé avec success!', $html, 'success');
                 return redirect()->back();
                 }
@@ -330,11 +332,17 @@ class HomeController extends Controller
                 }
 
                 public function UpdatePayement(Request $request){
-                        $html = "<ul style='list-style: none;'>";
+                        $html = "Vous ne povez  plus continuer";
                         $subs = subscription::find($request->id_subscription);
-                        $subs->paye=$subs->paye+$request->montant;
-                        $subs->save();
-                        Alert::html('Payement réalisé avec success!', $html, 'success');
+                        if($request->montant+$subs->paye>$subs->a_payer){
+                            Alert::warning('Ce client a deja fini son payement!', $html, 'warning');
+                             return redirect()->back();
+                        }else{
+                            $subs->paye=$subs->paye+$request->montant;
+                            $subs->save();
+                            Alert::html('Payement réalisé avec success!', $html, 'success');
+                        }
+                    
                     return redirect()->back();
                 }
 

@@ -24,7 +24,7 @@
                                     <a href="{{url('sav/')}}" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente<span>3</span></a>
                                 </li>
                                 <li class="">
-                                    <a href="{{url('user/')}}" class="sav"><i class="fa fa-user-circle"></i>User<span>3</span></a>
+                                    <a href="{{url('user/')}}" class="sav"><i class="fa fa-user-circle"></i>User<span>4</span></a>
                                 </li>
                             </ul>
                         </div>
@@ -109,7 +109,7 @@
                                         <td class="font p-3" id="id_subs">{{$subscriptions->subscription_id}}</td>
                                         <td class="font p-3">{{$subscriptions->client_name}}</td>
                                         <td class="font p-3 ">{{$subscriptions->logiciel_name}}</td>
-                                        <td class="font p-3 col1" id="montant">{{$subscriptions->prix_logiciel}}</td>
+                                        <td class="font p-3 col1" id="montant">{{$subscriptions->a_payer}}</td>
                                         <td class="font p-3 col2">{{$subscriptions->payement}}</td>
                                         <td class="font w">{{$subscriptions->date_debut}}</td>
                                         <td class="font">
@@ -250,6 +250,13 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="address" class="text-black">Montant du forfait</label>
+                                <input type="text" required id="montant_p" onkeyup="envoi(this.value)"  name="montant_p" class="form-control p-4" placeholder="Entrez le montant à payer">
+                            </div>
+
+                           
+
+                            <div class="form-group">
                                 <label for="logiciel" class="text-black">Logiciel</label>
                                 <select type="text" name="logiciel" class="form-control  text-black" style="height:46px">
 								@foreach ($logiciel as $logiciels)
@@ -281,9 +288,9 @@
                                     <span>virement</span><br><input type="radio" id="method3" value="V" class="ml-4" name="type_payement"><br>
                                 </div>
 							</div>
-                            <div class="form-group payeform mt-4">
-                                <label for="date_fin" class="text-black">Somme à payer</label>
-                                <input type="number" name="paye" class="form-control p-4">
+                            <div i class="form-group payeform mt-4">
+                                <label for="date_fin" class="text-black">Somme  payé</label>
+                                <input type="number" id="paye" name="paye" class="form-control p-4">
                             </div>
 
                         </div>
@@ -305,6 +312,7 @@
                                     $(".payeform").fadeIn(250);
                                 })
                                 $("#NPmethod").click(function() {
+                                    $('#paye').val(0)
                                     $(".payeform").hide();
                                 })
                             })
@@ -515,6 +523,18 @@
     }
 </script>
 
+<script>
+                               
+    function envoi(value) 
+    {
+  
+        if($("#NPmethod").is(':checked')){
+           $('#paye').val(0)
+        } else {
+            var p = parseInt(document.getElementById('montant_p').value);
+            document.getElementById('paye').value =p        }
+    }
+</script>
 
 
 @endsection

@@ -3,19 +3,23 @@
 @section('content')
 
 <div class="">
-	
 		<div class="container col-md-10">
 			<div class="bg-white mb-4 shadow p-3 mb-5 bg-white rounded">
                 <div class="container">
                 </div>
+				<style>
+              @media (max-width: 1026px) {
+                #hidesmall { display: none; }
+
+            }    </style>
 				<div class="row">
-                    <div class="col-md-6 mt-4"><br><br><br><br>
-                    <img     src="{{asset ('images/my_back.png')}}" alt="">
+                    <div class="col-md-6 mt-4" id="hidesmall"><br><br><br><br>
+                    <img src="{{asset ('images/my_back.png')}}" alt="">
                     </div>
                     <div class="col-md-6">
-                    <img height="100" class="offset-md-5 offset-xs-5 offset-md-5" width="100" src="{{asset ('images/optimusclient.jpg')}}" alt=""><br><br>
+                    <img width="200" class="offset-xs-4 col-xs-offset-4  offset-sm-4 offset-md-4"  src="{{asset ('images/op.png')}}" alt=""><br><br>
                     <span class="login100-form-title p-b-43">
-						Login to continue
+						Veillez vous connecter
 					</span>
                     <form class="container " method="POST" action="{{ route('login') }}">
                     @csrf
@@ -27,7 +31,7 @@
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                @enderror
+                        @enderror
 					</div>
 					
 					
@@ -90,8 +94,6 @@
                     </div>
                 </div>
 
-				<div class="login100-more" style="background-image: url('images/bg-01.jpg');">
-				</div>
 			</div>
 		</div>
 	</div>

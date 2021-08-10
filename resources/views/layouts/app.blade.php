@@ -69,7 +69,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm ">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('home/') }}">
-                    <img src="{{asset ('images/optimusclient.jpg')}}" width="75" alt=""> <span class="mt-4"> <strong>OPTIMUS CLIENT</strong> </span>
+                    <img class="" src="{{asset ('images/op.png')}}" width="75" > <span class="mt-4"> <strong>OPTIMUS CLIENT</strong> </span>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>

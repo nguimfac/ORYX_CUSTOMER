@@ -27,7 +27,7 @@
                 </div>
 
                 <!-- Advance Search -->
-                <div class="container">
+                <div class="container ">
                     <div class="row ">
                         <div class="col-md-4 containers">
                             <div class="advance-search ad-listing-content ">
@@ -46,7 +46,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 containers">
+                        <div class="col-md-4 containers ">
                             <div class="advance-search ad-listing-content ">
                                 <div class="container">
                                     <div class="row justify-content-center">
@@ -61,7 +61,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 containers">
+                        <div class="col-md-4 containers ">
                             <div class="advance-search ad-listing-content ">
                                 <div class="container">
                                     <div class="row justify-content-center">
@@ -69,7 +69,7 @@
                                             <div class="col-lg-12 col-md-12 align-content-center">
                                                 <img src="{{ asset ('images/sav.jpg')}}" width="120" alt=""><br>
                                                 <strong class="text-primary">SERVICE APRES VENTE</strong>
-    
+
                                             </div>
                                         </a>
                                     </div>
@@ -86,4 +86,4 @@
 </section>
 
 </div>
-@endsection
+<br><br><br><br><br><br><br> @endsection

@@ -21,7 +21,7 @@
                                     <a href="{{url('sav/')}}" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente<span>3</span></a>
                                 </li>
                                 <li class="">
-                                    <a href="{{url('user/')}}" class="sav"><i class="fa fa-user-circle"></i>User<span>3</span></a>
+                                    <a href="{{url('user/')}}" class="sav"><i class="fa fa-user-circle"></i>User<span>4</span></a>
                                 </li>
                             </ul>
                         </div>
@@ -104,17 +104,17 @@
                                         <img class="slider-img img-responsive rounded" width="50" src="{{asset ('storage/images/'.$logiciels->image_name)}}" alt="Chania">
                                         <td class="product-category text-left" id="titre_logiciel"><span class="categories font">{{$logiciels->titre}}</span></span>
                                         </td>
-                                        <td class="product-category" id="prix_logiciel"><span class="categories font">{{$logiciels->prix}} fcfa</span></td>
+                                        <td class="product-category" id="prix_logiciel"><span class="categories font">{{$logiciels->prix}} </span></td>
                                         <td class="product-category" id="date_creation"><span class="categories font">{{$logiciels->created_at}} </span></td>
 
                                         <td class="action" data-title="Action">
                                             <div class="">
                                                 <ul class="list-inline justify-content-center">
-                                                    <li class="list-inline-item">
+                                                   <!-- <li class="list-inline-item">
                                                         <a data-toggle="tooltip" data-placement="top" title="View" class="view" href="category.html">
                                                             <i class="fa fa-eye"></i>
                                                         </a>
-                                                    </li>
+                                                    </li>-->
                                                     <li class="list-inline-item">
                                                         <a id="edit" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEdit" title="Edit" class="edit">
                                                             <i class="fa fa-pencil"></i>

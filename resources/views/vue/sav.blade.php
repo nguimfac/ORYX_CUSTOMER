@@ -19,7 +19,7 @@
                                     <a href="{{url('sav/')}}" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente<span>3</span></a>
                                 </li>
                                 <li class="">
-                                    <a href="{{url('user/')}}" class="sav"><i class="fa fa-user-circle"></i>User<span>3</span></a>
+                                    <a href="{{url('user/')}}" class="sav"><i class="fa fa-user-circle"></i>User<span>4</span></a>
                                 </li>
                             </ul>
 
@@ -32,7 +32,7 @@
                                 <img src="images/user/user-thumb.jpg" alt="" class="rounded-circle">
                             </div>
                             <!-- User Name -->
-                            <img src="{{ asset ('images/subscription.png')}}" alt="100" width="200" srcset="">
+                            <img src="{{ asset ('images/sav.jpg')}}" alt="100" width="200" srcset="">
                         </div>
                         <!-- Dashboard Links -->
 

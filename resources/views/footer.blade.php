@@ -1,6 +1,6 @@
 <footer class="footer bg-dark">
     <div class="container">
-        <img src="{{asset('images/Optimus.png')}}" width="200" alt="" srcset=""><br>
+       <h3 class="text-white text-uppercase">Optimus client</h3>
         <span class="text-muted offset-md-1  ml-1">Powered by Oryx Consulting</span>
     </div>
 </footer>
