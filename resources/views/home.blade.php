@@ -20,7 +20,7 @@
                 <!-- Header Contetnt -->
                 <div class="content-block">
                     <h1>Suivez & Servez vos clients </h1>
-                    <p>Restez plus proche de vos clients <br> Ameliorez la satisaction de vos clients après le service</p>
+                    <p>  <i>Restez plus proche de vos clients <br> Ameliorez la satisfaction de vos clients après le service</i></p>
                     <div class="short-popular-category-list text-center">
                         <h2>CUSTOMER MANAGEMENT</h2>
                     </div>

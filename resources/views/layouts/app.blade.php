@@ -121,11 +121,12 @@
 
                         <li class="dropdown dropdown-slide @@dashboard ">
                             <a class="nav-link dropdown-toggle" data-toggle="" href="">{{Auth::user()->name}} </span>
-                                <span class="fa fa-user-circle fa-x"></span>	</a>
+                                <img src="{{asset('images/user.png')}}" width="25" />	</a>
 
                             <!-- Dropdown list -->
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item @@dashboardPage" href="destroysesssion">Logout</a></li>
+                                <li><a class="dropdown-item @@dashboardPage" href="destroysesssion">Deconnecter   <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                </a></li>
 
 
                             </ul>

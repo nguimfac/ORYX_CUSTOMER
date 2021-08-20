@@ -60,14 +60,26 @@ class HomeController extends Controller
         $role =Auth::user()->is_admin;
          if($role ==1 || $role ==2){
             return view('home');
-         }else{
+         }
+         if($role==0)
+         {
             Auth::logout();
              return view('auth.login')->with('message','Verifier vos information svp');        
          }
         
     }
 
-    
+    public function Prospect(){
+        $prospect=  DB::table('client')
+        ->select('telephone','titre','client.id as client_id','email','address','code_postal','logiciel.id as logiciel_id','address','nom','ville' )
+        ->join('logiciel','client.logiciel_id','=','logiciel.id')
+        ->where('etat',1)
+        ->orderBy('client.id','desc')
+        ->get();
+        $logiciels=logiciel::all();
+        return view('vue.prospect',['prospects'=>$prospect,'logiciel'=>$logiciels]);
+    }
+
     public function NotifyPayement($id){
    
     try
@@ -94,19 +106,24 @@ class HomeController extends Controller
     $logiciel=logiciel::all();
 
     $suggest  = DB::table('suggestions')
-    ->select('solution','suggestions.created_at','etat','titre_sugg','description_pb','titre','nom','suggestions.id as suggestions_id')
+    ->select('solution','suggestions.created_at','suggestions.etat as etat','titre_sugg','description_pb','titre','nom','suggestions.id as suggestions_id')
     ->join('client','suggestions.client_id',"=","client.id")
     ->join('logiciel','suggestions.logiciel_id','=','logiciel.id')
+    ->orderBy('suggestions.id','desc')
     ->get();
 
     $reclammations  = DB::table('reclammation')
-    ->select('titre as titre_logiciel','reclammation.created_at as created_at','reclammation.id as reclam_id','titre_rec','description_pb','nom as client_name','solution','etat')
+    ->select('titre as titre_logiciel','reclammation.created_at as created_at','reclammation.id as reclam_id','titre_rec','description_pb','nom as client_name','solution','reclammation.etat as etat')
     ->join('client','reclammation.client_id',"=","client.id")
     ->join('logiciel','reclammation.logiciel_id','=','logiciel.id')
     ->get();
-
-
-    return view('vue.sav',['reclammation'=>$reclammations,'software'=>$logiciel,'suggestion'=>$suggest]);
+     $role=Auth::User()->is_admin;
+    if($role ==1 || $role ==2){
+        return view('vue.sav',['reclammation'=>$reclammations,'software'=>$logiciel,'suggestion'=>$suggest]);
+    }
+    else{
+        return view('auth.login');
+    }
    }
      
    function fetch(Request $request)
@@ -131,7 +148,13 @@ class HomeController extends Controller
     public function ManageSoft()
     {
         $data = logiciel::orderBy('id','desc')->get();
-        return view('vue.logiciel',['logiciel'=>$data]);
+        $role=Auth::User()->is_admin;
+        if($role ==1 || $role ==2){
+            return view('vue.logiciel',['logiciel'=>$data]);
+        }
+        else{
+            return view('auth.login');
+        }
     }
 
     public function AddSoftware(Request $request ){
@@ -215,6 +238,7 @@ class HomeController extends Controller
                              ->select('a_payer','client.id as client_id','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
                              ->join('client','subscription.client_id',"=","client.id")
                              ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
+                             -> orderBy('subscription_id', 'desc')
                              ->get();
             $logiciel=logiciel::all();
             $number_subs = subscription::count();
@@ -249,6 +273,45 @@ class HomeController extends Controller
 
                 Alert::html('Subscription realisé avec success!', $html, 'success');
                 return redirect()->back();
+                }
+
+                public function  SaveProspect(Request $request){
+                    $validator = Validator::make($request->all(), [
+                        'nom_client' => 'required',
+                        'email_client' => 'required',
+                        'address_client'=> 'required',
+                        'telephone_client'=> 'required',
+                        'ville_client'=> 'required',   
+                    ]);
+            
+                    if ($validator->fails()) {
+                        return redirect()->back()
+                                    ->withErrors($validator)
+                                    ->withInput();
+                    }
+                    else{
+                        $current_date = date('Y-m-d H:i:s');
+                        $client_prospect= new client();
+                        $client_prospect->nom= $request->nom_client;
+                        $client_prospect->email= $request->email_client;
+                        $client_prospect->address= $request->address_client;
+                        $client_prospect->telephone= $request->telephone_client;
+                        $client_prospect->ville= $request->ville_client;
+                        $client_prospect->logiciel_id= $request->logiciel_id;
+                        $client_prospect->etat= 1;
+                        $client_prospect->created_at =$request->$current_date;
+                        $client_prospect->save();
+                        Alert::success('Prospect enregistré avec success', "success", 'success');
+
+                    }
+                    return redirect()->back();
+
+                }
+
+                
+                public function deleteprospect($id) {
+                  client::destroy($id);
+                  return redirect()->back();
                 }
                 
 
@@ -374,6 +437,8 @@ class HomeController extends Controller
                     
                 }
 
+                
+
                  public function DeleteSubscriptions($id){
                     subscription::destroy($id);
                     //Alert::success('Voulez-vous supprimer cette souscription?','Confirmation');
@@ -435,16 +500,16 @@ class HomeController extends Controller
                     $html = "<ul style='list-style: none;'>";
                     $recl =reclammation::find($request->id_reclammation);
                      if($request->reponse==1){
-                         $recl->description_pb = $request->solution;
+                         $recl->solution = $request->solution;
                          $recl->etat =1;
-                         $recl->save();
                          $recl->save();
                          Alert::html('Bravo vous avez finalement resolution ce probleme!', $html, 'success');  
                      }
                      else{
-                        $recl->description_pb = $request->solution;
-                        $recl->etat =0;
-                        Alert::html('Vous avez changez de solution mais ce problemeexiste toujours!', $html, 'warning');  
+                        $recl->solution = $request->solution;
+                        $recl->etat =false;
+                        $recl->save();
+                        Alert::html('Vous avez changez de solution mais ce probleme  existe toujours!', $html, 'warning');  
                      }
 
                      return redirect()->back();
@@ -501,7 +566,6 @@ class HomeController extends Controller
         }
 
         public function  SaveSuggestion(Request $request){
-
             $validator = Validator::make($request->all(), [
                 'titresugg' => 'required',
                 'descpd' => 'required',
@@ -533,4 +597,40 @@ class HomeController extends Controller
             suggestions::destroy($id);
             return redirect()->back();
         }  
+
+
+        public function PrintProformaInvoice(Request $request){
+            $id=$request->id_prospect;
+            $curent_date= date("Y-m-d");
+            $client_prospect=  DB::table('client')
+            ->select('telephone','titre','client.id as client_id','email','address','code_postal','logiciel.id as logiciel_id','address','nom','ville' )
+            ->join('logiciel','client.logiciel_id','=','logiciel.id')
+            ->where('client.id',$id)
+            ->get();
+                    // instantiate and use the dompdf class
+                     foreach($client_prospect as $client_prospects){
+                        $data = ['title' => 'nguimfack',
+                        'client_name'=>$client_prospects->nom,
+                        'client_address'=>$client_prospects->address,
+                        'client_ville'=>$client_prospects->ville,
+                        'client_email'=>$client_prospects->email,
+                        'logiciel'=>$client_prospects->titre,
+                        'invoice_date'=>$curent_date,
+                        'paye'=>$request->montant,
+                        'periode'=>$request->periode,
+                        'nombre'=>$request->nombre,
+                        'telephone'=>$client_prospects->telephone,
+                    ];
+                     }  
+                                        
+                    $pdf = PDF::loadView('myPDF', $data);
+                    return $pdf->download("facture ".$client_prospects->nom.".pdf");
+
+        }
+
+
+        public function sendamount(){
+            return redirect()->back();
+
+        }
 }

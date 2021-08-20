@@ -3,6 +3,28 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 
+<script>
+$(document).ready(function(){
+  $('#dropDown').click(function(event){
+    $('.drop-down').toggleClass('drop-down--active');
+    event.stopPropagation();
+  });
+  $(document).click(function(event) {
+    	if (!$(event.target).hasClass('drop-down--active')) {
+      		$(".drop-down").removeClass("drop-down--active");
+    	}
+  	});
+});
+
+
+  $(function() {
+    $('.change').append('2')
+      $('.souscription').click(function() {
+       $('.change').text('-')
+      })
+  })
+</script>
+
 
 <div class="container-fluid">
     <section class="dashboard section">
@@ -14,11 +36,25 @@
                     <div class="sidebar">
 
                         <div class="widget user-dashboard-menu">
-                            <ul>
+                            <ul class="menu-vertical">
                                 <li class="">
-                                    <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-user "></i> LOGICIELS <span>1</span></a></li>
+                                    <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-desktop "></i> LOGICIELS <span>1</span></a></li>
                                 <li class="active">
-                                    <a href="{{url('souscription/')}}" class="souscription"><i class="fa fa-bookmark-o"></i> Souscription<span>2</span></a>
+                                <div class="dropD">
+                                        <div class="drop-down">
+                                          <div id="dropDown" class="drop-down__button">
+                                            <a href="#" class="souscription"><i class="fa fa-bookmark-o"></i> Souscription<span class="change"></span></a>
+                                        </div>
+                                          <div class="drop-down__menu-box">
+                                            <ul class="drop-down__menu">
+                                              <li data-name="profile" class="drop-down__item text-black">   <a class="bg-white text-black" href="{{url('prospect')}}"></a> <span class="fa fa-user"></span>  Prospect </li>
+                                              <li data-name="dashboard" class="drop-down__item">  <a href="{{url('client')}}" class="bg-white"></a>   <span class="fa fa-user-o"></span>  Client </li>
+                                              <li data-name="activity" class="drop-down__item"><a href="{{url('peyement')}}" class="bg-white"></a> <span class="fa fa-money"></span>  Payement</li>
+                                            </ul>
+                                          </div>
+                                        </div>
+                                      </div> 
+
                                 </li>
 								<li class="">
                                     <a href="{{url('sav/')}}" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente<span>3</span></a>
@@ -26,10 +62,16 @@
                                 <li class="">
                                     <a href="{{url('user/')}}" class="sav"><i class="fa fa-user-circle"></i>User<span>4</span></a>
                                 </li>
+
+                              
+
+                             
+
+
                             </ul>
                         </div>
                         <!-- User Widget -->
-                        <div class="widget user-dashboard-profile">
+                        <div class="widget user-dashboard-profile" id="notdisplayed">
                             <!-- User Image -->
                             <div class="profile-thumb">
                                 <img src="images/user/user-thumb.jpg" alt="" class="rounded-circle">
@@ -42,6 +84,12 @@
                         <!-- delete-account modal -->
                         <!-- delete account popup modal start-->
                         <!-- Modal -->
+
+                        <style>
+              @media (max-width: 1026px) {
+                #notdisplayed { display: none; }
+
+            }    </style>
                         <div class="modal fade" id="deleteaccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
@@ -78,10 +126,10 @@
                                     <div class="p-0">
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-xs-6 col-sm-6">
                                     <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop"> Souscription <i class="fa fa-plus-square" aria-hidden="true"></i></button>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-xs-6 col-sm-6">
                                     <a class="btn btn-success" type="button" href="/sendmail"> Notifier clients <i class="fa fa-bell" aria-hidden="true"></i></a>
                                 </div>
                             </div>

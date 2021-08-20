@@ -9,7 +9,7 @@ class client extends Model
 {
     use HasFactory;
     public $table="client";
-    protected $fillable = ["id","nom", "civilite","email","address","code_postal","ville","telephone"];
+    protected $fillable = ["id","nom", "civilite","email","address","code_postal","ville","telephone",'etat,"logiciel_id'];
 
     public function subscription(){
         return $this->hasMany(subscription::class);

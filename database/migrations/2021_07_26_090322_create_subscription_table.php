@@ -19,10 +19,10 @@ class CreateSubscriptionTable extends Migration
             $table->foreign('client_id')->references('id')->on('client');
             $table->unsignedBigInteger('logiciel_id');
             $table->foreign('logiciel_id')->references('id')->on('logiciel');
-            $table->date('date_debut');
-            $table->date('date_fin');
-            $table->string('type_payement');
-            $table->double('a_payer')->default(0);
+            $table->date('date_debut')->nullable();
+            $table->date('date_fin')->nullable();
+            $table->string('type_payement')->nullable();
+            $table->double('a_payer')->default(0)->nullable();
             $table->double('paye')->default('0')->nullable();;
             $table->boolean('alert')->default(false);
             $table->timestamps();

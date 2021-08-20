@@ -13,7 +13,7 @@
                         <div class="widget user-dashboard-menu">
                             <ul>
                                 <li class="active">
-                                    <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-user "></i> LOGICIELS <span>1</span></a></li>
+                                    <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-desktop "></i> LOGICIELS <span>1</span></a></li>
                                 <li class="">
                                     <a href="{{url('souscription/')}}" class="souscription"><i class="fa fa-bookmark-o"></i> Souscription<span>2</span></a>
                                 </li>
@@ -26,7 +26,7 @@
                             </ul>
                         </div>
                         <!-- User Widget -->
-                        <div class="widget user-dashboard-profile">
+                        <div class="widget user-dashboard-profile" id="notdisplayed">
                             <!-- User Image -->
                             <div class="profile-thumb">
                                 <img src="images/user/user-thumb.jpg" alt="" class="rounded-circle">
@@ -36,7 +36,11 @@
                         </div>
                         <!-- Dashboard Links -->
 
+<style>
+              @media (max-width: 1026px) {
+                #notdisplayed { display: none; }
 
+            }    </style>
                         <!-- delete-account modal -->
                         <!-- delete account popup modal start-->
                         <!-- Modal -->
@@ -83,7 +87,7 @@
                                 </div>
                             </div>
                         </h3>
-                        <table class="table table-hover  table-striped product-dashboard-table" id="myTable">
+                        <table class="table table-hover  table-striped product-dashboard-table table-responsive-sm" id="myTable">
                             <thead class="bg-primary text-white">
                                 <tr>
                                     <th>NUMERO</th>

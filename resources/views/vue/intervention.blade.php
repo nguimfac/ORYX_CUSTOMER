@@ -12,7 +12,7 @@
                         <div class="widget user-dashboard-menu">
                             <ul>
                                 <li class="">
-                                    <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-user "></i> LOGICIELS <span>1</span></a></li>
+                                    <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-desktop "></i> LOGICIELS <span>1</span></a></li>
                                 <li class="">
                                     <a href="{{url('souscription/')}}" class="souscription"><i class="fa fa-bookmark-o"></i> Souscription<span>2</span></a>
                                 </li>
@@ -108,8 +108,27 @@
                                             <span aria-hidden="true">&times;</span>
                                           </button>
                                         </div>
+
+                                        <script>
+                                            $(document).ready(function(){
+                                              $("#myInput").on("keyup", function() {
+                                                var value = $(this).val().toLowerCase();
+                                                $("#myTable3 tr").filter(function() {
+                                                  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                                                });
+                                              });
+                                            });
+                                            </script>
+
                                         <div class="modal-body">
                                             <div class="form-group">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                      <span class="input-group-text " id="basic-addon1"> <li class="c-white fa fa-search"></li></span>
+                                                    </div>
+                                                    <input type="text" id="myInput" class="form-control" placeholder="Recherchez un agent" aria-label="Username" aria-describedby="basic-addon1">
+                                                  </div>
+                                             
                                                 <table  class="table table-striped table-borderless">
                                                     <thead>
                                                         <tr>
@@ -117,7 +136,7 @@
                                                             <td>Action</td>
                                                         </tr>
                                                     </thead>
-                                                    <tbody>
+                                                    <tbody id="myTable3">
                                                         @foreach ($users as $user)
                                                            <tr>
                                                                <td>{{$user->name}}</td>
@@ -154,7 +173,7 @@
                         @if ($interv_info->isNotEmpty())
                         <div id="showIntervention" class="col-md-12 w-100">
                             <hr>
-                            <table id="myTable" class=" table table-striped table-borderless ">
+                            <table id="myTable" class=" table table-striped table-borderless table-responsive-sm">
                                 <thead class="bg-dark text-white">
                                     <tr>
                                         <td>id</td> 

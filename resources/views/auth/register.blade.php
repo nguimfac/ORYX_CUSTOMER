@@ -1,6 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
+<div id="cover"> <span class="glyphicon glyphicon-refresh w3-spin preloader-Icon"></span>Please Wait, Loading... <img width="150" src="{{asset('images/load5.gif')}}" alt=""></div>
+<h1>Dom Loaded</h1>
+<style>
+
+</style>
+
+<script>
+    $('h1').hide();
+    $(window).on('load', function() {
+        $("#cover").fadeOut(1750);
+    })
+</script>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">

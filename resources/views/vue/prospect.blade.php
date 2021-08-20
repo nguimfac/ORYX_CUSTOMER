@@ -156,12 +156,12 @@ $(document).ready(function(){
                                     @foreach ($prospects as $propection)
                                     <tr>
                                         <td class="font p-3" id="id_pros">{{$propection->client_id}}</td>
-                                        <td class="font p-3">{{$propection->nom}}</td>
+                                        <td class="font p-3" id="nom_client">{{$propection->nom}}</td>
                                         <td class="font p-3 ">{{$propection->email}}</td>
                                         <td class="font p-3 col1" id="montant">{{$propection->address}}</td>
                                         <td class="font p-3 col2">{{$propection->telephone}}</td>
                                         <td class="font w">{{$propection->ville}}</td>
-                                        <td class="font p-3">{{$propection->titre}}</td>
+                                        <td class="font p-3"  id="id_logiciel">{{$propection->titre}}</td>
                                         <td class="font w">{{$propection->code_postal}}</td>
                                             <td class="action" data-title="Action">
                                                 <div class="">
@@ -181,6 +181,13 @@ $(document).ready(function(){
                                                                 </a>
                                                             </form>
                                                         </li>
+
+                                                        
+                                                        <li class="list-inline-item">
+                                                            <a id="souscrire" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropLabelSubs" title="creer une souscrition" class="view">
+                                                                <i class="fa fa-plus-circle"></i>
+                                                            </a>
+                                                        </li> 
                                                     </ul>
                                                 </div>
                                             </td>
@@ -238,14 +245,7 @@ $(document).ready(function(){
                             <div class="form-group">
                                 <label for="ville" class="">Ville</label>
                                 <input type="text" list="browsers" class="form-control p-4" name="ville_client">
-                                <datalist id="browsers">
-									<option value="Douala">
-									<option value="Yaoundé">
-									<option value="Limbe">
-									<option value="Edea">
-									<option value="Kribi">
-									<option value="Dschand">
-							</datalist>
+                                
                             </div>
 
                             <div class="form-group">
@@ -329,9 +329,77 @@ $(document).ready(function(){
 </div>
 </div>
 
+
+<div class="modal fade" id="staticBackdropLabelSubs" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelSubs" aria-hidden="true">
+    <div class="modal-dialog modal-md  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">souscription Client <label class="text-black text-uppercase" style="font-size:20px" for="client_name" id="client"></label> <img width="80" src="{{  asset('images/userimg.png') }}" alt="" srcset=""></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div class="modal-body">
+                <form action="/newprospect" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="hidden" id="id_prospects"  name="id_prospects" class="form-control p-4" placeholder="">
+                            <div class="form-group">
+                                <label for="nom" class="text-black">Nom du client</label>
+                                <input type="text" id="client_nom" disabled name="nom_client" class="form-control p-4" required placeholder="Name of the client">
+                            </div>                          
+
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label for="nom" class="text-black">Logiciel choisi</label>
+                                    <input type="text" id="logiciel_id" disabled name="logiciel_id" class="form-control p-4" required placeholder="Nom du logiciel">
+                                </div>
+                            </div>
+                        
+                        </div>
+                      
+
+                        <script>
+
+                            $(document).ready(function() {
+                                $(".payeform").hide()
+                                $("#method1").click(function() {
+                                    $(".payeform").fadeIn(250);
+                                })
+                                $("#method2").click(function() {
+                                    $(".payeform").fadeIn(250);
+                                })
+                                $("#method3").click(function() {
+                                    $(".payeform").fadeIn(250);
+                                })
+								$("#cash").click(function() {
+                                    $(".payeform").fadeIn(250);
+                                })
+                                $("#NPmethod").click(function() {
+                                    $('#paye').val(0)
+                                    $(".payeform").hide();
+                                })
+                            })
+                        </script>
+
+
+                    </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">ajouter</button>
+            </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
 <!-----Modal 2 for edti-->
 <div class="modal fade" id="staticBackdropEdit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelEdit" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Creez un autre montant<img width="100" src="{{  asset('images/software.jpg') }}" alt="" srcset=""></h5>
@@ -340,17 +408,49 @@ $(document).ready(function(){
 		  </button>
             </div>
             <form action="printproformainvoice" method="post">
+                @csrf  
                 <div class="modal-body">
 
+                    <div class="form-group">
+                     <div class="row">
+                         <div class="col-md-6"> 
+                             <input type="text" list="browsers" name="nombre" class="form-control p-4" placeholder="periode">
+                            <datalist id="browsers">
+                                <option value="1">
+                                <option value="2">
+                                <option value="3">
+                                <option value="4">
+                                <option value="5">
+                                <option value="6">
+                                <option value="7"> 
+                                <option value="8">
+                                <option value="9">
+
+                        </datalist>
+                        </div>
+                         <div class="col-md-6"><select name="periode" id="" class="form-control " style="height:46px"  placeholder="periode">
+                            <option value="mois">Mensuel</option>   
+                            <option value="ans">Annuel</option>  
+                        </select> </div>
+                     </div>
+                    </div>
+
                     <div class="form-group" >
-                      <input type="text" class="form-control" placeholder="" name="id_prospect" id="id_propect">
+                      <input type="hidden"  class="form-control" placeholder="" name="id_prospect" id="id_propect">
                     </div>
     
                  <div class="form-group">
                      <label for="montant">Montant de la proforma</label>
-                     <input type="text" class="form-control" id="montant" placeholder="entrez le montant" name="montant">
+                     <input type="text" required class="form-control p-4" id="montant" placeholder="entrez le montant" name="montant">
                  </div>
-                 <button type="submit" class="btn btn-primary btn-block"> <li class="fa fa-print"></li> imprimez</button>
+                 <button type="submit" id="prof" class="btn btn-primary btn-block"  > <li class="fa fa-print"></li> imprimez</button>
+<script>
+  $(document).ready(function() {
+    $('#prof').click(function(){
+            ('#staticBackdropEdit').hide();
+        })
+  })
+</script>
 
                 </div> 
             </form>
@@ -429,6 +529,17 @@ $(document).ready(function(){
     $(document).on('click', '#edit', function() {
         var _this = $(this).parents('tr');
         $('#id_propect').val(_this.find('#id_pros').text());
+       // $('#id_montant').val(_this.find('#id_subs').text());
+        //$('#a_payer').val(_this.find('#montant').text());
+    });
+
+    $(document).on('click', '#souscrire', function() {
+        var _this = $(this).parents('tr');
+        $('#id_prospects').val(_this.find('#id_pros').text());
+        $('#client_nom').val(_this.find('#nom_client').text());
+        $('#logiciel_id').val(_this.find('#id_logiciel').text());
+        $value = _this.find('#nom_client').text()
+        $('#client').text($value);
        // $('#id_montant').val(_this.find('#id_subs').text());
         //$('#a_payer').val(_this.find('#montant').text());
     });

@@ -55,6 +55,12 @@ Route::post('accessdenied',[UserController::class,'AccessDenied']);
 Route::get('/deleteuser/{id}',[UserController::class,'DeleteUser']);
 Route::post('updatesuggestion',[HomeController::class,'UpdateSuggestion']);
 Route::get('deletesuggestion/{id}',[HomeController::class,'DeleteSuggestion']);
+Route::get('prospect/',[HomeController::class,'Prospect']);
+Route::post('newprospect',[HomeController::class,'SaveProspect']);
+Route::post('printproformainvoice',[HomeController::class,'PrintProformaInvoice']);
+Route::get('deleteprospect/{id}',[HomeController::class,'deleteprospect']);
+Route::post('printproformainvoice',[HomeController::class,'PrintProformaInvoice']);
+
 
 
 

@@ -11,7 +11,7 @@
                         <div class="widget user-dashboard-menu">
                             <ul>
                                 <li class="">
-                                    <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-user "></i> LOGICIELS <span>1</span></a></li>
+                                    <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-desktop "></i> LOGICIELS <span>1</span></a></li>
                                 <li class="">
                                     <a href="{{url('souscription/')}}" class="souscription"><i class="fa fa-bookmark-o"></i> Souscription<span>2</span></a>
                                 </li>
@@ -26,7 +26,7 @@
                  
                         </div>
                         <!-- User Widget -->
-                        <div class="widget user-dashboard-profile">
+                        <div class="widget user-dashboard-profile" id="notdisplayed">
                             <!-- User Image -->
                             <div class="profile-thumb">
                                 <img src="images/user/user-thumb.jpg" alt="" class="rounded-circle">
@@ -39,6 +39,12 @@
                         <!-- delete-account modal -->
                         <!-- delete account popup modal start-->
                         <!-- Modal -->
+<style>
+              @media (max-width: 1026px) {
+                #notdisplayed { display: none; }
+
+            }    </style>
+
                         <div class="modal fade" id="deleteaccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
@@ -112,11 +118,11 @@
                                                         <td class="font p-3" id="id_reclam">{{$reclammations->reclam_id}}</td>
                                                         <td class="font p-3" id="">{{$reclammations->titre_rec}}</td>
 
-                                                        <td class="font p-3" id="contain_reclam">{{$reclammations->description_pb}}</td>
+                                                        <td class="font p-3" id="">{{$reclammations->description_pb}}</td>
                                                         <td class="font p-3 ">{{$reclammations->titre_logiciel}}</td>
 
                                                         <td class="font p-3 ">{{$reclammations->client_name}}</td>
-                                                        <td class="font p-3 col1">@if ($reclammations->solution==null) 
+                                                        <td class="font p-3  col1" id="contenu_rec">@if ($reclammations->solution==null) 
                                                              en attente solution...
                                                              @else
                                                              {{$reclammations->solution}}
@@ -178,7 +184,7 @@
                                     <br>
 
                                     <div>
-                                        <table id="myTable1" class="table-responsive table table-striped table-hover table-borderless">
+                                        <table id="myTable1" class="table-responsive-sm table table-striped table-hover table-borderless">
                                             <thead class="bg-primary text-white">
                                                 <tr>
                                                     <th scope="col">Numero</th>
@@ -200,7 +206,7 @@
                                                         <td class="font p-3" id="contain_solution">{{$suggestions->description_pb}}</td>
                                                         <td class="font p-3" id="">{{$suggestions->titre}}</td>
                                                         <td class="font p-3" id="">{{$suggestions->nom}}</td>
-                                                        <td class="font p-3" id="">{{$suggestions->solution}}</td>
+                                                        <td class="font p-3" id="contenu">{{$suggestions->solution}}</td>
                                                         <td class="font p-3 col2">
                                                             @if ($suggestions->etat==2)
                                                                 <span class="text-primary">Ouvert</span>
@@ -548,9 +554,9 @@
                             <div class="form-group">
                                 <input type="hidden" id="id_reclammation" name="id_reclammation" class="form-control p-4" required placeholder="date of the software">
                             </div>
-                                    <div class="form-group">
-                                        <label for="date_exp" class="text-black">Nouvelle Solution</label>
-                                        <textarea name="solution" required id="contain_reclammation" class="form-control" placeholder="Modifier l'ancienne solution"></textarea> 
+                                    <div class="form-group ">
+                                        <label for="date_exp" class="text-black text-right">Nouvelle Solution</label>
+                                        <textarea name="solution" required id="contain_reclammation" style="text-align: left" class="form-control" placeholder="Modifier l'ancienne solution"></textarea> 
                                            
                                     </div>
 
@@ -650,7 +656,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -700,9 +705,7 @@
     }
 </style>
 
-<span class="test">
-  sdsdssd
-</span>
+
 
 @if(count($errors) > 0)
 <script>
@@ -726,14 +729,13 @@
     $(document).on('click', '#edit', function() {
         var _this = $(this).parents('tr');
         $('#id_reclammation').val(_this.find('#id_reclam').text());
-        $('#contain_reclammation').val(_this.find('#contain_reclam').text());
+        $('#contain_reclammation').val(_this.find('#contenu_rec').text());
         $('#a_payer').val(_this.find('#montant').text());
     });
     $(document).on('click', '#editSugg', function() {
         var _this = $(this).parents('tr');
-        $('#id_suggestion').val(_this.find('#id_suggestions').text());contain_reclammation
-        $('#contain_suggestion').val(_this.find('#contain_solution').text());
-     
+        $('#id_suggestion').val(_this.find('#id_suggestions').text());
+        $('#contain_suggestion').val(_this.find('#contenu').text());
     });
     /*a revoir */
     $(document).ready(function() {

@@ -14,7 +14,7 @@
                         <div class="widget user-dashboard-menu">
                             <ul>
                                 <li class="">
-                                    <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-user "></i> LOGICIELS <span>1</span></a></li>
+                                    <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-desktop "></i> LOGICIELS <span>1</span></a></li>
                                 <li class="">
                                     <a href="{{url('souscription/')}}" class="souscription"><i class="fa fa-bookmark-o"></i> Souscription<span>2</span></a>
                                 </li>
@@ -22,7 +22,7 @@
                                     <a href="{{url('sav/')}}" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente<span>3</span></a>
                                 </li>
                                 <li class="active">
-                                    <a href="{{url('user/')}}" class="sav"><i class="fa fa-user-circle"></i>User<span>3</span></a>
+                                    <a href="{{url('user/')}}" class="sav"><i class="fa fa-user-circle"></i>User<span>4</span></a>
                                 </li>
                             </ul>
                         </div>
@@ -33,7 +33,7 @@
                                 <img src="images/user/user-thumb.jpg" alt="" class="rounded-circle">
                             </div>
                             <!-- User Name -->
-                            <img src="{{ asset ('images/subscription.png')}}" alt="100" width="200" srcset="">
+                            <img src="{{ asset ('images/userimg.png')}}" alt="100" width="150" srcset="">
                         </div>
                         <!-- Dashboard Links -->
 
