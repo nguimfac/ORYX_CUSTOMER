@@ -245,6 +245,8 @@ class HomeController extends Controller
             return view('vue.souscription',['logiciel'=>$logiciel,'subscription'=>$subscription,'number_subs'=>$number_subs]);
         }
 
+       
+
         public function NewSouscription(Request $request){
             $html = "<ul style='list-style: none;'>";
             $current_date = date('Y-m-d H:i:s');
@@ -262,7 +264,7 @@ class HomeController extends Controller
        //dd($id);
                 $subcript=new subscription();
                 $subcript->client_id=$id;
-                $subcript->logiciel_id=$request->logiciel;
+                $subcript->logiciel_id=$request->software;
                 $subcript->date_debut=$current_date;
                 $subcript->date_fin=$request->date_fin;
                 $subcript->type_payement=$request->type_payement;
@@ -376,21 +378,34 @@ class HomeController extends Controller
                         'date_debut' => ['required', 'date'],
                         'date_fin' => ['required', 'date'],
                     ]);*/
-                    $current_date= date('Y-m-d');
+                    $effectiveDate="";
+                    if($request->date_fin==1){
+                        $effectiveDate = date('Y-m-d', strtotime("+".$request->nombre." months", strtotime(date('Y-m-d'))));
+                        //dd($effectiveDate);
+                    }
+                    else{ $effectiveDate = date('Y-m-d', strtotime("+".$request->nombre." years", strtotime(date('Y-m-d'))));
+                       // dd($effectiveDate);
+        
+                    }
+
+                   /* 
                     $start_time = Carbon::parse($current_date);
                     $finish_time = Carbon::parse($request->date_fin);
-                    $result = $start_time->diffInDays($finish_time, false);
-                    if($result>0){
-                        $subs = subscription::find($request->id_subscription);
+                    $result = $start_time->diffInDays($finish_time, false);*/
+                    $current_date= date('Y-m-d');
+                    $subs = subscription::find($request->id_subscription);
+                        
+                    if($subs->a_payer!=$subs->paye){
+                        Alert::html('Impossible ce client n a pas terminé le payement du forfait precedent!', $html, 'warning');
+                        return redirect()->back();
+                    }
                         $subs->date_debut=$current_date;
-                        $subs->date_fin=$request->date_fin;
+                        $subs->date_fin=$effectiveDate;
                         $subs->paye=$request->Mpaye;
                         $subs->save();
                         Alert::html('Subscription Renouvelle avec success!', $html, 'success');
-                    }else{
-                        Alert::html('La date de renouvellation  doit etre superieure a la date courante. Ressayez', $html, 'error');
 
-                    }
+                 
                     return redirect()->back();
                 }
 
@@ -632,5 +647,64 @@ class HomeController extends Controller
         public function sendamount(){
             return redirect()->back();
 
+        }
+
+        public function Prospect_To_client(Request $request){
+           
+            $this->souscription();
+           $id_client = client::where('nom', $request->nom_client)->first()->id;
+           $id_logiciel = logiciel::where('titre', $request->logiciel_id)->first()->id;
+           $client = client::find($request->id_prospects);
+           $client->etat=0;
+           $client->save();
+          //  dd($id_client.''.$id_logiciel);
+            $subcript= new subscription();
+            $subcript->client_id=$id_client;
+            $subcript->logiciel_id=$id_logiciel;
+            $subcript->save();
+            Alert::html('Felicitation vous venez  d enregistré un nouveau client', "client".$request->nom_client, 'success');  
+            return redirect('/souscription');
+            
+
+        }
+
+        public function MakePayement( Request $request){  
+            
+            $validator = Validator::make($request->all(), [
+                'date_fin' => 'required',
+                'nombre' => 'required',
+                'montant_paye' => 'required',
+                'type_payement' => 'required',
+                'paye' => 'required',
+            ]);
+
+            if($validator->fails()){
+                Alert::html('Une erreur est survenue durant cette operation', "Désole", 'warning');  
+                return redirect()->back();
+            }
+            $effectiveDate="";
+            if($request->date_fin==1){
+                $effectiveDate = date('Y-m-d', strtotime("+".$request->nombre." months", strtotime(date('Y-m-d'))));
+                //dd($effectiveDate);
+            }
+            else{ $effectiveDate = date('Y-m-d', strtotime("+".$request->nombre." years", strtotime(date('Y-m-d'))));
+               // dd($effectiveDate);
+
+            }
+            $subcript = subscription::find($request->id_payement);
+            $subcript->date_debut = date('Y-m-d');
+            if($request->type_payement=="NP"){
+                $subcript->paye =0;
+            }else{
+                $subcript->paye  =$request->paye;
+            }
+            $subcript->a_payer =$request->montant_paye;
+            $subcript->date_fin = $effectiveDate;
+            $subcript->type_payement = $request->type_payement;
+            $subcript->save();
+            Alert::html('Payement realisé  avec success', "client".$request->nom_client, 'success');  
+            return redirect()->back();
+           
+           
         }
 }

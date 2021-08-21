@@ -280,9 +280,9 @@ $(document).ready(function(){
 									<option value="Douala">
 									<option value="Yaoundé">
 									<option value="Limbe">
-									<option value="Edea">
-									<option value="Kribi">
-									<option value="Dschand">
+		<option value="Kribi">
+																		<option value="Edea">
+							<option value="Dschand">
 							</datalist>
                             </div>
 
@@ -297,49 +297,7 @@ $(document).ready(function(){
                                 <input type="text" name="codepostal_client" class="form-control p-4" placeholder="code postal du client">
                             </div>
 
-                            <div class="form-group">
-                                <label for="address" class="text-black">Montant du forfait</label>
-                                <input type="text" required id="montant_p" onkeyup="envoi(this.value)"  name="montant_p" class="form-control p-4" placeholder="Entrez le montant à payer">
-                            </div>
-
-                           
-
-                            <div class="form-group">
-                                <label for="logiciel" class="text-black">Logiciel</label>
-                                <select type="text" name="logiciel" class="form-control  text-black" style="height:46px">
-								@foreach ($logiciel as $logiciels)
-								<option value="{{$logiciels->id}}">{{$logiciels->titre}}</option>
-								@endforeach
-							</select>
-                            </div>
-                            <div class="form-group ">
-                                <label for="date_fin" class="text-black">Date fin</label>
-                                <input type="date" name="date_fin" class="form-control p-4" required>
-                            </div>
-                            <div class="row ">
-                                <div class="col md-4 mt-4 ">
-                                    <span>Orange money</span><br><input class="ml-4" id="method1" type="radio" value="OM" name="type_payement">
-                                </div>
-
-                                <div class="col-md-4 mt-4">
-                                    <span>Mtn money<br></span><input type="radio" id="method2" class="ml-4" value="MM" name="type_payement"><br>
-                                </div>
-                                <div class="col-md-4 mt-4">
-                                    <span>Non payé<br></span><input type="radio" id="NPmethod" class="ml-4" value="NP" name="type_payement"><br>
-                                </div> 
-                            </div><br>
-							<div class="row">
-								<div class="col-md-4 mt-4">
-                                    <span>Cash<br></span><input type="radio" id="cash" class="ml-4" value="CASH" name="type_payement"><br>
-                                </div>
-                                <div class="col-md-4 mt-4">
-                                    <span>virement</span><br><input type="radio" id="method3" value="V" class="ml-4" name="type_payement"><br>
-                                </div>
-							</div>
-                            <div i class="form-group payeform mt-4">
-                                <label for="date_fin" class="text-black">Somme  payé</label>
-                                <input type="number" id="paye" name="paye" class="form-control p-4">
-                            </div>
+                          
 
                         </div>
 
@@ -398,7 +356,9 @@ $(document).ready(function(){
                     <div>
                         <div class="tab">
                             <button class="tablinks" onclick="openSubscription(event, 'renewSubs')">Renouveller Souscription</button>
+                            <button class="tablinks" onclick="openSubscription(event, 'creerpayement')">Creer un Payement</button>
                             <button class="tablinks" onclick="openSubscription(event, 'payement')">Continuer Payement</button>
+
                         </div>
                     </div>
                     <div id="renewSubs" class="tabcontent">
@@ -407,20 +367,37 @@ $(document).ready(function(){
                             <div class="form-group">
                                 <input type="hidden" id="id_subscription" name="id_subscription" class="form-control p-4" required placeholder="date of the software">
                             </div>
+
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="date_exp" class="text-black">Date expiration</label>
-                                        <input type="date" id="date_expiration" name="date_fin" class="form-control p-4" required placeholder="date of the software">
-                                    </div>
-                                </div>
+                                    <label for="date_fin " class="text-black">Periode</label>
+                                    <input type="number" list="number" name="nombre" class="form-control p-4" placeholder="periode">
+                                    <datalist id="number">
+                                        <option value="1">
+                                        <option value="2">
+                                        <option value="3">
+                                        <option value="4">
+                                        <option value="5">
+                                        <option value="6">
+                                        <option value="7"> 
+                                        <option value="8">
+                                        <option value="9">
+                                </datalist>                                    
+                            </div>
                                 <div class="col-md-6">
+                                    <label for="date_fin"  class="text-black">Mois/ans</label>
+                                    <select name="date_fin" class="form-control " style="height:46px" id="">
+                                        <option value="1">mensuelle</option>
+                                        <option value="2">annuelle</option>
+                                    </select>
+                                </div>
+                            </div>
+                                <div class="">
                                     <div class="form-group">
                                         <label for="date_exp" class="text-black">Montant payé</label>
                                         <input type="number" id="Mpaye" name="Mpaye" class="form-control p-4" required placeholder="Entrez le montant payé">
                                     </div>
                                 </div>
-                            </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Nouveau</button>
@@ -446,7 +423,76 @@ $(document).ready(function(){
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-block btn-primary">Enregistrer</button>
                             </div>
+                        </form>
                     </div>
+
+                    <div id="creerpayement" class="tabcontent">
+                        <form class="text-left" action="{{url('makepayement')}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group">
+                                <input type="hidden" id="id_payement" name="id_payement" class="form-control p-4" required placeholder="date of the software">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="address" class="text-black">Montant du forfait</label>
+                                <input type="text" required id="montant_p" onkeyup="envoi(this.value)"  name="montant_paye" class="form-control p-4" placeholder="Entrez le montant à payer">
+                            </div>
+                            <div class="form-group ">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="date_fin " class="text-black">Periode</label>
+                                        <input type="number" list="number" name="nombre" class="form-control p-4" placeholder="periode">
+                                        <datalist id="number">
+                                            <option value="1">
+                                            <option value="2">
+                                            <option value="3">
+                                            <option value="4">
+                                            <option value="5">
+                                            <option value="6">
+                                            <option value="7"> 
+                                            <option value="8">
+                                            <option value="9">
+                                    </datalist>                                    
+                                </div>
+                                    <div class="col-md-6">
+                                        <label for="date_fin"  class="text-black">Mois/ans</label>
+                                        <select name="date_fin" class="form-control " style="height:46px" id="">
+                                            <option value="1">mensuelle</option>
+                                            <option value="2">annuelle</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="col md-4 mt-4 ">
+                                    <span>Orange money</span><br><input required class="ml-4" id="method1" type="radio" value="OM" name="type_payement">
+                                </div>
+
+                                <div class="col-md-4 mt-4">
+                                    <span>Mtn money<br></span><input required type="radio" id="method2" class="ml-4" value="MM" name="type_payement"><br>
+                                </div>
+                                <div class="col-md-4 mt-4">
+                                    <span>Non payé<br></span><input type="radio" id="NPmethod" class="ml-4" value="NP" name="type_payement"><br>
+                                </div> 
+                            </div><br>
+							<div class="row">
+								<div class="col-md-4 mt-4">
+                                    <span>Cash<br></span><input required  type="radio" id="cash" class="ml-4" value="CASH" name="type_payement"><br>
+                                </div>
+                                <div class="col-md-4 mt-4">
+                                    <span>virement</span><br><input required type="radio" id="method3" value="V" class="ml-4" name="type_payement"><br>
+                                </div>
+							</div>
+                            <div i class="form-group payeform mt-4">
+                                <label for="date_fin" class="text-black">Somme  payé</label>
+                                <input type="number" id="paye" required name="paye" class="form-control p-4">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-block btn-primary">Enregistrer</button>
+                            </div>
+                    </div>
+                    
+
                     </form>
                 </div>
             </div>
@@ -525,6 +571,7 @@ $(document).ready(function(){
     $(document).on('click', '#edit', function() {
         var _this = $(this).parents('tr');
         $('#id_subscription').val(_this.find('#id_subs').text());
+        $('#id_payement').val(_this.find('#id_subs').text());
         $('#id_montant').val(_this.find('#id_subs').text());
         $('#a_payer').val(_this.find('#montant').text());
     });
@@ -550,7 +597,8 @@ $(document).ready(function(){
 	})
 */
     $(document).ready(function() {
-        $('#payement').hide();
+        $('#payement').hide();creerpayement
+        $('#creerpayement').hide();
     })
 
     function openSubscription(evt, subscriptionvalue) {

@@ -340,20 +340,20 @@ $(document).ready(function(){
         </button>
             </div>
             <div class="modal-body">
-                <form action="/newprospect" method="POST" enctype="multipart/form-data">
+                <form action="/prospect_to_client_subscrip" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-md-12">
                             <input type="hidden" id="id_prospects"  name="id_prospects" class="form-control p-4" placeholder="">
                             <div class="form-group">
                                 <label for="nom" class="text-black">Nom du client</label>
-                                <input type="text" id="client_nom" disabled name="nom_client" class="form-control p-4" required placeholder="Name of the client">
+                                <input type="text" id="client_nom" readonly name="nom_client" class="form-control p-4" required placeholder="Name of the client">
                             </div>                          
 
                             <div class="form-group">
                                 <div class="form-group">
                                     <label for="nom" class="text-black">Logiciel choisi</label>
-                                    <input type="text" id="logiciel_id" disabled name="logiciel_id" class="form-control p-4" required placeholder="Nom du logiciel">
+                                    <input type="text" id="logiciel_id"  readonly   name="logiciel_id" class="form-control p-4" required placeholder="Nom du logiciel">
                                 </div>
                             </div>
                         
@@ -428,7 +428,7 @@ $(document).ready(function(){
 
                         </datalist>
                         </div>
-                         <div class="col-md-6"><select name="periode" id="" class="form-control " style="height:46px"  placeholder="periode">
+                         <div class="col-md-6"><select name="date_fin" id="" class="form-control " style="height:46px"  placeholder="periode">
                             <option value="mois">Mensuel</option>   
                             <option value="ans">Annuel</option>  
                         </select> </div>

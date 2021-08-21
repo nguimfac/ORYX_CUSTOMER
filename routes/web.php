@@ -60,6 +60,10 @@ Route::post('newprospect',[HomeController::class,'SaveProspect']);
 Route::post('printproformainvoice',[HomeController::class,'PrintProformaInvoice']);
 Route::get('deleteprospect/{id}',[HomeController::class,'deleteprospect']);
 Route::post('printproformainvoice',[HomeController::class,'PrintProformaInvoice']);
+Route::post('prospect_to_client_subscrip',[HomeController::class,'Prospect_To_client']);
+Route::post('makepayement',[HomeController::class,'MakePayement']);
+
+
 
 
 
