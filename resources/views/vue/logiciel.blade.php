@@ -1,6 +1,30 @@
 @extends('layouts.app') @section('content')
 
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
+<script>
+    $(document).ready(function(){
+      $('#dropDown').click(function(event){
+        $('.drop-down').toggleClass('drop-down--active');
+        event.stopPropagation();
+      });
+      $(document).click(function(event) {
+            if (!$(event.target).hasClass('drop-down--active')) {
+                  $(".drop-down").removeClass("drop-down--active");
+            }
+          });
+    });
+    
+    
+      $(function() {
+        $('.change').append('2')
+          $('.souscription').click(function() {
+           $('.change').text('-')
+          })
+      })
+    </script>
+
 <div class="container-fluid ">
     <section class="dashboard section">
         <!-- Container Start -->
@@ -13,10 +37,29 @@
                         <div class="widget user-dashboard-menu">
                             <ul>
                                 <li class="active">
-                                    <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-desktop "></i> LOGICIELS <span>1</span></a></li>
-                                <li class="">
-                                    <a href="{{url('souscription/')}}" class="souscription"><i class="fa fa-bookmark-o"></i> Souscription<span>2</span></a>
+                                    <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-desktop "></i> LOGICIELS <span>1</span></a>
                                 </li>
+
+                                <li class="">
+                                    <div class="dropD">
+                                            <div class="drop-down">
+                                              <div id="dropDown" class="drop-down__button">
+                                                <a href="#" class="souscription"><i class="fa fa-bookmark-o"></i> Souscription<span class="change"></span></a>
+                                            </div>
+                                              <div class="drop-down__menu-box">
+                                                <ul class="drop-down__menu">
+                                                  <li data-name="profile" class="drop-down__item text-black"> <a class="bg-white text-black" href="{{url('prospect')}}"></a> <span class="fa fa-user"></span>  Prospect </li>
+                                                  <li data-name="dashboard" class="drop-down__item">  <a href="{{url('souscription')}}" class="bg-white"></a>   <span class="fa fa-user-o"></span>  Client </li>
+                                                  <li data-name="activity" class="drop-down__item"><a href="{{url('peyement')}}" class="bg-white"></a> <span class="fa fa-money"></span>  Payement</li>
+                                                </ul>
+                                              </div>
+                                            </div>
+                                          </div> 
+                                   
+    
+    
+                                    </li>
+
 								<li class="">
                                     <a href="{{url('sav/')}}" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente<span>3</span></a>
                                 </li>
@@ -32,7 +75,7 @@
                                 <img src="images/user/user-thumb.jpg" alt="" class="rounded-circle">
                             </div>
                             <!-- User Name -->
-                            <img src="{{ asset ('images/software.jpg')}}" alt="100" srcset="">
+                            <img src="{{ asset ('images/optimus.jpg')}}" alt="100" srcset="">
                         </div>
                         <!-- Dashboard Links -->
 
@@ -94,7 +137,7 @@
                                     <th>IMAGE</th>
                                     <th> TITRE</th>
                                     <th class="text-center">PRIX</th>
-                                    <th class="text-center">Added</th>
+                                    <th class="text-center">Date</th>
                                     <th class="text-center">Action</th>
                                 </tr>
                             </thead>

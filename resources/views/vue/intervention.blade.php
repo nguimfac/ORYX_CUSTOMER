@@ -16,7 +16,7 @@
                                 <li class="">
                                     <a href="{{url('souscription/')}}" class="souscription"><i class="fa fa-bookmark-o"></i> Souscription<span>2</span></a>
                                 </li>
-								<li class="active">
+                                <li class="active">
                                     <a href="{{url('sav/')}}" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente (intervention)<span>3</span></a>
                                 </li>
                                 <li class="">
@@ -68,167 +68,165 @@
                 <div class="col-lg-9">
                     <!-- Recently Favorited -->
                     <div class="widget dashboard-container my-adslist">
-                     <div class="row">
-                         <div class="col-md-7">
-                            <form action="saveintervention" method="POST">
-                                @csrf
-                                <div class="form-group">
-                                    <input type="hidden"  name="id_reclammation" value={{$intervent->id}} class="form-control shadow-lg p-3 mb-5 bg-white rounded p-4 " name="reclammation_id" id="reclammation" >
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="email" class="text-black"> RECLAMMATION <i class="fa fa-exclamation-circle" aria-hidden="true"></i> : <span class="text-primary">{{$intervent->titre_rec}}</span></label>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Tache effectuée</label>
-                                    <textarea name="tache" required  class="form-control shadow-lg p-3 mb-5 bg-white rounded" id="tache"></textarea>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="email">Cout</label>
-                                    <input type="number" class="form-control shadow-lg p-3 mb-5 bg-white rounded p-4 " name="cout" id="cout" >
-                                </div>
-
-                                <label for="email" class="text-black">Est-elle effective</label><br>
-                                <div class="row ">
-                                    <div class="col-md-2 ">
-                                        <span class="ml-3">Oui</span><br><input class="ml-4" id="method1" type="radio" value="1" name="reponse">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <form action="saveintervention" method="POST">
+                                    @csrf
+                                    <div class="form-group">
+                                        <input type="hidden" name="id_reclammation" value={{$intervent->id}} class="form-control shadow-lg p-3 mb-5 bg-white rounded p-4 " name="reclammation_id" id="reclammation" >
                                     </div>
-                                    <div class="col-md-3">
-                                        <span class="ml-4">Non<br></span><input type="radio" id="NPmethod" class="ml-4" value="0" name="reponse"><br>
-                                    </div>
-                                </div><br>
 
-                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <h5 class="modal-title" id="exampleModalLabel">Choisissez Les agents intervenants</h5>
-                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <div class="form-group">
+                                        <label for="email" class="text-black"> RECLAMMATION <i class="fa fa-exclamation-circle" aria-hidden="true"></i> : <span class="text-primary">{{$intervent->titre_rec}}</span></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Tache effectuée</label>
+                                        <textarea name="tache" required class="form-control shadow-lg p-3 mb-5 bg-white rounded" id="tache"></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="email">Cout</label>
+                                        <input type="number" class="form-control shadow-lg p-3 mb-5 bg-white rounded p-4 " name="cout" id="cout">
+                                    </div>
+
+                                    <label for="email" class="text-black">Est-elle effective</label><br>
+                                    <div class="row ">
+                                        <div class="col-md-2 ">
+                                            <span class="ml-3">Oui</span><br><input class="ml-4" id="method1" type="radio" value="1" name="reponse">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <span class="ml-4">Non<br></span><input type="radio" id="NPmethod" class="ml-4" value="0" name="reponse"><br>
+                                        </div>
+                                    </div><br>
+
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Choisissez Les agents intervenants</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                           </button>
-                                        </div>
+                                                </div>
 
-                                        <script>
-                                            $(document).ready(function(){
-                                              $("#myInput").on("keyup", function() {
-                                                var value = $(this).val().toLowerCase();
-                                                $("#myTable3 tr").filter(function() {
-                                                  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                                                });
-                                              });
-                                            });
-                                            </script>
+                                                <script>
+                                                    $(document).ready(function() {
+                                                        $("#myInput").on("keyup", function() {
+                                                            var value = $(this).val().toLowerCase();
+                                                            $("#myTable3 tr").filter(function() {
+                                                                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                                                            });
+                                                        });
+                                                    });
+                                                </script>
 
-                                        <div class="modal-body">
-                                            <div class="form-group">
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                      <span class="input-group-text " id="basic-addon1"> <li class="c-white fa fa-search"></li></span>
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text " id="basic-addon1"> <li class="c-white fa fa-search"></li></span>
+                                                            </div>
+                                                            <input type="text" id="myInput" class="form-control" placeholder="Recherchez un agent" aria-label="Username" aria-describedby="basic-addon1">
+                                                        </div>
+
+                                                        <table class="table table-striped table-borderless">
+                                                            <thead>
+                                                                <tr>
+                                                                    <td>Agent</td>
+                                                                    <td>Action</td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="myTable3">
+                                                                @foreach ($users as $user)
+                                                                <tr>
+                                                                    <td>{{$user->name}}</td>
+                                                                    <td><label><input  type="checkbox" name="agent[]" value="{{$user->name}}"></label><br></td>
+                                                                </tr>
+
+                                                                @endforeach
+
+                                                            </tbody>
+                                                        </table>
                                                     </div>
-                                                    <input type="text" id="myInput" class="form-control" placeholder="Recherchez un agent" aria-label="Username" aria-describedby="basic-addon1">
-                                                  </div>
-                                             
-                                                <table  class="table table-striped table-borderless">
-                                                    <thead>
-                                                        <tr>
-                                                            <td>Agent</td>
-                                                            <td>Action</td>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="myTable3">
-                                                        @foreach ($users as $user)
-                                                           <tr>
-                                                               <td>{{$user->name}}</td>
-                                                               <td><label><input  type="checkbox" name="agent[]" value="{{$user->name}}"></label><br></td>
-                                                           </tr>
-                                                       
-                                                        @endforeach
-
-                                                    </tbody>
-                                                </table>
-                                            </div>  
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="modal-footer">
-                                          <button type="submit" class="btn btn-primary">Save changes</button>
-                                        </div>
-                                      </div>
                                     </div>
-                                  </div>
-                                
 
-                                <div class="modal-footer">
-                                    <button type="button"  class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal"  class=" btn btn-primary btn-block">Choisissez des agents</button>
-                                    
-                                </div>
-                            </form>
-     
-                         </div>
-                         <div class="col-md-5">
-                            <img class="offset-md-2 offset-md-2 offset-sm-2  mt-4" src="{{asset('images/view2.png')}}" alt=""><br><br>
-                            <span class="mr-4 btn btn-dark" id="interventionView">Afficher les interventions pour ce probleme  <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal" class=" btn btn-primary btn-block">Choisissez des agents</button>
+
+                                    </div>
+                                </form>
+
+                            </div>
+                            <div class="col-md-5">
+                                <img class="offset-md-2 offset-md-2 offset-sm-2  mt-4" src="{{asset('images/view2.png')}}" alt=""><br><br>
+                                <span class="mr-4 btn btn-dark" id="interventionView">Afficher les interventions pour ce probleme  <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
                             </span>
-                         </div>
+                            </div>
 
-                        @if ($interv_info->isNotEmpty())
-                        <div id="showIntervention" class="col-md-12 w-100">
-                            <hr>
-                            <table id="myTable" class=" table table-striped table-borderless table-responsive-sm">
-                                <thead class="bg-dark text-white">
-                                    <tr>
-                                        <td>id</td> 
-                                        <td>Tache effectuée</td> 
-                                        <td>Cout Engendré</td>
-                                        <td>Agent intervenue</td>
-                                        <td>Date intervention</td>
-                                        <td>Action</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                  @foreach ($interv_info as $info)
-                                  <tr>
-                                    <td>{{$info->id}}</td>
-                                    <td>{{$info->tache}}</td>
-                                    <td>{{$info->cout}}fcfa</td>  
-                                    <td>
-                                    @foreach($info->intervenant as $value)
-                                                    {{$value}},
-                                    @endforeach
-                                    </td>
-                                    <td>{{$info->created_at}}</td>      
-                                    <td>
-                                        <li class="list-inline-item">
-                                            <form method="get" action="/deleteintervention/{{$info->id}}">
-                                                @csrf
-                                                <input name="_method" type="hidden" value="DELETE">
-                                                <a type="submit" data-placement="top" title="Delete show_confirm " class="delete show_confirm btn btn-danger " href="">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </form>
-                                        </li>
-                                    </td>
-                                </tr>
-                                  @endforeach
+                            @if ($interv_info->isNotEmpty())
+                            <div id="showIntervention" class="col-md-12 w-100">
+                                <hr>
+                                <table id="myTable" class=" table table-striped table-borderless table-responsive-sm">
+                                    <thead class="bg-dark text-white">
+                                        <tr>
+                                            <td>id</td>
+                                            <td>Tache effectuée</td>
+                                            <td>Cout Engendré</td>
+                                            <td>Agent intervenue</td>
+                                            <td>Date intervention</td>
+                                            <td>Action</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($interv_info as $info)
+                                        <tr>
+                                            <td>{{$info->id}}</td>
+                                            <td>{{$info->tache}}</td>
+                                            <td>{{$info->cout}}fcfa</td>
+                                            <td>
+                                                @foreach($info->intervenant as $value) {{$value}}, @endforeach
+                                            </td>
+                                            <td>{{$info->created_at}}</td>
+                                            <td>
+                                                <li class="list-inline-item">
+                                                    <form method="get" action="/deleteintervention/{{$info->id}}">
+                                                        @csrf
+                                                        <input name="_method" type="hidden" value="DELETE">
+                                                        <a type="submit" data-placement="top" title="Delete show_confirm " class="delete show_confirm btn btn-danger " href="">
+                                                            <i class="fa fa-trash"></i>
+                                                        </a>
+                                                    </form>
+                                                </li>
+                                            </td>
+                                        </tr>
+                                        @endforeach
 
-                                </tbody><br>
-                            </table><br><br>
-                            <span class="float-right">Total des depenses effectuée pour cette reclammation <strong class="text-primary">{{$depense}} fcfa</strong></span>
+                                    </tbody><br>
+                                </table><br><br>
+                                <span class="float-right">Total des depenses effectuée pour cette reclammation <strong class="text-primary">{{$depense}} fcfa</strong></span>
 
+                            </div>
+
+                            @else
+                            <div class="w-100 offset-md-4"><br><br><br>
+                                <span class=" float-left alert-success p-4">Il y'a pas eu d'intervention  pour cette reclammation<strong class="text-primary"></strong></span>
+
+                            </div>
+                            @endif
                         </div>
 
-                        @else
-                        <div class="w-100 offset-md-4"><br><br><br>
-                            <span class=" float-left alert-success p-4">Il y'a pas eu d'intervention  pour cette reclammation<strong class="text-primary"></strong></span>
 
-                        </div>
-                        @endif
-                     </div> 
-                     
-            
                     </div>
 
 
-                    
+
 
                 </div>
 
@@ -381,7 +379,7 @@
             <div class="modal-body">
                 <div class="modal-body">
                     <div>
-                       <!-- <div class="tab">
+                        <!-- <div class="tab">
                             <button class="tablinks" onclick="openSubscription(event, 'renewSubs')">Modifier La solution precedente</button>
                             <button class="tablinks" onclick="openSubscription(event, 'payement')">Continuer Payement</button>
                         </div>-!-->
@@ -390,26 +388,26 @@
                         <form class="text-left" action="/updatereclammtion" method="POST" enctype="multipart/form-data">
                             @csrf
 
-                            
+
                             <div class="form-group">
                                 <input type="hidden" id="id_reclammation" name="reclammation" class="form-control p-4" required placeholder="date of the software">
                             </div>
-                                    <div class="form-group">
-                                        <label for="date_exp" class="text-black">Nouvelle Solution</label>
-                                        <textarea name="solution"  id="contain_reclammation" class="form-control" placeholder="Modifier l'ancienne solution"></textarea>                                    
-                                    </div>
+                            <div class="form-group">
+                                <label for="date_exp" class="text-black">Nouvelle Solution</label>
+                                <textarea name="solution" id="contain_reclammation" class="form-control" placeholder="Modifier l'ancienne solution"></textarea>
+                            </div>
 
-                                    <label for="email" class="text-black">Est-elle effective</label><br>
-                                    <div class="row ">
-                                        <div class="col-md-2 ">
-                                            <span class="ml-3">Oui</span><br><input class="ml-4" id="method1" type="radio" value="1" name="reponse">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <span class="ml-4">Non<br></span><input type="radio" id="NPmethod" class="ml-4" value="0" name="reponse"><br>
-                                        </div>
-                                    </div><br>
-                                
-                           
+                            <label for="email" class="text-black">Est-elle effective</label><br>
+                            <div class="row ">
+                                <div class="col-md-2 ">
+                                    <span class="ml-3">Oui</span><br><input class="ml-4" id="method1" type="radio" value="1" name="reponse">
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="ml-4">Non<br></span><input type="radio" id="NPmethod" class="ml-4" value="0" name="reponse"><br>
+                                </div>
+                            </div><br>
+
+
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Nouveau</button>
@@ -500,7 +498,7 @@
     $(document).ready(function() {
         $('#showIntervention').hide();
         $('#interventionView').click(function() {
-            $('#showIntervention').fadeIn(); 
+            $('#showIntervention').fadeIn();
         })
 
     })

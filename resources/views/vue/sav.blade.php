@@ -1,5 +1,29 @@
 @extends('layouts.app') @section('content')
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> {{View::make('vue.links')}}
+
+
+<script>
+    $(document).ready(function(){
+      $('#dropDown').click(function(event){
+        $('.drop-down').toggleClass('drop-down--active');
+        event.stopPropagation();
+      });
+      $(document).click(function(event) {
+            if (!$(event.target).hasClass('drop-down--active')) {
+                  $(".drop-down").removeClass("drop-down--active");
+            }
+          });
+    });
+    
+    
+      $(function() {
+        $('.change').append('2')
+          $('.souscription').click(function() {
+           $('.change').text('-')
+          })
+      })
+    </script>
+
 <div class="container-fluid mb-4">
     <section class="dashboard section">
         <!-- Container Start -->
@@ -11,10 +35,26 @@
                         <div class="widget user-dashboard-menu">
                             <ul>
                                 <li class="">
-                                    <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-desktop "></i> LOGICIELS <span>1</span></a></li>
-                                <li class="">
-                                    <a href="{{url('souscription/')}}" class="souscription"><i class="fa fa-bookmark-o"></i> Souscription<span>2</span></a>
+                                    <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-desktop "></i> LOGICIELS <span>1</span></a>
                                 </li>
+
+                                <li class="">
+                                    <div class="dropD">
+                                            <div class="drop-down">
+                                              <div id="dropDown" class="drop-down__button">
+                                                <a href="#" class="souscription"><i class="fa fa-bookmark-o"></i> Souscription<span class="change"></span></a>
+                                            </div>
+                                              <div class="drop-down__menu-box">
+                                                <ul class="drop-down__menu">
+                                                  <li data-name="profile" class="drop-down__item text-black"> <a class="bg-white text-black" href="{{url('prospect')}}"></a> <span class="fa fa-user"></span>  Prospect </li>
+                                                  <li data-name="dashboard" class="drop-down__item">  <a href="{{url('souscription')}}" class="bg-white"></a>   <span class="fa fa-user-o"></span>  Client </li>
+                                                  <li data-name="activity" class="drop-down__item"><a href="{{url('peyement')}}" class="bg-white"></a> <span class="fa fa-money"></span>  Payement</li>
+                                                </ul>
+                                              </div>
+                                            </div>
+                                          </div> 
+                                    </li>
+
 								<li class="active">
                                     <a href="{{url('sav/')}}" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente<span>3</span></a>
                                 </li>
@@ -385,7 +425,8 @@
                                 <label class="text-black"  for="email" class="text-black">Description du probleme</label>
                                 <textarea name="descpb" id="descpb"value="{{ old('descpb') }}"   class="form-control " placeholder="Decrivez le probleme de votre client"></textarea>
                             </div>
-                            <label for="email" class="text-black">Avez vous une solution a proposé</label><br>
+                            <label for="email" class="text-black">Avez vous une solution à proposer ?</label><br>
+                           
                             <div class="row ">
                                 <div class="col-md-2 ">
                                     <span class="ml-3">Oui</span><br><input class="ml-4" id="method1" type="radio" value="1" name="reponse">
@@ -397,7 +438,19 @@
 
                             <div class="form-group payeform">
                                 <label for="date_fin" class="text-black">Entrez votre solution</label>
-                                 <textarea name="solution"  value="{{ old('solution') }}"  class="form-control "></textarea>
+                                 <input type="text" list="city" name="solution"  value="{{ old('solution') }}"  class="form-control p-5">
+                                 <datalist id="city">
+                                     <option value="Douala">
+                                     <option value="Yaoundé">
+                                     <option value="Bafousssam">
+                                     <option value="Dschang">
+                                     <option value="Edea">
+                                     <option value="Limbe">
+                                     <option value="Kribi"> 
+                                     <option value="Bamenda">
+                                     <option value="Kumba">
+     
+                             </datalist>
 
                                  <br>
                                  <div class="form-group">

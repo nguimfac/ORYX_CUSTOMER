@@ -48,7 +48,7 @@ $(document).ready(function(){
                                           <div class="drop-down__menu-box">
                                             <ul class="drop-down__menu">
                                               <li data-name="profile" class="drop-down__item text-black"> <a class="bg-white text-black" href="{{url('prospect')}}"></a> <span class="fa fa-user"></span>  Prospect </li>
-                                              <li data-name="dashboard" class="drop-down__item">  <a href="{{url('client')}}" class="bg-white"></a>   <span class="fa fa-user-o"></span>  Client </li>
+                                              <li data-name="dashboard" class="drop-down__item">  <a href="{{url('souscription')}}" class="bg-white"></a>   <span class="fa fa-user-o"></span>  Client </li>
                                               <li data-name="activity" class="drop-down__item"><a href="{{url('peyement')}}" class="bg-white"></a> <span class="fa fa-money"></span>  Payement</li>
                                             </ul>
                                           </div>
@@ -123,16 +123,14 @@ $(document).ready(function(){
                     <div class="widget dashboard-container my-adslist">
                         <h3 class="widget-header">
                             <div class="row">
+
                                 <div class="col-md-8 mt-4">
                                     <strong>LISTE DE PROSPECT </strong><br>
                                     <div class="p-0">
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-xs-6 col-sm-6">
+                                <div class="col-md-2 offset-md-12 mr-4 col-xs-6 col-sm-6">
                                     <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop"> New Prospect <i class="fa fa-plus-square" aria-hidden="true"></i></button>
-                                </div>
-                                <div class="col-md-2 col-xs-6 col-sm-6">
-                                    <a class="btn btn-success" type="button" href="/sendmail"> Notifier clients <i class="fa fa-bell" aria-hidden="true"></i></a>
                                 </div>
                             </div>
                         </h3>
@@ -244,8 +242,19 @@ $(document).ready(function(){
                             
                             <div class="form-group">
                                 <label for="ville" class="">Ville</label>
-                                <input type="text" list="browsers" class="form-control p-4" name="ville_client">
-                                
+                                <input type="text" list="city" class="form-control p-4" name="ville_client">
+                                <datalist id="city">
+                                    <option value="Douala">
+                                    <option value="Yaoundé">
+                                    <option value="Bafousssam">
+                                    <option value="Dschang">
+                                    <option value="Edea">
+                                    <option value="Limbe">
+                                    <option value="Kribi"> 
+                                    <option value="Bamenda">
+                                    <option value="Kumba">
+    
+                            </datalist>
                             </div>
 
                             <div class="form-group">
@@ -334,7 +343,7 @@ $(document).ready(function(){
     <div class="modal-dialog modal-md  modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">souscription Client <label class="text-black text-uppercase" style="font-size:20px" for="client_name" id="client"></label> <img width="80" src="{{  asset('images/userimg.png') }}" alt="" srcset=""></h5>
+                <h5 class="modal-title" id="staticBackdropLabel"> Creez une souscription pour le client <label class="text-black text-uppercase" style="font-size:20px" for="client_name" id="client"></label> <img width="80" src="{{  asset('images/userimg.png') }}" alt="" srcset=""></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -402,7 +411,7 @@ $(document).ready(function(){
     <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Creez un autre montant<img width="100" src="{{  asset('images/software.jpg') }}" alt="" srcset=""></h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Creez un autre montant pour proforma<img width="100" src="{{  asset('images/software.jpg') }}" alt="" srcset=""></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 		  </button>

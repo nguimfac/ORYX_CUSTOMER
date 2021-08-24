@@ -235,10 +235,10 @@ class HomeController extends Controller
         public function Souscription()
         {
             $subscription  = DB::table('subscription')
-                             ->select('a_payer','client.id as client_id','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
+                             ->select('a_payer','telephone','client.id as client_id','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
                              ->join('client','subscription.client_id',"=","client.id")
                              ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
-                             -> orderBy('subscription_id', 'desc')
+                             ->orderBy('subscription.id', 'desc')
                              ->get();
             $logiciel=logiciel::all();
             $number_subs = subscription::count();
@@ -395,7 +395,7 @@ class HomeController extends Controller
                     $current_date= date('Y-m-d');
                     $subs = subscription::find($request->id_subscription);
                         
-                    if($subs->a_payer!=$subs->paye){
+                    if($subs->a_payer>$subs->paye){
                         Alert::html('Impossible ce client n a pas terminé le payement du forfait precedent!', $html, 'warning');
                         return redirect()->back();
                     }
@@ -447,7 +447,7 @@ class HomeController extends Controller
                     ];
                      }  
                                         
-                    $pdf = PDF::loadView('myPDF', $data);
+                    $pdf = PDF::loadView('invoice', $data);
                     return $pdf->download("facture ".$subscriptions->client_name.".pdf");
                     
                 }
@@ -623,6 +623,12 @@ class HomeController extends Controller
             ->where('client.id',$id)
             ->get();
                     // instantiate and use the dompdf class
+
+                    if($request->date_fin=="mois"){
+                        $request->periode="Mois";
+                    }else{
+                        $request->periode="Ans";
+                    }
                      foreach($client_prospect as $client_prospects){
                         $data = ['title' => 'nguimfack',
                         'client_name'=>$client_prospects->nom,

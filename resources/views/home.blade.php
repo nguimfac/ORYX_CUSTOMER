@@ -20,7 +20,7 @@
                 <!-- Header Contetnt -->
                 <div class="content-block">
                     <h1>Suivez & Servez vos clients </h1>
-                    <p>  <i>Restez plus proche de vos clients <br> Ameliorez la satisfaction de vos clients après le service</i></p>
+                    <p> <i>Restez plus proche de vos clients <br> Ameliorez la satisfaction de vos clients après le service</i></p>
                     <div class="short-popular-category-list text-center">
                         <h2>CUSTOMER MANAGEMENT</h2>
                     </div>
@@ -35,10 +35,8 @@
                                     <div class="row justify-content-center">
                                         <a title="Gerer Vos logiciel" href="{{ url('software/') }}">
                                             <div class="col-lg-12 col-md-12 align-content-center">
-                                                <img src="{{ asset ('images/software.jpg')}}" width="200" alt=""><br>
-                                                <strong class="text-primary">LOGICIEL
-										
-										 </strong>
+                                                <img src="{{ asset ('images/optimus.jpg')}}" width="160" alt=""><br>
+                                                <strong class="text-primary">LOGICIELS</strong>
                                             </div>
                                         </a>
                                     </div>

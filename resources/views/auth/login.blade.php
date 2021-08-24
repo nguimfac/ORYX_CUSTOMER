@@ -15,7 +15,7 @@
 </script>
 
 <div class="">
-		<div class="container col-md-10">
+		<div class="container col-md-10 col-sm-10 col-xs-10">
 			<div class="bg-white mb-4 shadow p-3 mb-5 bg-white rounded">
                 <div class="container">
                 </div>
@@ -29,7 +29,7 @@
                     <img src="{{asset ('images/my_back.png')}}" alt="">
                     </div>
                     <div class="col-md-6">
-                    <img width="200" class="offset-xs-4 col-xs-offset-4  offset-sm-4 offset-md-4"  src="{{asset ('images/op.png')}}" alt=""><br><br>
+                    <img width="200" class="offset-xs-4 col-xs-offset-4  img-responsive offset-sm-4 offset-md-4"  src="{{asset ('images/op.png')}}" alt=""><br><br>
                     <span class="login100-form-title p-b-43">
 						Veillez vous connecter
 					</span>

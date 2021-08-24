@@ -526,7 +526,6 @@ td::hover {
 }
 
 .drop-down__button {
-    background: linear-gradient(to right, #f67611, #f59d58);
     cursor: pointer;
 }
 

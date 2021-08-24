@@ -47,13 +47,15 @@ $(document).ready(function(){
                                         </div>
                                           <div class="drop-down__menu-box">
                                             <ul class="drop-down__menu">
-                                              <li data-name="profile" class="drop-down__item text-black">   <a class="bg-white text-black" href="{{url('prospect')}}"></a> <span class="fa fa-user"></span>  Prospect </li>
-                                              <li data-name="dashboard" class="drop-down__item">  <a href="{{url('client')}}" class="bg-white"></a>   <span class="fa fa-user-o"></span>  Client </li>
+                                              <li data-name="profile" class="drop-down__item text-black"> <a class="bg-white text-black" href="{{url('prospect')}}"></a> <span class="fa fa-user"></span>  Prospect </li>
+                                              <li data-name="dashboard" class="drop-down__item">  <a href="{{url('souscription')}}" class="bg-white"></a>   <span class="fa fa-user-o"></span>  Client </li>
                                               <li data-name="activity" class="drop-down__item"><a href="{{url('peyement')}}" class="bg-white"></a> <span class="fa fa-money"></span>  Payement</li>
                                             </ul>
                                           </div>
                                         </div>
                                       </div> 
+                               
+
 
                                 </li>
 								<li class="">
@@ -62,12 +64,6 @@ $(document).ready(function(){
                                 <li class="">
                                     <a href="{{url('user/')}}" class="sav"><i class="fa fa-user-circle"></i>User<span>4</span></a>
                                 </li>
-
-                              
-
-                             
-
-
                             </ul>
                         </div>
                         <!-- User Widget -->
@@ -126,12 +122,19 @@ $(document).ready(function(){
                                     <div class="p-0">
                                     </div>
                                 </div>
+
+                                <div class="col-md-4 offset-md-12 ">
+                                    <a class="btn btn-success offset-md-6 ml-5" type="button" href="/sendmail"> Notifier vos clients <i class="fa fa-bell" aria-hidden="true"></i></a>
+                                </div>
+
+
+                        <!--
                                 <div class="col-md-2 col-xs-6 col-sm-6">
                                     <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop"> Souscription <i class="fa fa-plus-square" aria-hidden="true"></i></button>
                                 </div>
-                                <div class="col-md-2 col-xs-6 col-sm-6">
-                                    <a class="btn btn-success" type="button" href="/sendmail"> Notifier clients <i class="fa fa-bell" aria-hidden="true"></i></a>
-                                </div>
+                                 --->
+
+                                
                             </div>
                         </h3>
 
@@ -139,13 +142,14 @@ $(document).ready(function(){
                             <table id="myTable" class="table-responsive table table-striped table-hover table-borderless">
                                 <thead class="bg-primary text-white">
                                     <tr>
-                                        <th scope="col">Numero</th>
+                                        <th hidden scope="col">Numero</th>
                                         <th scope="col">Client</th>
                                         <th scope="col">Logiciel</th>
                                         <th scope="col">Frais </th>
+                                        <th scope="col">Tel Client </th>
                                         <th scope="col"> Payés</th>
-                                        <th scope="col"> Debut</th>
-                                        <th scope="col">D Fin</th>
+                                        <th scope="col"> Date payement</th>
+                                        <th scope="col">Date deFin</th>
                                         <th scope="col">Payement</th>
                                         <th>Reste</th>
                                         <th scope="col text-left">Action</th>
@@ -154,39 +158,58 @@ $(document).ready(function(){
                                 <tbody class="jsTableBody">
                                     @foreach ($subscription as $subscriptions)
                                     <tr>
-                                        <td class="font p-3" id="id_subs">{{$subscriptions->subscription_id}}</td>
+                                        <td hidden class="font p-3" id="id_subs">{{$subscriptions->subscription_id}}</td>
                                         <td class="font p-3">{{$subscriptions->client_name}}</td>
                                         <td class="font p-3 ">{{$subscriptions->logiciel_name}}</td>
                                         <td class="font p-3 col1" id="montant">{{$subscriptions->a_payer}}</td>
-                                        <td class="font p-3 col2">{{$subscriptions->payement}}</td>
-                                        <td class="font w">{{$subscriptions->date_debut}}</td>
+                                        <td class="font p-3 ">{{$subscriptions->telephone}}</td>                                       
+                                         <td class="font p-3 col2">{{$subscriptions->payement}}</td>
+
+                                        <td class="font w">
+                                            @if ($subscriptions->date_debut==NULL)
+                                                attente de payement... 
+                                            @else
+                                            {{$subscriptions->date_debut}}
+                                            @endif
+                                        </td>
                                         <td class="font">
                                             <?php 
 												$datetime1 = date_create(date('y-m-d'));
 												$datetime2 = date_create($subscriptions->date_fin);
 												$interval = date_diff($datetime1, $datetime2);
 												$val=$interval->format('%R%a');
-												if($val<=5){
+												if($val<=5 && $subscriptions->date_fin!=null){
 													echo '<div class="text-danger text-center">'.$subscriptions->date_fin.'<br>(expiration)</div>';
-												}else{
+												 }elseif ($subscriptions->date_fin==null) {
+                                                    echo 'attente de payement...';
+                                                 }
+                                                else{
 												echo $subscriptions->date_fin;
 												}
 												//$val=$difference->d;
 											?>
                                         </td>
-                                        <td class="font p-3">{{$subscriptions->type_payement}}</td>
+                                        <td class="font p-3">@if($subscriptions->type_payement==NULL)
+                                             attente de payement...
+                                             @else
+                                             {{$subscriptions->type_payement}}
+                                        @endif
+                                       
+                                    </td>
                                         <td><span class="subtract font"></span></td>
 
                                         <td class="action" data-title="Action">
                                             <div class="">
                                                 <ul class="list-inline justify-content-center">
+                                                    @if ($subscriptions->date_debut!=Null)
                                                     <li class="list-inline-item">
-                                                        <a data-toggle="tooltip" data-placement="top" title="Generate invoice" class="view" href="printinvoice/{{$subscriptions->subscription_id}}">
+                                                        <a data-toggle="tooltip" data-placement="top" title="Recu de payement" class="view" href="printinvoice/{{$subscriptions->subscription_id}}">
                                                             <i class="fa fa-print"></i>
                                                         </a>
                                                     </li>
+                                                    @endif
                                                     <li class="list-inline-item">
-                                                        <a id="edit" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEdit" title="Edit" class="edit">
+                                                        <a id="edit" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEdit" title="Renouveller une souscrription/nouveau payement/continuer" class="edit">
                                                             <i class="fa fa-refresh"></i>
                                                         </a>
                                                     </li>
@@ -200,7 +223,7 @@ $(document).ready(function(){
                                                         </form>
                                                     </li>
 													<li class="list-inline-item">
-                                                        <a id="notify" data-placement="top" href="send_toclient/{{$subscriptions->client_id}}"  type="button"  title="Edit" class="view">
+                                                        <a id="notify" data-placement="top" href="send_toclient/{{$subscriptions->client_id}}"  type="button"  title="Notifier le client pour son payement" class="view">
                                                             <i class="fa fa-bell"></i>
                                                         </a>
                                                     </li>
