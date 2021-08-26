@@ -57,11 +57,16 @@ Route::post('updatesuggestion',[HomeController::class,'UpdateSuggestion']);
 Route::get('deletesuggestion/{id}',[HomeController::class,'DeleteSuggestion']);
 Route::get('prospect/',[HomeController::class,'Prospect']);
 Route::post('newprospect',[HomeController::class,'SaveProspect']);
-Route::post('printproformainvoice',[HomeController::class,'PrintProformaInvoice']);
 Route::get('deleteprospect/{id}',[HomeController::class,'deleteprospect']);
 Route::post('printproformainvoice',[HomeController::class,'PrintProformaInvoice']);
 Route::post('prospect_to_client_subscrip',[HomeController::class,'Prospect_To_client']);
 Route::post('makepayement',[HomeController::class,'MakePayement']);
+Route::post('newsolution',[HomeController::class,'NewSolution']);
+Route::get('deletesolution/{id}',[HomeController::class,'DeleteSolution']);
+Route::post('updatesolution',[HomeController::class,'UpdateSolution']);
+Route::post('printinvoice',[HomeController::class,'PrintFacture']);
+
+
 
 
 

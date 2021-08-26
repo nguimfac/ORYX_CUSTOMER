@@ -20,7 +20,7 @@
         <div id="details" class="clearfix">
             <div id="client">
                 <div class="to">FACTURE PROFORMAT DU CLIENT :</div><br>
-                <span class="name">CLient  : {{$client_name}}</span><br>
+                <div class="name">CLient  : {{$client_name}}</div><br>
                 <div class="address">Adress : {{$client_address}}, {{$client_ville}}</div><br>
                 <div class="email"><a href="mailto:john@example.com">Email : {{$client_email}}</a></div><br>
                 <div class="date">Date : {{$invoice_date}}</div><br>

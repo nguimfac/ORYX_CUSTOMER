@@ -6,9 +6,11 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use App\Models\logiciel;
+use App\Models\facture;
 use Illuminate\Support\Facades\DB;
 use App\Models\subscription;
 use App\Models\client;
+use App\Models\solution;
 use App\Models\reclammation;
 use App\Models\suggestions;
 use App\Models\intervention;
@@ -104,7 +106,7 @@ class HomeController extends Controller
     //SELECT `id`, `titre_sugg`, `description_pb`, `logiciel_id`, `client_id`, `etat`, `created_at`, `updated_at` FROM `suggestions` WHERE 1
 
     $logiciel=logiciel::all();
-
+    $solution =solution::all();
     $suggest  = DB::table('suggestions')
     ->select('solution','suggestions.created_at','suggestions.etat as etat','titre_sugg','description_pb','titre','nom','suggestions.id as suggestions_id')
     ->join('client','suggestions.client_id',"=","client.id")
@@ -119,7 +121,7 @@ class HomeController extends Controller
     ->get();
      $role=Auth::User()->is_admin;
     if($role ==1 || $role ==2){
-        return view('vue.sav',['reclammation'=>$reclammations,'software'=>$logiciel,'suggestion'=>$suggest]);
+        return view('vue.sav',['reclammation'=>$reclammations,'software'=>$logiciel,'solutions'=>$solution,'suggestion'=>$suggest]);
     }
     else{
         return view('auth.login');
@@ -412,10 +414,14 @@ class HomeController extends Controller
                 public function UpdatePayement(Request $request){
                         $html = "Vous ne povez  plus continuer";
                         $subs = subscription::find($request->id_subscription);
-                        if($request->montant+$subs->paye>$subs->a_payer){
+                        if(($request->montant+$subs->paye=$subs->a_payer) && ($subs->a_payer!=0)){
                             Alert::warning('Ce client a deja fini son payement!', $html, 'warning');
                              return redirect()->back();
-                        }else{
+                         }elseif($subs->a_payer==0){
+                            Alert::warning('Ce client n a pas encore commencer le payement!', $html, 'warning');
+                            return redirect()->back();
+                         }
+                        else{
                             $subs->paye=$subs->paye+$request->montant;
                             $subs->save();
                             Alert::html('Payement réalisé avec success!', $html, 'success');
@@ -614,7 +620,7 @@ class HomeController extends Controller
         }  
 
 
-        public function PrintProformaInvoice(Request $request){
+        public function PrintProformaInvoice(Request $request){ 
             $id=$request->id_prospect;
             $curent_date= date("Y-m-d");
             $client_prospect=  DB::table('client')
@@ -645,9 +651,44 @@ class HomeController extends Controller
                      }  
                                         
                     $pdf = PDF::loadView('myPDF', $data);
-                    return $pdf->download("facture ".$client_prospects->nom.".pdf");
-
+                   return $pdf->download("facture ".$client_prospects->nom.".pdf");
         }
+
+        public function PrintFacture(Request $request){ 
+            $id=$request->id_prospect;
+            $curent_date= date("Y-m-d");
+            $client_prospect=  DB::table('client')
+            ->select('telephone','titre','client.id as client_id','email','address','code_postal','logiciel.id as logiciel_id','address','nom','ville' )
+            ->join('logiciel','client.logiciel_id','=','logiciel.id')
+            ->where('client.id',$id)
+            ->get();
+                    // instantiate and use the dompdf class
+
+                    if($request->date_fin=="mois"){
+                        $request->periode="Mois";
+                    }else{
+                        $request->periode="Ans";
+                    }
+                     foreach($client_prospect as $client_prospects){
+                        $data = ['title' => 'nguimfack',
+                        'client_name'=>$client_prospects->nom,
+                        'client_address'=>$client_prospects->address,
+                        'client_ville'=>$client_prospects->ville,
+                        'client_email'=>$client_prospects->email,
+                        'logiciel'=>$client_prospects->titre,
+                        'invoice_date'=>$curent_date,
+                        'paye'=>$request->montant,
+                        'periode'=>$request->periode,
+                        'nombre'=>$request->nombre,
+                        'telephone'=>$client_prospects->telephone,
+                    ];
+                     }  
+                                        
+                    $pdf = PDF::loadView('myPDF', $data);
+                   return $pdf->download("facture ".$client_prospects->nom.".pdf");
+        }
+
+
 
 
         public function sendamount(){
@@ -713,4 +754,45 @@ class HomeController extends Controller
            
            
         }
+
+        public function NewSolution(Request $request){
+            $validator = Validator::make($request->all(), [
+                'solution_value' => 'required',   
+            ]);
+            if($validator->fails()){
+                Alert::html('Une erreur est survenue durant cette operation', "Désole", 'warning');  
+                return redirect()->back();
+            }else{
+             $solution = new Solution();
+            $solution->description =$request->solution_value;
+            $solution->save();
+            }
+            Alert::html('Solution enregistré avec success', "solution", 'success');  
+                return redirect()->back();
+        }
+
+        public function deletesolution($id) {
+            solution::destroy($id);
+            return redirect()->back();
+        }
+        public function UpdateSolution(Request $request){
+
+            $validator = Validator::make($request->all(), [
+                'solution_value' => 'required',   
+            ]);
+
+            if($validator->fails()){
+                Alert::html('Veillez remplir le formulaire completement', "Désole", 'warning');  
+                return redirect()->back();
+            }else{   
+                $sol =solution::find($request->solution_id);
+                $sol->description = $request->solution_value;
+                $sol->save(); 
+            }
+            Alert::html('Solution modifié avec success', "solution", 'success');  
+            return redirect()->back();
+        }
+
+
+         
 }

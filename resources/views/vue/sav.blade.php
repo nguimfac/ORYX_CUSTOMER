@@ -117,13 +117,13 @@
                         <div id="tsum-tabs">
                             <main>
                                 <input id="tab1" class="inputs" type="radio" name="tabs" checked>
-                                <label for="tab1"><strong>RECLAMMATION</strong></label>
+                                <label for="tab1"><strong> <a href="#tabs1"> RECLAMMATION </a></strong></label>
 
                                 <input id="tab2" class="inputs" type="radio" name="tabs">
-                                <label for="tab2"><strong>SUGGESTION</strong></label>
+                                <label for="tab2"><strong><a href="#tabs2">SUGGESTION</a>  </strong></label>
 
                                 <input id="tab3" class="inputs" type="radio" name="tabs">
-                                <label for="tab3"><strong>SOLUTION</strong></label>
+                                <label for="tab3"><strong> <a href="#tabs3">SOLUTION</a> </strong></label>
 
                               
                                 <section id="content1"><br>
@@ -295,10 +295,66 @@
                                 </section>
 
                                 <section id="content3">
-                                    <p>
-                                        CONTENT FIR TAB 3
-                                    </p>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdropSolution"> Add solution <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                                        </div>
+                                       
+                                    </div>
+                                    <br>
+
+                                    <div>
+                                        <table id="myTable1" class="table-responsive-sm table table-striped table-hover table-borderless">
+                                            <thead class="bg-primary text-white">
+                                                <tr>
+                                                    <th scope="col">Numero</th>
+                                                    <th scope="col">Description</th>
+                                                    <th scope="col">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="jsTableBody1">
+                                                    <tr>
+                                                        @foreach ($solutions as $solu)
+                                                        <td class="font p-3" id="id_solution">{{$solu->id}}</td>
+                                                        <td class="font p-3" id="contain_solution">{{$solu->description}}</td>
+    
+
+                                                        <td class="action" data-title="Action">
+                                                            <div class="">
+                                                                <ul class="list-inline justify-content-center">
+                                                                   
+                                                                    <li class="list-inline-item">
+                                                                        <a id="editSol" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEditSolution" title="Edit" class="edit">
+                                                                            <i class="fa fa-pencil-square"></i>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="list-inline-item">
+                                                                        <form method="get" action="deletesolution/{{$solu->id}}">
+                                                                            @csrf
+                                                                            <input name="_method" type="hidden" value="DELETE">
+                                                                            <a type="submit" data-placement="top" title="Delete show_confirm " class="delete show_confirm" href="">
+                                                                                <i class="fa fa-trash"></i>
+                                                                            </a>
+                                                                        </form>
+                                                                    </li>
+                                                                   
+
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+   
+                                            </tbody>
+                                        </table>
+
+
+
+                                    </div>
+                                        
+                               
                                 </section>
+
 
                                 <section id="content4">
                                     <p>
@@ -327,64 +383,7 @@
 </section>
 </div>
 
-<script>
-    $(document).ready(function() {
-        $('#client_name').keyup(function() {
-            var query = $(this).val();
-            if (query != '') {
-                var _token = $('input[name="_token"]').val();
-                $.ajax({
-                    url: "{{ route('sav.fetch') }}",
-                    method: "POST",
-                    data: {
-                        query: query,
-                        _token: _token
-                    },
-                    success: function(data) {
-                        $('#clientList').fadeIn();
-                        $('#clientList').html(data);
-                    }
-                });
-            } else {
-                $('#clientList').fadeOut();
 
-            }
-        });
-
-        
-      $(document).ready(function() {
-        $('#client_names').keyup(function() {
-            var query = $(this).val();
-            if (query != '') {
-                var _token = $('input[name="_token"]').val();
-                $.ajax({
-                    url: "{{ route('sav.fetch') }}",
-                    method: "POST",
-                    data: {
-                        query: query,
-                        _token: _token
-                    },
-                    success: function(data) {
-                        $('#clientLists').fadeIn();
-                        $('#clientLists').html(data);
-                    }
-                });
-            } else {
-                $('#clientLists').fadeOut();
-
-            }
-        });
-      })
-
-
-        $(document).on('click', 'li', function() {
-            $('#client_name').val($(this).text());
-            $('#client_names').val($(this).text());
-            $('#clientList').fadeOut();
-            $('#clientLists').fadeOut();
-        }); 
-    });
-</script>
 
 
 
@@ -440,17 +439,14 @@
                                 <label for="date_fin" class="text-black">Entrez votre solution</label>
                                  <input type="text" list="city" name="solution"  value="{{ old('solution') }}"  class="form-control p-5">
                                  <datalist id="city">
-                                     <option value="Douala">
-                                     <option value="Yaoundé">
-                                     <option value="Bafousssam">
-                                     <option value="Dschang">
-                                     <option value="Edea">
-                                     <option value="Limbe">
-                                     <option value="Kribi"> 
-                                     <option value="Bamenda">
-                                     <option value="Kumba">
+                                    @foreach ($solutions as $solu)
+                                        <option  class="scrollable" style="width:55px" value="{{$solu->description}}">
+                                    @endforeach
      
                              </datalist>
+
+
+                           
 
                                  <br>
                                  <div class="form-group">
@@ -498,7 +494,32 @@
     </div>
 </div>
 
+<div class="modal fade" id="staticBackdropSolution" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Creez une Solution <img width="80" src="{{  asset('images/sav.jpg') }}" alt="" srcset=""></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div class="modal-body">
+                <form autocomplete="off" action="/newsolution" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <label class="text-black">Description</label>
+                    <textarea name="solution_value" value="{{old('solution_value')}}>" class="form-control" placeholder="Entrez la solution" id=""></textarea>
 
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Nouveau</button>
+            </div>
+            </form>
+        </div>
+
+    </div>
+</div>
 
 <!------Modal 2 for save------>
 
@@ -610,7 +631,6 @@
                                     <div class="form-group ">
                                         <label for="date_exp" class="text-black text-right">Nouvelle Solution</label>
                                         <textarea name="solution" required id="contain_reclammation" style="text-align: left" class="form-control" placeholder="Modifier l'ancienne solution"></textarea> 
-                                           
                                     </div>
 
                                     <label for="email" class="text-black">Est-elle effective</label><br>
@@ -712,6 +732,52 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="staticBackdropEditSolution" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelEdit" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Renouvelle Votre solution<img width="100" src="{{  asset('images/sav.jpg') }}" alt="" srcset=""></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <div>
+                       <!-- <div class="tab">
+                            <button class="tablinks" onclick="openSubscription(event, 'renewSubs')">Modifier La solution precedente</button>
+                            <button class="tablinks" onclick="openSubscription(event, 'payement')">Continuer Payement</button>
+                        </div>-!-->
+                    </div>
+                    <div id="renewSubs" class="tabcontent">
+                        <form class="text-left" action="/updatesolution" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <form autocomplete="off" action="/newsolution" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="solution_id" id="solution_id">
+                                </div>
+                                <div class="form-group">
+                                <label class="text-black">Description</label>
+                                <textarea name="solution_value" id="solution_value" value="{{old('solution_value')}}>" class="form-control" placeholder="Entrez la solution" id=""></textarea>
+            
+                                </div>
+                        </div>
+            
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Nouveau</button>
+                        </div>
+                        </form>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 </div>
 
 <style>
@@ -790,6 +856,13 @@
         $('#id_suggestion').val(_this.find('#id_suggestions').text());
         $('#contain_suggestion').val(_this.find('#contenu').text());
     });
+
+    $(document).on('click', '#editSol', function() {
+        var _this = $(this).parents('tr');
+        $('#solution_id').val(_this.find('#id_solution').text());
+        $('#solution_value').val(_this.find('#contain_solution').text());
+    });
+    /*a r
     /*a revoir */
     $(document).ready(function() {
             var a_payer = parseInt($("#a_payer").val());
@@ -833,6 +906,63 @@
     }
 </script>
 
+<script>
+    $(document).ready(function() {
+        $('#client_name').keyup(function() {
+            var query = $(this).val();
+            if (query != '') {
+                var _token = $('input[name="_token"]').val();
+                $.ajax({
+                    url: "{{ route('sav.fetch') }}",
+                    method: "POST",
+                    data: {
+                        query: query,
+                        _token: _token
+                    },
+                    success: function(data) {
+                        $('#clientList').fadeIn();
+                        $('#clientList').html(data);
+                    }
+                });
+            } else {
+                $('#clientList').fadeOut();
 
+            }
+        });
+
+        
+      $(document).ready(function() {
+        $('#client_names').keyup(function() {
+            var query = $(this).val();
+            if (query != '') {
+                var _token = $('input[name="_token"]').val();
+                $.ajax({
+                    url: "{{ route('sav.fetch') }}",
+                    method: "POST",
+                    data: {
+                        query: query,
+                        _token: _token
+                    },
+                    success: function(data) {
+                        $('#clientLists').fadeIn();
+                        $('#clientLists').html(data);
+                    }
+                });
+            } else {
+                $('#clientLists').fadeOut();
+
+            }
+        });
+      })
+
+
+        $(document).on('click', 'li', function() {
+            $('#client_name').val($(this).text());
+            $('#client_names').val($(this).text());
+            $('#clientList').fadeOut();
+            $('#clientLists').fadeOut();
+        }); 
+    });
+</script>
 
 @endsection

@@ -17,6 +17,7 @@ class CreateSuggestionsTable extends Migration
             $table->id();
             $table->string('titre_sugg',100);
             $table->string('description_pb');
+            
             $table->string('solution')->default('Pas encore eté resolu')->nullable();
             $table->unsignedBigInteger('logiciel_id');
             $table->foreign('logiciel_id')->references('id')->on('logiciel');

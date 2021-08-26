@@ -2,6 +2,11 @@
 
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
+<style>
+    @media (max-width: 1026px) {
+      #notdisplayed { display: none; }
+
+  }    </style>
 
 <script>
 $(document).ready(function(){
@@ -54,9 +59,6 @@ $(document).ready(function(){
                                           </div>
                                         </div>
                                       </div> 
-                               
-
-
                                 </li>
 								<li class="">
                                     <a href="{{url('sav/')}}" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente<span>3</span></a>
@@ -81,11 +83,7 @@ $(document).ready(function(){
                         <!-- delete account popup modal start-->
                         <!-- Modal -->
 
-                        <style>
-              @media (max-width: 1026px) {
-                #notdisplayed { display: none; }
-
-            }    </style>
+               
                         <div class="modal fade" id="deleteaccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
@@ -143,6 +141,7 @@ $(document).ready(function(){
                                 <thead class="bg-primary text-white">
                                     <tr>
                                         <th hidden scope="col">Numero</th>
+                                        <th hidden scope="col">id_client</th>
                                         <th scope="col">Client</th>
                                         <th scope="col">Logiciel</th>
                                         <th scope="col">Frais </th>
@@ -159,7 +158,8 @@ $(document).ready(function(){
                                     @foreach ($subscription as $subscriptions)
                                     <tr>
                                         <td hidden class="font p-3" id="id_subs">{{$subscriptions->subscription_id}}</td>
-                                        <td class="font p-3">{{$subscriptions->client_name}}</td>
+                                        <td hidden id="facture_id">{{$subscriptions->client_id}}</td>
+                                        <td class="font p-3"  id="client_name">{{$subscriptions->client_name}}</td>
                                         <td class="font p-3 ">{{$subscriptions->logiciel_name}}</td>
                                         <td class="font p-3 col1" id="montant">{{$subscriptions->a_payer}}</td>
                                         <td class="font p-3 ">{{$subscriptions->telephone}}</td>                                       
@@ -225,6 +225,12 @@ $(document).ready(function(){
 													<li class="list-inline-item">
                                                         <a id="notify" data-placement="top" href="send_toclient/{{$subscriptions->client_id}}"  type="button"  title="Notifier le client pour son payement" class="view">
                                                             <i class="fa fa-bell"></i>
+                                                        </a>
+                                                    </li>
+
+                                                    <li class="list-inline-item">
+                                                        <a id="edit_facture" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEditFacture" title="Creer une facture" class="view">
+                                                            <i class="fa fa-file-text-o"></i>
                                                         </a>
                                                     </li>
 
@@ -303,8 +309,8 @@ $(document).ready(function(){
 									<option value="Douala">
 									<option value="Yaoundé">
 									<option value="Limbe">
-		<option value="Kribi">
-																		<option value="Edea">
+		                            <option value="Kribi">										
+                                    <option value="Edea">
 							<option value="Dschand">
 							</datalist>
                             </div>
@@ -362,6 +368,63 @@ $(document).ready(function(){
 </div>
 </div>
 
+
+<div class="modal fade" id="staticBackdropEditFacture" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropEditFacture" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Creez un  montant pour la Facture<img width="100" src="{{  asset('images/software.jpg') }}" alt="" srcset=""></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+            </div>
+            <form action="printinvoice" method="post">
+                @csrf  
+                <div class="modal-body">
+
+                    <div class="form-group">
+                     <div class="row">
+                         <div class="col-md-6"> 
+                             <input type="text" list="browsers" name="nombre" class="form-control p-4" placeholder="periode">
+                            <datalist id="browsers">
+                                <option value="1">
+                                <option value="2">
+                                <option value="3">
+                                <option value="4">
+                                <option value="5">
+                                <option value="6">
+                                <option value="7"> 
+                                <option value="8">
+                                <option value="9">
+
+                        </datalist>
+                        </div>
+                         <div class="col-md-6"><select name="date_fin" id="" class="form-control " style="height:46px"  placeholder="periode">
+                            <option value="mois">Mensuel</option>   
+                            <option value="ans">Annuel</option>  
+                        </select> </div>
+                     </div>
+                    </div>
+
+                    <div class="form-group" >
+                      <input type=""  class="form-control" placeholder="" name="id_prospect" id="id_facture">
+                    </div>
+    
+                 <div class="form-group">
+                     <label for="montant">Montant de la facture</label>
+                     <input type="text" required class="form-control p-4" id="montant" placeholder="entrez le montant" name="montant">
+                 </div>
+                 <button type="submit" id="prof" class="btn btn-primary btn-block"  > <li class="fa fa-print"></li> imprimez</button>
+
+                </div> 
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+
 <!-----Modal 2 for edti-->
 <div class="modal fade" id="staticBackdropEdit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelEdit" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -373,8 +436,6 @@ $(document).ready(function(){
 		  </button>
             </div>
             <div class="modal-body">
-
-
                 <div class="modal-body">
                     <div>
                         <div class="tab">
@@ -391,6 +452,9 @@ $(document).ready(function(){
                                 <input type="hidden" id="id_subscription" name="id_subscription" class="form-control p-4" required placeholder="date of the software">
                             </div>
 
+                            <div class="form-group">
+                                <label for="text-black" class="text-black text-center offset-md-3 text-uppercase">Actualiser la souscription Du client <strong class="renewsubs_client_name"></strong> </label>
+                            </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="date_fin " class="text-black">Periode</label>
@@ -437,10 +501,16 @@ $(document).ready(function(){
                             <div class="form-group">
                                 <input type="hidden" id="a_payer" name="a_payer" class="form-control p-4" required placeholder="date of the software">
                             </div>
+
+                            <div class="form-group">
+                                    <label for="Montant" class="text-black">Client Concerné</label>
+                                    <input type="text" disabled id="client" name="client" class="form-control p-4">
+                            </div>
+
                             <div class="">
                                 <div class="form-group">
                                     <label for="Montant" class="text-black">Nouveau Montant</label>
-                                    <input type="text" id="montant_paye" name="montant" class="form-control p-4" required placeholder="entrez le nouveu montant">
+                                    <input type="number" id="montant_paye" name="montant" class="form-control p-4" required placeholder="entrez le nouveu montant">
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -455,6 +525,7 @@ $(document).ready(function(){
                             <div class="form-group">
                                 <input type="hidden" id="id_payement" name="id_payement" class="form-control p-4" required placeholder="date of the software">
                             </div>
+                            <label for="text-black" class="text-black text-center offset-md-4 text-uppercase"> Payement  du client <strong class="payement_client_name"></strong> </label>
                             
                             <div class="form-group">
                                 <label for="address" class="text-black">Montant du forfait</label>
@@ -514,8 +585,6 @@ $(document).ready(function(){
                                 <button type="submit" class="btn btn-block btn-primary">Enregistrer</button>
                             </div>
                     </div>
-                    
-
                     </form>
                 </div>
             </div>
@@ -591,13 +660,25 @@ $(document).ready(function(){
 </script>
 
 <script>
+     $(document).on('click', '#edit_facture', function() {
+        var _this = $(this).parents('tr');
+        $('#id_facture').val(_this.find('#facture_id').text())
+    });
+</script>
+
+<script>
     $(document).on('click', '#edit', function() {
         var _this = $(this).parents('tr');
         $('#id_subscription').val(_this.find('#id_subs').text());
         $('#id_payement').val(_this.find('#id_subs').text());
         $('#id_montant').val(_this.find('#id_subs').text());
         $('#a_payer').val(_this.find('#montant').text());
+        $('#client').val(_this.find('#client_name').text());
+        $('.payement_client_name').text(_this.find('#client_name').text())
+        $('.renewsubs_client_name').text(_this.find('#client_name').text())
     });
+
+   
     /*a revoir */
     $(document).ready(function() {
         var a_payer = parseInt($("#a_payer").val());

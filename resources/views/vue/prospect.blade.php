@@ -411,7 +411,7 @@ $(document).ready(function(){
     <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Creez un autre montant pour proforma<img width="100" src="{{  asset('images/software.jpg') }}" alt="" srcset=""></h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Creez un  montant pour la proforma<img width="100" src="{{  asset('images/software.jpg') }}" alt="" srcset=""></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 		  </button>
