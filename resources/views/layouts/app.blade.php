@@ -69,7 +69,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm ">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('home/') }}">
-                    <img class="" src="{{asset ('images/op.png')}}" width="75" > <span class="mt-4"> <strong>OPTIMUS CLIENT</strong> </span>
+                    <img class="" src="{{asset ('images/op.png')}}" width="75"> <span class="mt-4"> <strong>OPTIMUS CLIENT</strong> </span>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -104,7 +104,16 @@
                             <!-- Dropdown list -->
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item @@dashboardPage" href="{{url('software')}}">Logiciel</a></li>
-                                <li><a class="dropdown-item @@dashboardMyAds" href="{{url('souscription')}}">Souscription</a></li>
+                                <li class="dropdown dropdown-submenu dropright">
+                                    <a class="dropdown-item dropdown-toggle" href="#!" id="dropdown0501" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Souscription</a>
+
+                                    <ul class="dropdown-menu" aria-labelledby="dropdown0501">
+                                        <li><a class="dropdown-item" href="{{url('prospect')}}">Prospect</a></li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{url('souscription')}}">Client</a>
+                                        </li>
+                                    </ul>
+                                </li>
 
                                 <li class="dropdown dropdown-submenu dropright">
                                     <a class="dropdown-item dropdown-toggle" href="#!" id="dropdown0501" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Service apres ventes</a>

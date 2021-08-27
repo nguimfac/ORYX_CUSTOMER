@@ -49,7 +49,6 @@ $(document).ready(function(){
                                             <ul class="drop-down__menu">
                                               <li data-name="profile" class="drop-down__item text-black"> <a class="bg-white text-black" href="{{url('prospect')}}"></a> <span class="fa fa-user"></span>  Prospect </li>
                                               <li data-name="dashboard" class="drop-down__item">  <a href="{{url('souscription')}}" class="bg-white"></a>   <span class="fa fa-user-o"></span>  Client </li>
-                                              <li data-name="activity" class="drop-down__item"><a href="{{url('peyement')}}" class="bg-white"></a> <span class="fa fa-money"></span>  Payement</li>
                                             </ul>
                                           </div>
                                         </div>

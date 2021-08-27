@@ -20,17 +20,20 @@
                 <div class="container">
                 </div>
 				<style>
-              @media (max-width: 1026px) {
-                #hidesmall { display: none; }
+					@media (max-width: 1050px) {
+						#hidesmall { display: none; }
 
-            }    </style>
+												} 
+			   </style>
 				<div class="row">
                     <div class="col-md-6 mt-4" id="hidesmall"><br><br><br><br>
                     <img src="{{asset ('images/my_back.png')}}" alt="">
                     </div>
                     <div class="col-md-6">
-                    <img width="200" class="offset-xs-4 col-xs-offset-4  img-responsive offset-sm-4 offset-md-4"  src="{{asset ('images/op.png')}}" alt=""><br><br>
-                    <span class="login100-form-title p-b-43">
+                    
+					<img width="200" class="offset-xs-4 col-xs-offset-4  img-responsive offset-sm-4 offset-md-4"  src="{{asset ('images/op.png')}}" alt=""><br><br>
+                   
+					<span class="login100-form-title p-b-43">
 						Veillez vous connecter
 					</span>
                     <form class="container " method="POST" action="{{ route('login') }}">

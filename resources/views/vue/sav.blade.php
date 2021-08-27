@@ -48,7 +48,6 @@
                                                 <ul class="drop-down__menu">
                                                   <li data-name="profile" class="drop-down__item text-black"> <a class="bg-white text-black" href="{{url('prospect')}}"></a> <span class="fa fa-user"></span>  Prospect </li>
                                                   <li data-name="dashboard" class="drop-down__item">  <a href="{{url('souscription')}}" class="bg-white"></a>   <span class="fa fa-user-o"></span>  Client </li>
-                                                  <li data-name="activity" class="drop-down__item"><a href="{{url('peyement')}}" class="bg-white"></a> <span class="fa fa-money"></span>  Payement</li>
                                                 </ul>
                                               </div>
                                             </div>
@@ -388,7 +387,7 @@
 
 
 <div class="modal fade" id="staticBackdropR" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg  modal-dialog-centered">
+    <div class="modal-dialog modal-md  modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Creez une Reclammation <img width="80" src="{{  asset('images/sav.jpg') }}" alt="" srcset=""></h5>
@@ -525,10 +524,10 @@
 
 
 <div  class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div  class="modal-dialog modal-lg  modal-dialog-centered">
+    <div  class="modal-dialog modal-md  modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Creez une Reclammation <img width="80" src="{{  asset('images/sav.jpg') }}" alt="" srcset=""></h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Creez une Suggestion <img width="80" src="{{  asset('images/sav.jpg') }}" alt="" srcset=""></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -756,7 +755,7 @@
                             <form autocomplete="off" action="/newsolution" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="solution_id" id="solution_id">
+                                    <input type="hidden" class="form-control" name="solution_id" id="solution_id">
                                 </div>
                                 <div class="form-group">
                                 <label class="text-black">Description</label>

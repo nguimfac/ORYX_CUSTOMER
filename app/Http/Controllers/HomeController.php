@@ -237,10 +237,10 @@ class HomeController extends Controller
         public function Souscription()
         {
             $subscription  = DB::table('subscription')
-                             ->select('a_payer','telephone','client.id as client_id','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
+                             ->select('a_payer','telephone','subscription.updated_at as date_up','client.id as client_id','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
                              ->join('client','subscription.client_id',"=","client.id")
                              ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
-                             ->orderBy('subscription.id', 'desc')
+                             ->orderBy('date_up', 'desc')
                              ->get();
             $logiciel=logiciel::all();
             $number_subs = subscription::count();
@@ -400,7 +400,11 @@ class HomeController extends Controller
                     if($subs->a_payer>$subs->paye){
                         Alert::html('Impossible ce client n a pas terminé le payement du forfait precedent!', $html, 'warning');
                         return redirect()->back();
-                    }
+                    }elseif($subs->a_payer==0){
+                        Alert::warning('Ce client n a pas encore commencer le payement!', $html, 'warning');
+                        return redirect()->back();
+                     }
+                        $subs->a_payer =$request->newmont;
                         $subs->date_debut=$current_date;
                         $subs->date_fin=$effectiveDate;
                         $subs->paye=$request->Mpaye;
@@ -435,7 +439,7 @@ class HomeController extends Controller
                 {
                     $curent_date= date("Y-m-d");
                     $subscription  = DB::table('subscription')
-                    ->select('ville','address as client_address','alert as notification','email as client_email','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
+                    ->select('ville','address as client_address','a_payer','alert as notification','email as client_email','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
                     ->join('client','subscription.client_id',"=","client.id")
                     ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
                     ->where('subscription.id',$id)
@@ -449,12 +453,13 @@ class HomeController extends Controller
                         'client_email'=>$subscriptions->client_email,
                         'invoice_date'=>$curent_date,
                         'logiciel'=>$subscriptions->logiciel_name,
+                        'mont_paye'=>$subscriptions->a_payer,
                         'paye'=>$subscriptions->payement
                     ];
                      }  
                                         
                     $pdf = PDF::loadView('invoice', $data);
-                    return $pdf->download("facture ".$subscriptions->client_name.".pdf");
+                    return $pdf->download("Recu ".$subscriptions->client_name.".pdf");
                     
                 }
 
@@ -651,7 +656,7 @@ class HomeController extends Controller
                      }  
                                         
                     $pdf = PDF::loadView('myPDF', $data);
-                   return $pdf->download("facture ".$client_prospects->nom.".pdf");
+                   return $pdf->download("Proforma ".$client_prospects->nom.".pdf");
         }
 
         public function PrintFacture(Request $request){ 
@@ -663,7 +668,6 @@ class HomeController extends Controller
             ->where('client.id',$id)
             ->get();
                     // instantiate and use the dompdf class
-
                     if($request->date_fin=="mois"){
                         $request->periode="Mois";
                     }else{
@@ -684,7 +688,7 @@ class HomeController extends Controller
                     ];
                      }  
                                         
-                    $pdf = PDF::loadView('myPDF', $data);
+                    $pdf = PDF::loadView('facture', $data);
                    return $pdf->download("facture ".$client_prospects->nom.".pdf");
         }
 
@@ -740,6 +744,10 @@ class HomeController extends Controller
             }
             $subcript = subscription::find($request->id_payement);
             $subcript->date_debut = date('Y-m-d');
+            if($subcript->a_payer!=0){
+            Alert::html('Desolé ce client a déja commencé son payement veillez juste continuer', "client".$request->nom_client, 'warning');  
+            return redirect()->back();
+            }
             if($request->type_payement=="NP"){
                 $subcript->paye =0;
             }else{

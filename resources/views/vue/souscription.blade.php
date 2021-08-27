@@ -54,7 +54,6 @@ $(document).ready(function(){
                                             <ul class="drop-down__menu">
                                               <li data-name="profile" class="drop-down__item text-black"> <a class="bg-white text-black" href="{{url('prospect')}}"></a> <span class="fa fa-user"></span>  Prospect </li>
                                               <li data-name="dashboard" class="drop-down__item">  <a href="{{url('souscription')}}" class="bg-white"></a>   <span class="fa fa-user-o"></span>  Client </li>
-                                              <li data-name="activity" class="drop-down__item"><a href="{{url('peyement')}}" class="bg-white"></a> <span class="fa fa-money"></span>  Payement</li>
                                             </ul>
                                           </div>
                                         </div>
@@ -228,11 +227,13 @@ $(document).ready(function(){
                                                         </a>
                                                     </li>
 
-                                                    <li class="list-inline-item">
-                                                        <a id="edit_facture" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEditFacture" title="Creer une facture" class="view">
-                                                            <i class="fa fa-file-text-o"></i>
-                                                        </a>
-                                                    </li>
+                                                   @if ($subscriptions->a_payer==NULL)
+                                                   <li class="list-inline-item">
+                                                    <a id="edit_facture" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEditFacture" title="Creer une facture" class="view">
+                                                        <i class="fa fa-file-text-o"></i>
+                                                    </a>
+                                                </li>
+                                                   @endif
 
                                                 </ul>
                                             </div>
@@ -381,12 +382,13 @@ $(document).ready(function(){
             <form action="printinvoice" method="post">
                 @csrf  
                 <div class="modal-body">
+                    <label for="" class="offset-md-3 text-black text-uppercase"> Facture client <strong id="client_fact"> </strong></label>
 
                     <div class="form-group">
                      <div class="row">
                          <div class="col-md-6"> 
-                             <input type="text" list="browsers" name="nombre" class="form-control p-4" placeholder="periode">
-                            <datalist id="browsers">
+                             <input type="text" list="periode" name="nombre" required class="form-control p-4" placeholder="periode">
+                             <datalist id="periode">
                                 <option value="1">
                                 <option value="2">
                                 <option value="3">
@@ -407,7 +409,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="form-group" >
-                      <input type=""  class="form-control" placeholder="" name="id_prospect" id="id_facture">
+                      <input type="hidden"  class="form-control" placeholder="" name="id_prospect" id="id_facture">
                     </div>
     
                  <div class="form-group">
@@ -477,6 +479,13 @@ $(document).ready(function(){
                                         <option value="1">mensuelle</option>
                                         <option value="2">annuelle</option>
                                     </select>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="">
+                                <div class="form-group">
+                                    <label for="date_exp" class="text-black">Renouveller le montant</label>
+                                    <input type="number" id="newmont" name="newmont" class="form-control p-4" required placeholder="Entrez le montant payé">
                                 </div>
                             </div>
                                 <div class="">
@@ -663,6 +672,7 @@ $(document).ready(function(){
      $(document).on('click', '#edit_facture', function() {
         var _this = $(this).parents('tr');
         $('#id_facture').val(_this.find('#facture_id').text())
+        $('#client_fact').text(_this.find('#client_name').text())
     });
 </script>
 

@@ -19,11 +19,11 @@
     <main class="margin-top:100em">
         <div id="details" class="clearfix">
             <div id="client">
-                <div class="to">FACTURE PROFORMAT DU CLIENT :</div><br>
-                <div class="name">CLient  : {{$client_name}}</div><br>
-                <div class="address">Adress : {{$client_address}}, {{$client_ville}}</div><br>
-                <div class="email"><a href="mailto:john@example.com">Email : {{$client_email}}</a></div><br>
-                <div class="date">Date : {{$invoice_date}}</div><br>
+                <div class="to">FACTURE CLIENT  :</div> <br>
+                <div class="name">CLient:{{$client_name}}</div> <br>
+                <div class="address">address : {{$client_address}}, {{$client_ville}}</div> <br>
+                <div class="email"><a href="mailto:john@example.com">Email:{{$client_email}}</a></div> <br>
+                <div class="date">Date : {{$invoice_date}}</div>
             </div>
         </div>
        
@@ -33,7 +33,7 @@
                     <tr>
                         <th class="no">N°</th>
                         <th class="desc">DESCRIPTION</th>
-                        <th class="unit">PERIODE</th>
+                        <th class="unit">UNIT PRICE</th>
                         <th class="total">TOTAL</th>
                     </tr>
                 </thead>
@@ -41,18 +41,26 @@
                     <tr>
                         <td class="no">01</td>
                         <td class="desc">
-                            <h3>Logiciel</h3>{{$logiciel}}
+                            <h3>Logiciel<hr></h3>{{$logiciel}}
+                            <h3>Periode<hr></h3> {{ $nombre}}  ( {{$periode}})
                         </td>
-                        <td class="unit">{{ $nombre}}  ( {{$periode}})</td>
-                        <td class="total">{{$paye}} fcfa</td>
+                        <td class="unit">{{$paye}}</td>
+                        <td class="total">{{$paye}}</td>
                     </tr>
                 </tbody> 
             </table>
          </div>
 <br>
          <div  style="float:right;margin-right:100px">
+          
+            <div>
+                <span colspan="2">GRAND TOTAL :</span>
+                <span style="font-size:20px"><strong>{{$paye}} fcfa</strong></span>
+                <hr style="color:green">
+            </span>
+        </div>
          </div>
-<br><br><br>
+<br><br><br><br><br><br>
         <div id="notices">
             <div>NOTICE:</div>
             <div class="notice"><i>En cas de soucis l'ors de l'utilisation de l'application veillez appeller au <i>655469301</i></i></div>

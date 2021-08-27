@@ -92,10 +92,10 @@
                                     <label for="email" class="text-black">Est-elle effective</label><br>
                                     <div class="row ">
                                         <div class="col-md-2 ">
-                                            <span class="ml-3">Oui</span><br><input class="ml-4" id="method1" type="radio" value="1" name="reponse">
+                                            <span class="ml-3">Oui</span><br><input class="ml-4" required id="method1" type="radio" value="1" name="reponse">
                                         </div>
                                         <div class="col-md-3">
-                                            <span class="ml-4">Non<br></span><input type="radio" id="NPmethod" class="ml-4" value="0" name="reponse"><br>
+                                            <span class="ml-4">Non<br></span><input type="radio" required id="NPmethod" class="ml-4" value="0" name="reponse"><br>
                                         </div>
                                     </div><br>
 
