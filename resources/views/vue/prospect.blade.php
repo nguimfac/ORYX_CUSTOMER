@@ -146,6 +146,7 @@ $(document).ready(function(){
                                         <th scope="col"> ville</th>
                                         <th scope="col">Logiciel</th>
                                         <th scope="col">Code postal</th>
+                                        <th scope="col">Commercial Concerné</th>
                                         <th scope="col text-left">Action</th>
                                     </tr>
                                 </thead>
@@ -159,8 +160,10 @@ $(document).ready(function(){
                                         <td class="font p-3 col2">{{$propection->telephone}}</td>
                                         <td class="font w">{{$propection->ville}}</td>
                                         <td class="font p-3"  id="id_logiciel">{{$propection->titre}}</td>
-                                        <td class="font w">{{$propection->code_postal}}</td>
-                                            <td class="action" data-title="Action">
+                                        <td class="font w">{{$propection->code_postal}}</td> 
+                                        <td class="font w">{{$propection->name}}</td> 
+
+                                        <td class="action" data-title="Action">
                                                 <div class="">
                                                     <ul class="list-inline justify-content-center">
                                                        
@@ -235,13 +238,13 @@ $(document).ready(function(){
 
                             <div class="form-group">
                                 <label for="nom" class="text-black">Nom du client</label>
-                                <input type="text" name="nom_client" class="form-control p-4" required placeholder="Name of the client">
+                                <input type="text" value="{{old('nom_client')}}"  name="nom_client" class="form-control p-4" required placeholder="Name of the client">
                             </div>
 
                             
                             <div class="form-group">
                                 <label for="ville" class="">Ville</label>
-                                <input type="text" list="city" class="form-control p-4" name="ville_client">
+                                <input type="text" value="{{old('ville_client')}}" list="city" class="form-control p-4" name="ville_client">
                                 <datalist id="city">
                                     <option value="Douala">
                                     <option value="Yaoundé">
@@ -252,13 +255,12 @@ $(document).ready(function(){
                                     <option value="Kribi"> 
                                     <option value="Bamenda">
                                     <option value="Kumba">
-    
                             </datalist>
                             </div>
-
+ 
                             <div class="form-group">
                                 <label for="address" class="text-black">Telephone</label>
-                                <input type="number" name="telephone_client" class="form-control p-4" placeholder="telephone du client">
+                                <input type="number" required    name="telephone_client" class="form-control p-4" placeholder="telephone du client">
                             </div>
 
                             <div class="form-group">
@@ -269,29 +271,40 @@ $(document).ready(function(){
                                  @endforeach
 							</select>
                             </div>
+
+                           <div class="form-group">
+                               <label for="commercial" class="text-black">Commercial enchargé</label>
+                               <select name="commercial_id" id="commercial_id" class="form-control " style="height:46px">
+                                <option value="">Pas de commercial concerné</option>
+                                 @foreach ($commercial as $c )
+                                      <option value="{{$c->id}}">{{$c->name}}</option>
+                                 @endforeach
+                               </select>
+                           </div>
                         
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="address" class="text-black">Code Postal</label>
-                                <input type="text" name="codepostal_client" class="form-control p-4" placeholder="code postal du client">
+                                <input type="text" value="{{old('codepostal_client')}}" name="codepostal_client" class="form-control p-4" placeholder="code postal du client">
                             </div>
 
+                            
                            
                             <div class="form-group">
                                 <label for="civilite" class="text-black">Civilité</label>
-                                <input type="text" name="civilite_client" class="form-control p-4" required placeholder="Civilité">
+                                <input type="text" value="{{old('civilite_client')}}" name="civilite_client" class="form-control p-4" required placeholder="Civilité">
                             </div>
 
                             <div class="form-group">
                                 <label for="email" class="text-black">Email</label>
-                                <input type="email" name="email_client" class="form-control p-4" required placeholder="email du client">
+                                <input type="email"value="{{old('email_client')}}"  name="email_client" class="form-control p-4" required placeholder="email du client">
                             </div>
 
 
                             <div class="form-group">
                                 <label for="address" class="text-black">Address</label>
-                                <input type="text" name="address_client" class="form-control p-4" required placeholder="address du client">
+                                <input type="text" value="{{old('address_client')}}" name="address_client" class="form-control p-4" required placeholder="address du client">
                             </div>
 
                            

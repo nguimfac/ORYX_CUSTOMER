@@ -20,18 +20,24 @@
                 <div class="container">
                 </div>
 				<style>
+					#hidesmall{ 
+						max-width: 100%; 
+						 height: auto;
+					} 
+					.top{ 
+						margin-bottom: 50em;
+					}
 					@media (max-width: 1050px) {
 						#hidesmall { display: none; }
-
 												} 
 			   </style>
+
 				<div class="row">
-                    <div class="col-md-6 mt-4" id="hidesmall"><br><br><br><br>
-                    <img src="{{asset ('images/my_back.png')}}" alt="">
+                    <div class="col-md-6 mb-5" id="hidesmall"><br><br>
+                    <img src="{{asset ('images/login_img.jpg')}}" width="600" height="600" class="top rounded img-fluid mb-5" alt="">
                     </div>
                     <div class="col-md-6">
-                    
-					<img width="200" class="offset-xs-4 col-xs-offset-4  img-responsive offset-sm-4 offset-md-4"  src="{{asset ('images/op.png')}}" alt=""><br><br>
+					<img width="200" class="offset-xs-4 col-xs-offset-4 img-fluid img-responsive offset-sm-4 offset-md-4"  src="{{asset ('images/op.png')}}" alt=""><br><br>
                    
 					<span class="login100-form-title p-b-43">
 						Veillez vous connecter

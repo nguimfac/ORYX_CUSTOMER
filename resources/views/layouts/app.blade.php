@@ -19,6 +19,7 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/my_js.js') }}" defer></script>
     <script src="{{ asset('js/animsition.min.js') }}"></script>
+    <script src="{{ asset('js/dataTables.responsive.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/countdowntime.js') }}"></script>
     <script src="{{ asset('js/daterangepicker.js') }}"></script>
@@ -31,15 +32,25 @@
     <script src="https://demo.themefisher.com/classimax/plugins/bootstrap/popper.min.js"></script>
     <script src="https://demo.themefisher.com/classimax/plugins/bootstrap/bootstrap.min.js"></script>
 
-    <script src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="{{asset('js/datables.js')}}"></script>
+    <script src="{{asset('js/dataTables.responsive.js')}}"></script>
+    <script src="{{asset('js/vfs_fonts.js')}}"></script>
+    <script src="{{asset('js/datables.js')}}"></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+    <link href="{{ asset('css/daterangepicker.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/daterangepicker.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/responsive.bootstrap.css') }}" rel="stylesheet">
+
+
 
     <!-- Styles -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/icon-font.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/responsive.bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/hamburgers.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animsition.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
@@ -51,77 +62,79 @@
     <link href="{{ asset('css/my_style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/fileinput.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/fileinput-rtl.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+
+
+    <link rel="stylesheet" href="{{asset('css/datables.css')}}">
     <!-- Styles -->
 
-    <link href=https://demo.themefisher.com/classimax/plugins/font-awesome/css/font-awesome.min.css "" rel="stylesheet">
+    <link href="https://demo.themefisher.com/classimax/plugins/font-awesome/css/font-awesome.min.css " rel="stylesheet ">
 
-    <link rel="stylesheet" href="https://demo.themefisher.com/classimax/plugins/slick/slick.css">
-    <link rel="stylesheet" href="https://demo.themefisher.com/classimax/plugins/slick/slick-theme.css">
-    <link rel="stylesheet" href="{{asset('css/Style.css')}}">
+    <link rel="stylesheet " href="https://demo.themefisher.com/classimax/plugins/slick/slick.css ">
+    <link rel="stylesheet " href="https://demo.themefisher.com/classimax/plugins/slick/slick-theme.css ">
+    <link rel="stylesheet " href="{{asset( 'css/Style.css')}} ">
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset( 'css/app.css') }} " rel="stylesheet ">
 </head>
 
 <body>
     @include('sweetalert::alert')
-    <div id="">
+    <div id=" ">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm ">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('home/') }}">
-                    <img class="" src="{{asset ('images/op.png')}}" width="75"> <span class="mt-4"> <strong>OPTIMUS CLIENT</strong> </span>
+            <div class="container ">
+                <a class="navbar-brand " href="{{ url( 'home/') }} ">
+                    <img class=" " src="{{asset ( 'images/op.png')}} " width="75 "> <span class="mt-4 "> <strong>OPTIMUS CLIENTS</strong> </span>
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
+                <button class="navbar-toggler " type="button " data-toggle="collapse " data-target="#navbarSupportedContent " aria-controls="navbarSupportedContent " aria-expanded="false " aria-label="{{ __( 'Toggle navigation') }} ">
+                    <span class="navbar-toggler-icon "></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="collapse navbar-collapse " id="navbarSupportedContent ">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
+                    <ul class="navbar-nav mr-auto ">
 
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
+                    <ul class="navbar-nav ml-auto ">
                         <!-- Authentication Links -->
                         @guest @if (Route::has('login'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        <li class="nav-item ">
+                            <a class="nav-link " href="{{ route( 'login') }} ">{{ __('Login') }}</a>
                         </li>
                         @endif @if (Route::has('register'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                        <li class="nav-item ">
+                            <a class="nav-link " href="{{ route( 'register') }} ">{{ __('Register') }}</a>
                         </li>
                         @endif @else
-                        <li class="nav-item active">
-                            <a class="nav-link" href="home">Home</a>
+                        <li class="nav-item active ">
+                            <a class="nav-link " href="home ">Home</a>
                         </li>
 
-                        <li class="nav-item dropdown dropdown-slide @@dashboard">
-                            <a class="nav-link dropdown-toggle" data-toggle="" href="#!">Dashboard</span>
+                        <li class="nav-item dropdown dropdown-slide @@dashboard ">
+                            <a class="nav-link dropdown-toggle " data-toggle=" " href="#! ">Dashboard</span>
 								</a>
 
                             <!-- Dropdown list -->
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item @@dashboardPage" href="{{url('software')}}">Logiciel</a></li>
-                                <li class="dropdown dropdown-submenu dropright">
-                                    <a class="dropdown-item dropdown-toggle" href="#!" id="dropdown0501" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Souscription</a>
+                            <ul class="dropdown-menu ">
+                                <li><a class="dropdown-item @@dashboardPage " href="{{url( 'software')}} ">Logiciel</a></li>
+                                <li class="dropdown dropdown-submenu dropright ">
+                                    <a class="dropdown-item dropdown-toggle " href="#! " id="dropdown0501 " role="button " data-toggle="dropdown " aria-haspopup="true " aria-expanded="false ">Souscription</a>
 
-                                    <ul class="dropdown-menu" aria-labelledby="dropdown0501">
-                                        <li><a class="dropdown-item" href="{{url('prospect')}}">Prospect</a></li>
+                                    <ul class="dropdown-menu " aria-labelledby="dropdown0501 ">
+                                        <li><a class="dropdown-item " href="{{url( 'prospect')}} ">Prospect</a></li>
                                         <li>
-                                            <a class="dropdown-item" href="{{url('souscription')}}">Client</a>
+                                            <a class="dropdown-item " href="{{url( 'souscription')}} ">Client</a>
                                         </li>
                                     </ul>
                                 </li>
 
-                                <li class="dropdown dropdown-submenu dropright">
-                                    <a class="dropdown-item dropdown-toggle" href="#!" id="dropdown0501" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Service apres ventes</a>
+                                <li class="dropdown dropdown-submenu dropright ">
+                                    <a class="dropdown-item dropdown-toggle " href="#! " id="dropdown0501 " role="button " data-toggle="dropdown " aria-haspopup="true " aria-expanded="false ">Service apres ventes</a>
 
-                                    <ul class="dropdown-menu" aria-labelledby="dropdown0501">
-                                        <li><a class="dropdown-item" href="{{url('sav')}}">Reclammation</a></li>
+                                    <ul class="dropdown-menu " aria-labelledby="dropdown0501 ">
+                                        <li><a class="dropdown-item " href="{{url( 'sav')}} ">Reclammation</a></li>
                                         <li>
-                                            <a class="dropdown-item" href="{{url('sav')}}">Suggestion</a>
+                                            <a class="dropdown-item " href="{{url( 'sav')}} ">Suggestion</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -129,12 +142,12 @@
                         </li>
 
                         <li class="dropdown dropdown-slide @@dashboard ">
-                            <a class="nav-link dropdown-toggle" data-toggle="" href="">{{Auth::user()->name}} </span>
-                                <img src="{{asset('images/user.png')}}" width="25" />	</a>
+                            <a class="nav-link dropdown-toggle " data-toggle=" " href=" ">{{Auth::user()->name}} </span>
+                                <img src="{{asset( 'images/user.png')}} " width="25 " />	</a>
 
                             <!-- Dropdown list -->
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item @@dashboardPage" href="destroysesssion">Deconnecter   <i class="fa fa-sign-out" aria-hidden="true"></i>
+                            <ul class="dropdown-menu ">
+                                <li><a class="dropdown-item @@dashboardPage " href="destroysesssion ">Deconnecter   <i class="fa fa-sign-out " aria-hidden="true "></i>
                                 </a></li>
 
 
@@ -149,7 +162,7 @@
                 </div>
             </div>
         </nav>
-        <main class="py-4">
+        <main class="py-4 ">
             @yield('content')
         </main>
         <div>

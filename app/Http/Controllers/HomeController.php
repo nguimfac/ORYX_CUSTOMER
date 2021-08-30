@@ -72,18 +72,21 @@ class HomeController extends Controller
     }
 
     public function Prospect(){
-        $prospect=  DB::table('client')
-        ->select('telephone','titre','client.id as client_id','email','address','code_postal','logiciel.id as logiciel_id','address','nom','ville' )
+       // DB::enableQueryLog();
+
+        $commercials =User::where('is_admin','=',0)->get();
+        $prospect = DB::table('client')
+        ->select('name','telephone','titre','client.id as client_id','client.email as email','address','code_postal','logiciel.id as logiciel_id','address','nom','ville' )
         ->join('logiciel','client.logiciel_id','=','logiciel.id')
+        ->join('users','client.users_id','=','users.id')
         ->where('etat',1)
-        ->orderBy('client.id','desc')
+        ->orderBy('client_id','desc')
         ->get();
         $logiciels=logiciel::all();
-        return view('vue.prospect',['prospects'=>$prospect,'logiciel'=>$logiciels]);
+        return view('vue.prospect',['prospects'=>$prospect,'logiciel'=>$logiciels,'commercial'=>$commercials]);
     }
 
     public function NotifyPayement($id){
-   
     try
     {
         $cl= client::find($id);
@@ -237,9 +240,10 @@ class HomeController extends Controller
         public function Souscription()
         {
             $subscription  = DB::table('subscription')
-                             ->select('a_payer','telephone','subscription.updated_at as date_up','client.id as client_id','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
+                             ->select('name','users_id','a_payer','telephone','subscription.updated_at as date_up','client.id as client_id','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
                              ->join('client','subscription.client_id',"=","client.id")
                              ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
+                             ->join('users','subscription.commercial_id','=','users.id')
                              ->orderBy('date_up', 'desc')
                              ->get();
             $logiciel=logiciel::all();
@@ -284,15 +288,17 @@ class HomeController extends Controller
                         'nom_client' => 'required',
                         'email_client' => 'required',
                         'address_client'=> 'required',
-                        'telephone_client'=> 'required',
+                        'telephone_client'=> 'required|min:9',
                         'ville_client'=> 'required',   
                     ]);
             
+
+
                     if ($validator->fails()) {
-                        return redirect()->back()
-                                    ->withErrors($validator)
-                                    ->withInput();
+                        Alert::html($validator->errors()->first(), 'warning', 'warning');
+                        return redirect()->back();
                     }
+
                     else{
                         $current_date = date('Y-m-d H:i:s');
                         $client_prospect= new client();
@@ -302,12 +308,14 @@ class HomeController extends Controller
                         $client_prospect->telephone= $request->telephone_client;
                         $client_prospect->ville= $request->ville_client;
                         $client_prospect->logiciel_id= $request->logiciel_id;
+                        $client_prospect->users_id=$request->commercial_id;
                         $client_prospect->etat= 1;
                         $client_prospect->created_at =$request->$current_date;
                         $client_prospect->save();
                         Alert::success('Prospect enregistré avec success', "success", 'success');
 
-                    }
+                        }
+
                     return redirect()->back();
 
                 }
@@ -380,6 +388,10 @@ class HomeController extends Controller
                         'date_debut' => ['required', 'date'],
                         'date_fin' => ['required', 'date'],
                     ]);*/
+
+
+                   
+
                     $effectiveDate="";
                     if($request->date_fin==1){
                         $effectiveDate = date('Y-m-d', strtotime("+".$request->nombre." months", strtotime(date('Y-m-d'))));
@@ -418,7 +430,8 @@ class HomeController extends Controller
                 public function UpdatePayement(Request $request){
                         $html = "Vous ne povez  plus continuer";
                         $subs = subscription::find($request->id_subscription);
-                        if(($request->montant+$subs->paye=$subs->a_payer) && ($subs->a_payer!=0)){
+
+                        if(($request->montant+$subs->paye>$subs->a_payer)){
                             Alert::warning('Ce client a deja fini son payement!', $html, 'warning');
                              return redirect()->back();
                          }elseif($subs->a_payer==0){
@@ -709,10 +722,14 @@ class HomeController extends Controller
            $client->etat=0;
            $client->save();
           //  dd($id_client.''.$id_logiciel);
+
             $subcript= new subscription();
             $subcript->client_id=$id_client;
+            $subcript->commercial_id = client::where('nom', $request->nom_client)->orderBy('id','desc')->value('users_id');
             $subcript->logiciel_id=$id_logiciel;
             $subcript->save();
+
+
             Alert::html('Felicitation vous venez  d enregistré un nouveau client', "client".$request->nom_client, 'success');  
             return redirect('/souscription');
             

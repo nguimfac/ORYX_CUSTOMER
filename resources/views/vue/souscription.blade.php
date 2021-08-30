@@ -134,28 +134,106 @@ $(document).ready(function(){
                                 
                             </div>
                         </h3>
+                      <script>
+                          $(document).ready(function() {
+
+   
+// inspired by http://jsfiddle.net/arunpjohny/564Lxosz/1/
+$('.table-responsive-stack').each(function (i) {
+   var id = $(this).attr('id');
+   //alert(id);
+   $(this).find("th").each(function(i) {
+      $('#'+id + ' td:nth-child(' + (i + 1) + ')').prepend('<span class="table-responsive-stack-thead">'+             $(this).text() + ':</span> ');
+      $('.table-responsive-stack-thead').hide();
+      
+   });
+   
+
+   
+});
+
+
+
+
+
+$( '.table-responsive-stack' ).each(function() {
+var thCount = $(this).find("th").length; 
+var rowGrow = 100 / thCount + '%';
+//console.log(rowGrow);
+$(this).find("th, td").css('flex-basis', rowGrow);   
+});
+
+
+
+
+function flexTable(){
+if ($(window).width() < 768) {
+   
+$(".table-responsive-stack").each(function (i) {
+   $(this).find(".table-responsive-stack-thead").show();
+   $(this).find('thead').hide();
+});
+   
+ 
+// window is less than 768px   
+} else {
+   
+   
+$(".table-responsive-stack").each(function (i) {
+   $(this).find(".table-responsive-stack-thead").hide();
+   $(this).find('thead').show();
+});
+   
+   
+
+}
+// flextable   
+}      
+
+flexTable();
+
+window.onresize = function(event) {
+ flexTable();
+};
+
+
+
+
+
+
+// document ready  
+});
+
+                      </script>
+
+<style>
+   
+</style>
 
                         <div>
-                            <table id="myTable" class="table-responsive table table-striped table-hover table-borderless">
+                            <table id="myTable" id="tableOne"  class="table-responsive-stack table-responsive table table-striped table-hover table-borderless">
                                 <thead class="bg-primary text-white">
                                     <tr>
+                                        <th  scope="col">Commercial Concerné</th>
                                         <th hidden scope="col">Numero</th>
                                         <th hidden scope="col">id_client</th>
                                         <th scope="col">Client</th>
                                         <th scope="col">Logiciel</th>
-                                        <th scope="col">Frais </th>
+                                        <th scope="col">Montant </th>
                                         <th scope="col">Tel Client </th>
                                         <th scope="col"> Payés</th>
                                         <th scope="col"> Date payement</th>
                                         <th scope="col">Date deFin</th>
-                                        <th scope="col">Payement</th>
-                                        <th>Reste</th>
+                                        <th scope="col">Mode Payement</th>
+                                        <th scope="col">Solde</th>
+                                        <th scope="col">status</th>
                                         <th scope="col text-left">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="jsTableBody">
                                     @foreach ($subscription as $subscriptions)
                                     <tr>
+                                        <td class="font p-3">{{$subscriptions->name}}</td>
                                         <td hidden class="font p-3" id="id_subs">{{$subscriptions->subscription_id}}</td>
                                         <td hidden id="facture_id">{{$subscriptions->client_id}}</td>
                                         <td class="font p-3"  id="client_name">{{$subscriptions->client_name}}</td>
@@ -195,8 +273,8 @@ $(document).ready(function(){
                                         @endif
                                        
                                     </td>
-                                        <td><span class="subtract font"></span></td>
-
+                                        <td><span class="col4 font">{{$subscriptions->a_payer-$subscriptions->payement}}</span></td> </span></td>
+                                        <td><span class="col3 font"></span></td>
                                         <td class="action" data-title="Action">
                                             <div class="">
                                                 <ul class="list-inline justify-content-center">
@@ -398,7 +476,6 @@ $(document).ready(function(){
                                 <option value="7"> 
                                 <option value="8">
                                 <option value="9">
-
                         </datalist>
                         </div>
                          <div class="col-md-6"><select name="date_fin" id="" class="form-control " style="height:46px"  placeholder="periode">
@@ -451,7 +528,7 @@ $(document).ready(function(){
                         <form class="text-left" action="/updatesubscription" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                <input type="hidden" id="id_subscription" name="id_subscription" class="form-control p-4" required placeholder="date of the software">
+                                <input type="" id="id_subscription" name="id_subscription" class="form-control p-4" required placeholder="date of the software">
                             </div>
 
                             <div class="form-group">
@@ -494,9 +571,32 @@ $(document).ready(function(){
                                         <input type="number" id="Mpaye" name="Mpaye" class="form-control p-4" required placeholder="Entrez le montant payé">
                                     </div>
                                 </div>
+<style>
+    .fa-print {
+        color: white;
+    }
+</style>
+
+<script>
+/ All buttons where id contains 'rbutton_'
+const $buttons = $("button[id*='p']");
+
+//Selected button onclick
+$buttons.click(function() {
+    $(this).prop('disabled', true); //disable clicked button
+});
+</script>
+                                <div class="">
+                                    <div class="form-group">
+                                            <button  id="p" class="fa fa-print btn btn-info" value="print" name="print" title="imprimer la facture"></button>
+                                    </div>
+                                </div>
+                                
+                             
+                                
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Nouveau</button>
+                                <button type="submit" class="btn btn-primary" id="renew">Nouveau</button>
                             </div>
                     </div>
 
@@ -575,7 +675,7 @@ $(document).ready(function(){
                                     <span>Mtn money<br></span><input required type="radio" id="method2" class="ml-4" value="MM" name="type_payement"><br>
                                 </div>
                                 <div class="col-md-4 mt-4">
-                                    <span>Non payé<br></span><input type="radio" id="NPmethod" class="ml-4" value="NP" name="type_payement"><br>
+                                    <span>Non payé<br></span><input  type="radio" id="NPmethod" class="ml-4" value="NP" name="type_payement"><br>
                                 </div> 
                             </div><br>
 							<div class="row">
@@ -653,10 +753,21 @@ $(document).ready(function(){
         $(".jsTableBody tr").each(function() {
             col1 = $(this).find('.col1').text();
             col2 = $(this).find('.col2').text();
+            col4 = $(this).find('.col4').text();
             subtract = parseInt(col1) - parseInt(col2);
 			if(subtract <0){
 			    subtract =0;
 			}
+          
+           if(col4==0 && parseInt(col1)!=0  ){
+            col3 = $(this).find('.col3').html('Fini');
+           }else
+           {
+            col3 = $(this).find('.col3').html('Non Fini');
+ 
+           }
+
+
             $(this).find(".subtract").html(subtract);
         })
     })

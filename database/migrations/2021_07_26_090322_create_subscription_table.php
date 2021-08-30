@@ -13,6 +13,7 @@ class CreateSubscriptionTable extends Migration
      */
     public function up()
     {
+        
         Schema::create('subscription', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_id');
@@ -27,6 +28,7 @@ class CreateSubscriptionTable extends Migration
             $table->boolean('alert')->default(false);
             $table->timestamps();
         });
+
     }
 
     /**
