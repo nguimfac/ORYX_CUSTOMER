@@ -211,7 +211,7 @@ window.onresize = function(event) {
 </style>
 
                         <div>
-                            <table id="myTable" id="tableOne"  class="table-responsive-stack table-responsive table table-striped table-hover table-borderless">
+                            <table id="myTable" id="tableOne"  class=" table-responsive table table-striped table-hover table-borderless">
                                 <thead class="bg-primary text-white">
                                     <tr>
                                         <th  scope="col">Commercial Concerné</th>
@@ -528,7 +528,11 @@ window.onresize = function(event) {
                         <form class="text-left" action="/updatesubscription" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                <input type="" id="id_subscription" name="id_subscription" class="form-control p-4" required placeholder="date of the software">
+                                <input type="hidden" id="id_subscription" name="id_subscription" class="form-control p-4" required placeholder="">
+                            </div>
+
+                            <div class="form-group">
+                                <input type="hidden" id="id_client_for_fac" name="id_client_for_fac" class="form-control p-4" required placeholder="">
                             </div>
 
                             <div class="form-group">
@@ -588,7 +592,7 @@ $buttons.click(function() {
 </script>
                                 <div class="">
                                     <div class="form-group">
-                                            <button  id="p" class="fa fa-print btn btn-info" value="print" name="print" title="imprimer la facture"></button>
+                                            <button  id="p" class="fa fa-print btn btn-info" value="Print" name="Print" title="imprimer la facture"></button>
                                     </div>
                                 </div>
                                 
@@ -596,7 +600,7 @@ $buttons.click(function() {
                                 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary" id="renew">Nouveau</button>
+                                <button type="submit" class="btn btn-primary" id="renew" name="Enregistrer" value="Enregistrer">Enregistrer</button>
                             </div>
                     </div>
 
@@ -703,49 +707,6 @@ $buttons.click(function() {
 </div>
 </div>
 
-<style>
-    .page {
-        margin: 1em auto;
-        max-width: 768px;
-        display: flex;
-        align-items: flex-start;
-        flex-wrap: wrap;
-        height: 100%;
-    }
-    
-    .box {
-        padding: 0.5em;
-        width: 100%;
-        margin: 0.5em;
-    }
-    
-    .box-2 {
-        padding: 0.5em;
-        width: calc(100%/2 - 1em);
-    }
-    
-    .options label,
-    .options input {
-        width: 4em;
-        padding: 0.5em 1em;
-    }
-    
-    .btn {
-        padding: 0.5em 1em;
-        text-decoration: none;
-        margin: 0.8em 0.3em;
-        display: inline-block;
-        cursor: pointer;
-    }
-    
-    .hide {
-        display: none;
-    }
-    
-    img {
-        max-width: 100%;
-    }
-</style>
 
 
 <script>
@@ -797,6 +758,7 @@ $buttons.click(function() {
         $('#client').val(_this.find('#client_name').text());
         $('.payement_client_name').text(_this.find('#client_name').text())
         $('.renewsubs_client_name').text(_this.find('#client_name').text())
+        $('#id_client_for_fac').val(_this.find('#facture_id').text())
     });
 
    

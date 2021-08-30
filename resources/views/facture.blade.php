@@ -44,8 +44,8 @@
                             <h3>Logiciel<hr></h3>{{$logiciel}}
                             <h3>Periode<hr></h3> {{ $nombre}}  ( {{$periode}})
                         </td>
-                        <td class="unit">{{$paye}}</td>
-                        <td class="total">{{$paye}}</td>
+                        <td class="unit">{{$paye}} fcfa</td>
+                        <td class="total">{{$paye}} fcfa</td> 
                     </tr>
                 </tbody> 
             </table>

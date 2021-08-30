@@ -383,15 +383,41 @@ class HomeController extends Controller
 
                 public function UpdateSubscription(Request $request)
                 {
-                    $html = "<ul style='list-style: none;'>";
-                   /* $validatedData = $request->validate([
-                        'date_debut' => ['required', 'date'],
-                        'date_fin' => ['required', 'date'],
-                    ]);*/
+                    $html = "message";
+                    $id=$request->id_client_for_fac;
+                    $curent_date= date("Y-m-d");
+                    $client_prospect=  DB::table('client')
+                    ->select('telephone','titre','client.id as client_id','email','address','code_postal','logiciel.id as logiciel_id','address','nom','ville' )
+                    ->join('logiciel','client.logiciel_id','=','logiciel.id')
+                    ->where('client.id',$id)
+                    ->get();
+                            if($request->date_fin=="mois"){
+                                $request->periode="Mois";
+                            }else{
+                                $request->periode="Ans";
+                            }
+                             foreach($client_prospect as $client_prospects){
+                                $data = ['title' => 'nguimfack',
+                                'client_name'=>$client_prospects->nom,
+                                'client_address'=>$client_prospects->address,
+                                'client_ville'=>$client_prospects->ville,
+                                'client_email'=>$client_prospects->email,
+                                'logiciel'=>$client_prospects->titre,
+                                'invoice_date'=>$curent_date,
+                                'paye'=>$request->newmont,
+                                'periode'=>$request->periode,
+                                'nombre'=>$request->nombre,
+                                'telephone'=>$client_prospects->telephone,
+                            ];
+                             }                      
+                           
 
-
-                   
-
+                    if(isset($_POST['Print']))
+                   {
+                    $pdf = PDF::loadView('facture', $data);
+                    return $pdf->download("facture ".$client_prospects->nom.".pdf");
+                   }
+                   else{
                     $effectiveDate="";
                     if($request->date_fin==1){
                         $effectiveDate = date('Y-m-d', strtotime("+".$request->nombre." months", strtotime(date('Y-m-d'))));
@@ -399,7 +425,6 @@ class HomeController extends Controller
                     }
                     else{ $effectiveDate = date('Y-m-d', strtotime("+".$request->nombre." years", strtotime(date('Y-m-d'))));
                        // dd($effectiveDate);
-        
                     }
 
                    /* 
@@ -407,8 +432,7 @@ class HomeController extends Controller
                     $finish_time = Carbon::parse($request->date_fin);
                     $result = $start_time->diffInDays($finish_time, false);*/
                     $current_date= date('Y-m-d');
-                    $subs = subscription::find($request->id_subscription);
-                        
+                    $subs = subscription::find($request->id_subscription);    
                     if($subs->a_payer>$subs->paye){
                         Alert::html('Impossible ce client n a pas terminé le payement du forfait precedent!', $html, 'warning');
                         return redirect()->back();
@@ -422,7 +446,7 @@ class HomeController extends Controller
                         $subs->paye=$request->Mpaye;
                         $subs->save();
                         Alert::html('Subscription Renouvelle avec success!', $html, 'success');
-
+                    }
                  
                     return redirect()->back();
                 }
@@ -699,8 +723,7 @@ class HomeController extends Controller
                         'nombre'=>$request->nombre,
                         'telephone'=>$client_prospects->telephone,
                     ];
-                     }  
-                                        
+                     }                      
                     $pdf = PDF::loadView('facture', $data);
                    return $pdf->download("facture ".$client_prospects->nom.".pdf");
         }
