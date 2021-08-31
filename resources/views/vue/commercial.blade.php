@@ -97,7 +97,7 @@
                         <h3 class="widget-header">
                             <div class="row">
                                 <div class="col-md-8 mt-4">
-                                    <strong>COMMERCIALS</strong><br>
+                                    <strong>COMMERCIALES</strong><br>
                                     <div class="p-0">
 
                                     </div>
@@ -120,36 +120,38 @@
                             <tbody>
                                 @foreach ($comm as $commercial)
                                 <tr>
+                                    @if($commercial->name!="aucun")
                                     <td class="product-category" id="id_commer"><span class="categories">{{$commercial->id}} </span></td>
-                                        <td class="product-category" id="noms"><span class="categories font">{{$commercial->name}} </span></td>
-                                        <td class="product-category" id="roles"><span class="categories font">{{$commercial->role}} </span></td>
+                                    <td class="product-category" id="noms"><span class="categories font">{{$commercial->name}} </span></td>
+                                    <td class="product-category" id="roles"><span class="categories font">{{$commercial->role}} </span></td>
 
-                                        <td class="action" data-title="Action">
-                                            <div class="">
-                                                <ul class="list-inline justify-content-center">
-                                                   <!-- <li class="list-inline-item">
-                                                        <a data-toggle="tooltip" data-placement="top" title="View" class="view" href="category.html">
-                                                            <i class="fa fa-eye"></i>
-                                                        </a>
-                                                    </li>-->
-                                                    <li class="list-inline-item">
-                                                        <a id="edit" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEdit" title="Edit" class="edit">
-                                                            <i class="fa fa-pencil"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li class="list-inline-item">
+                                    <td class="action" data-title="Action">
+                                        <div class="">
+                                            <ul class="list-inline justify-content-center">
+                                               <!-- <li class="list-inline-item">
+                                                    <a data-toggle="tooltip" data-placement="top" title="View" class="view" href="category.html">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                </li>-->
+                                                <li class="list-inline-item">
+                                                    <a id="edit" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEdit" title="Edit" class="edit">
+                                                        <i class="fa fa-pencil"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="list-inline-item">
 
-                                                        <form method="get" action="DeleteCommercial/{{$commercial->id}} ">
-                                                            @csrf
-                                                            <input name="_method" type="hidden" value="DELETE">
-                                                            <a type="submit" data-placement="top" title="Delete show_confirm " class="delete show_confirm" href="">
-                                                                <i class="fa fa-trash"></i>
-                                                            </a>
-                                                        </form>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
+                                                    <form method="get" action="DeleteCommercial/{{$commercial->id}} ">
+                                                        @csrf
+                                                        <input name="_method" type="hidden" value="DELETE">
+                                                        <a type="submit" data-placement="top" title="Delete show_confirm " class="delete show_confirm" href="">
+                                                            <i class="fa fa-trash"></i>
+                                                        </a>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    @endif
                                 </tr>
                                 @endforeach
                             </tbody>

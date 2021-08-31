@@ -69,6 +69,8 @@ Route::post('printinvoice',[HomeController::class,'PrintFacture']);
 Route::get('commercial',[HomeController::class,'Commercial']);
 Route::post('newcommercial',[HomeController::class,'NewCommercial']);
 Route::post('updatecommercial',[HomeController::class,'UpdateCommercial']);
+Route::get('getcommerlemail',[HomeController::class,'getcommerlemail']);
+Route::post('newclient',[HomeController::class,'SaveProspect']);
 
 
 

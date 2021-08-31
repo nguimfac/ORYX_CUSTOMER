@@ -35,7 +35,7 @@
                         <th class="no">N°</th>
                         <th class="desc">DESCRIPTION</th>
                         <th class="unit">MONTANT</th>
-                        <th class="no">MODE DE PAYEMENT</th>
+                        <th class="unit">MODE DE PAYEMENT</th>
                         <th class="total">PAYE</th>
                     </tr>
                 </thead>

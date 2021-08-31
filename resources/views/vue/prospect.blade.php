@@ -288,7 +288,7 @@ $(document).ready(function(){
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="address" class="text-black">Code Postal</label>
-                                <input type="text" value="{{old('codepostal_client')}}" name="codepostal_client" class="form-control p-4" placeholder="code postal du client">
+                                <input type="text" required value="{{old('codepostal_client')}}" name="codepostal_client" class="form-control p-4" placeholder="code postal du client">
                             </div>
 
                             

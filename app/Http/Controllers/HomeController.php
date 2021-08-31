@@ -76,11 +76,11 @@ class HomeController extends Controller
 
         $commercials = User::where('is_admin', '=', 0)->get();
         $prospect = DB::table('client')
-            ->select('name', 'telephone', 'titre', 'client.id as client_id', 'client.email as email', 'address', 'code_postal', 'logiciel.id as logiciel_id', 'address', 'nom', 'ville')
+            ->select('client.created_at as date_c','name', 'telephone', 'titre', 'client.id as client_id', 'client.email as email', 'address', 'code_postal', 'logiciel.id as logiciel_id', 'address', 'nom', 'ville')
             ->join('logiciel', 'client.logiciel_id', '=', 'logiciel.id')
             ->join('users', 'client.users_id', '=', 'users.id')
             ->where('etat', 1)
-            ->orderBy('client_id', 'desc')
+            ->orderBy('date_c', 'desc')
             ->get();
         $logiciels = logiciel::all();
         return view('vue.prospect', ['prospects' => $prospect, 'logiciel' => $logiciels, 'commercial' => $commercials]);
@@ -307,29 +307,54 @@ class HomeController extends Controller
             'telephone_client' => 'required|min:9',
             'ville_client' => 'required',
         ]);
-  
+
+        $current_date = date('Y-m-d H:i:s');
 
 
         if ($validator->fails()) {
             Alert::html($validator->errors()->first(), 'warning', 'warning');
             return redirect()->back();
         } else {
-            $current_date = date('Y-m-d H:i:s');
-            $client_prospect = new client();
-            $client_prospect->nom = $request->nom_client;
-            $client_prospect->email = $request->email_client;
-            $client_prospect->address = $request->address_client;
-            $client_prospect->telephone = $request->telephone_client;
-            $client_prospect->ville = $request->ville_client;
-            $client_prospect->logiciel_id = $request->logiciel_id;
-            if($request->commercial_id=="")$request->commercial_id = 11;
-            $client_prospect->users_id = $request->commercial_id;
-            $client_prospect->etat = 1;
-            $client_prospect->created_at = $request->$current_date;
-            $client_prospect->save();
-            Alert::success('Prospect enregistré avec success', "success", 'success');
-        }
-
+                if (\Request::is('newprospect')) { 
+                    $client_prospect = new client();
+                    $client_prospect->nom = $request->nom_client;
+                    $client_prospect->email = $request->email_client;
+                    $client_prospect->address = $request->address_client;
+                    $client_prospect->code_postal = $request->codepostal_client;
+                    $client_prospect->telephone = $request->telephone_client;
+                    $client_prospect->ville = $request->ville_client;
+                    $client_prospect->logiciel_id = $request->logiciel_id;
+                    if($request->commercial_id=="")$request->commercial_id = 11;
+                    $client_prospect->users_id = $request->commercial_id;
+                    $client_prospect->etat = 1;
+                    $client_prospect->created_at = $request->$current_date;
+                    $client_prospect->save();
+                    Alert::success('Prospect enregistré avec success', "success", 'success');    
+                }elseif(\Request::is('newclient'))  {
+                    $id = DB::table('client')->insertGetId(
+                        [
+                            'nom' => $request->nom_client,
+                            'civilite' => $request->civilite_client,
+                            'email' => $request->email_client,
+                            'address' => $request->address_client,
+                            'code_postal' => $request->codepostal_client,
+                            'logiciel_id'=>$request->logiciel_id,
+                            'telephone' => $request->telephone_client,
+                            'ville' => $request->ville_client,
+                            'users_id'=>11,
+                            'etat'=>1,
+                            'created_at' => $current_date
+                        ]
+                    );
+                    $subcript = new subscription();
+                    $subcript->client_id = $id;
+                    $subcript->commercial_id = 11;
+                    $subcript->logiciel_id = $request->logiciel_id;
+                    $subcript->save();
+                   
+                }
+            }
+        
         return redirect()->back();
     }
 
@@ -372,10 +397,7 @@ class HomeController extends Controller
     function SendMail()
     {
         $html = "<ul style='list-style: none;'>";
-        $details = [
-            'title' => "Notification de souscription",
-            'body' => "Votre periode d'expiration arrive deja a echeance"
-        ];
+      
 
         $current_date = date('Y-m-d');
         $subscription  = DB::table('subscription')
@@ -387,7 +409,11 @@ class HomeController extends Controller
             $start_time = Carbon::parse($current_date);
             $finish_time = Carbon::parse($subscriptions->date_fin);
             $result = $start_time->diffInDays($finish_time, false);
-            if ($result <= 5 && $subscriptions->notification == 0) {
+            if ($result <= 5 && $subscriptions->notification == 0 && $subscriptions->date_fin !=null) {
+                $details = [
+                    'title' => "Notification de souscription",
+                    'body' => "Bonjour Monsieur/Messieurs nous esperons que vous avez profité  longuement du/des logiciel(s) que vous avez souscris chez ORYX CONSULTING mais la periode d'expiration de votre souscription pour le logiciel ".$subscriptions->logiciel_name." arrive deja à échéance.Merci de vous rapprocher au près de nos agents pour un renouvellement."
+                ];
                 Mail::to($subscriptions->client_email)->send(new TestMail($details));
                 $update_alert_status = subscription::find($subscriptions->subscription_id);
                 $update_alert_status->alert = 1;
@@ -880,5 +906,29 @@ class HomeController extends Controller
         }
         return redirect()->back();
     }
+    public function getcommerlemail(){
+        $html = "<ul style='list-style: none;'>";
+        try {
+            $details1 =[
+                'title'=>"Notification de souscription",
+                'body'=> "Bonjour Monsieur/Madame La periode d'expiration de certain client arrive deja a expiration veillez consulter  les souscriptions clientes pour les notifiers"
+            ];
+            $current_date = date('Y-m-d');
+            $subscription  = DB::table('users')
+                     ->select('alert as notification','email as commercial_email','subscription.id as subscription_id','paye as payement','date_debut','date_fin','type_payement')
+                     ->join('subscription','subscription.commercial_id',"=","users.id")->get();
+                     foreach($subscription as $subscriptions){
+                        $start_time = Carbon::parse($current_date);
+                        $finish_time = Carbon::parse($subscriptions->date_fin);
+                        $result = $start_time->diffInDays($finish_time, false);
+                        if($result<=5 && $subscriptions->notification==0 && $subscriptions->date_fin!=null){
+                            Mail::to("nguimfackjunior2@gmail.com")->send(new TestMail($details1));  
+                            Mail::to($subscriptions->commercial_email)->send(new TestMail($details1));  
+                        }
+                    }
+          } catch (\Exception $e) {
+             // Alert::html('Veillez verifier Votre connexion internet', $html, 'error');
+          }
+    }  
 }
 

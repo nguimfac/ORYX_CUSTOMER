@@ -158,8 +158,11 @@
                                                             <tbody id="myTable3">
                                                                 @foreach ($users as $user)
                                                                 <tr>
-                                                                    <td>{{$user->name}}</td>
-                                                                    <td><label><input  type="checkbox" name="agent[]" value="{{$user->name}}"></label><br></td>
+                                                                   @if ($user->is_admin==0 && $user->name!="aucun")
+                                                                   <td>{{$user->name}}</td>
+                                                                   <td><label><input  type="checkbox" name="agent[]" value="{{$user->name}}"></label><br></td>
+                                                               
+                                                                   @endif
                                                                 </tr>
 
                                                                 @endforeach

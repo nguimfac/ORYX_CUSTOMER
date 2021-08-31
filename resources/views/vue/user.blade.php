@@ -125,9 +125,11 @@
                                         <td>{{$user->email}}</td>
                                         <td>
                                             @if ($user->is_admin==1)
-                                             Agent / Admin
+                                             Admin
                                             @elseif($user->is_admin==2)
-                                            Agent / Utilisateur
+                                             Utilisateur
+                                             @elseif ($user->is_admin==3)
+                                             en Attente de droits...
                                             @endif
                                             </td>
                                             <td class="action" data-title="Action">

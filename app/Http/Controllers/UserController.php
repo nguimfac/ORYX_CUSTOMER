@@ -31,7 +31,7 @@ class UserController extends Controller
 
     public function AccessDenied(Request $request){
       $user =User::find($request->userid);
-        $user->is_admin = 0;
+        $user->is_admin = 3;
         $user->save();
         return redirect()->back();
 

@@ -116,14 +116,20 @@ $(document).ready(function(){
                     <div class="widget dashboard-container my-adslist">
                         <h3 class="widget-header">
                             <div class="row">
-                                <div class="col-md-8 mt-4">
-                                    <strong>SUBSCRIPTION REALISE</strong><br>
+                                <div class="col-md-4  mt-4">
+                                    <strong>SUBSCRIPTION REALISEES</strong><br>
                                     <div class="p-0">
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 offset-md-12 ">
-                                    <a class="btn btn-success offset-md-6 ml-5" type="button" href="/sendmail"> Notifier vos clients <i class="fa fa-bell" aria-hidden="true"></i></a>
+                                
+
+                                <div class="col-md-3 col-lg-2">
+                                    <a class="btn btn-success  ml-5" type="button" href="/sendmail"> Notifier vos clients <i class="fa fa-bell" aria-hidden="true"></i></a>
+                                </div>
+
+                                <div class="col-md-3  col-lg-2">
+                                    <a class="btn btn-primary text-white ml-5" type="button" data-toggle="modal" data-target="#staticBackdrop"> Creer un client <i class="fa fa-user" aria-hidden="true"></i></a>
                                 </div>
 
 
@@ -136,84 +142,132 @@ $(document).ready(function(){
                                 
                             </div>
                         </h3>
-                      <script>
-                          $(document).ready(function() {
+          
 
-   
-// inspired by http://jsfiddle.net/arunpjohny/564Lxosz/1/
-$('.table-responsive-stack').each(function (i) {
-   var id = $(this).attr('id');
-   //alert(id);
-   $(this).find("th").each(function(i) {
-      $('#'+id + ' td:nth-child(' + (i + 1) + ')').prepend('<span class="table-responsive-stack-thead">'+             $(this).text() + ':</span> ');
-      $('.table-responsive-stack-thead').hide();
-      
-   });
-   
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Nouveau Client <img width="80" src="{{  asset('images/userimg.png') }}" alt="" srcset=""></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div class="modal-body">
+                <form action="newclient" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-6">
 
-   
-});
+                            <div class="form-group">
+                                <label for="nom" class="text-black">Nom du client</label>
+                                <input type="text" value="{{old('nom_client')}}"  name="nom_client" class="form-control p-4" required placeholder="Name of the client">
+                            </div>
 
-
-
-
-
-$( '.table-responsive-stack' ).each(function() {
-var thCount = $(this).find("th").length; 
-var rowGrow = 100 / thCount + '%';
-//console.log(rowGrow);
-$(this).find("th, td").css('flex-basis', rowGrow);   
-});
-
-
-
-
-function flexTable(){
-if ($(window).width() < 768) {
-   
-$(".table-responsive-stack").each(function (i) {
-   $(this).find(".table-responsive-stack-thead").show();
-   $(this).find('thead').hide();
-});
-   
+                            
+                            <div class="form-group">
+                                <label for="ville" class="">Ville</label>
+                                <input type="text" value="{{old('ville_client')}}" list="city" class="form-control p-4" name="ville_client">
+                                <datalist id="city">
+                                    <option value="Douala">
+                                    <option value="Yaoundé">
+                                    <option value="Bafousssam">
+                                    <option value="Dschang">
+                                    <option value="Edea">
+                                    <option value="Limbe">
+                                    <option value="Kribi"> 
+                                    <option value="Bamenda">
+                                    <option value="Kumba">
+                            </datalist>
+                            </div>
  
-// window is less than 768px   
-} else {
-   
-   
-$(".table-responsive-stack").each(function (i) {
-   $(this).find(".table-responsive-stack-thead").hide();
-   $(this).find('thead').show();
-});
-   
-   
+                            <div class="form-group">
+                                <label for="address" class="text-black">Telephone</label>
+                                <input type="number" required    name="telephone_client" class="form-control p-4" placeholder="telephone du client">
+                            </div>
 
-}
-// flextable   
-}      
+                            <div class="form-group">
+                                <label for="logiciel" class="text-black">Logiciel</label>
+                                <select type="text" name="logiciel_id" class="form-control  text-black" style="height:46px">
+								 @foreach ($logiciel as $log)
+                                     <option value="{{$log->id}}">{{$log->titre}}</option>
+                                 @endforeach
+							</select>
+                            </div>
 
-flexTable();
+                      
+                        
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="address" class="text-black">Code Postal</label>
+                                <input type="text" required value="{{old('codepostal_client')}}" name="codepostal_client" class="form-control p-4" placeholder="code postal du client">
+                            </div>
 
-window.onresize = function(event) {
- flexTable();
-};
+                            
+                           
+                            <div class="form-group">
+                                <label for="civilite" class="text-black">Civilité</label>
+                                <input type="text" value="{{old('civilite_client')}}" name="civilite_client" class="form-control p-4" required placeholder="Civilité">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="text-black">Email</label>
+                                <input type="email"value="{{old('email_client')}}"  name="email_client" class="form-control p-4" required placeholder="email du client">
+                            </div>
 
 
+                            <div class="form-group">
+                                <label for="address" class="text-black">Address</label>
+                                <input type="text" value="{{old('address_client')}}" name="address_client" class="form-control p-4" required placeholder="address du client">
+                            </div>
+
+                           
+                            
+
+                        </div>
+
+                        <script>
+
+                            $(document).ready(function() {
+                                $(".payeform").hide()
+                                $("#method1").click(function() {
+                                    $(".payeform").fadeIn(250);
+                                })
+                                $("#method2").click(function() {
+                                    $(".payeform").fadeIn(250);
+                                })
+                                $("#method3").click(function() {
+                                    $(".payeform").fadeIn(250);
+                                })
+								$("#cash").click(function() {
+                                    $(".payeform").fadeIn(250);
+                                })
+                                $("#NPmethod").click(function() {
+                                    $('#paye').val(0)
+                                    $(".payeform").hide();
+                                })
+                            })
+                        </script>
 
 
+                    </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Nouveau</button>
+            </div>
+            </form>
+        </div>
+
+    </div>
+</div>
 
 
-// document ready  
-});
-
-                      </script>
-
-<style>
-   
-</style>
 
                         <div>
-                            <table id="myTable" id="tableOne"  class=" table-responsive table table-striped table-hover table-borderless">
+                            <table id="myTable" id="tableOne"  class=" table-responsive  table table-striped table-hover table-borderless">
                                 <thead class="bg-primary text-white">
                                     <tr>
                                         <th  scope="col">Commercial Concerné</th>
@@ -840,6 +894,80 @@ $buttons.click(function() {
             document.getElementById('paye').value =p        }
     }
 </script>
+
+<script>
+    $(document).ready(function() {
+
+
+// inspired by http://jsfiddle.net/arunpjohny/564Lxosz/1/
+$('.table-responsive-stack').each(function (i) {
+var id = $(this).attr('id');
+//alert(id);
+$(this).find("th").each(function(i) {
+$('#'+id + ' td:nth-child(' + (i + 1) + ')').prepend('<span class="table-responsive-stack-thead">'+             $(this).text() + ':</span> ');
+$('.table-responsive-stack-thead').hide();
+
+});
+
+
+
+});
+
+
+
+
+
+$( '.table-responsive-stack' ).each(function() {
+var thCount = $(this).find("th").length; 
+var rowGrow = 100 / thCount + '%';
+//console.log(rowGrow);
+$(this).find("th, td").css('flex-basis', rowGrow);   
+});
+
+
+
+
+function flexTable(){
+if ($(window).width() < 768) {
+
+$(".table-responsive-stack").each(function (i) {
+$(this).find(".table-responsive-stack-thead").show();
+$(this).find('thead').hide();
+});
+
+
+// window is less than 768px   
+} else {
+
+
+$(".table-responsive-stack").each(function (i) {
+$(this).find(".table-responsive-stack-thead").hide();
+$(this).find('thead').show();
+});
+
+
+
+}
+// flextable   
+}      
+
+flexTable();
+
+window.onresize = function(event) {
+flexTable();
+};
+
+
+
+
+
+
+// document ready  
+});
+
+</script>
+
+
 
 
 @endsection

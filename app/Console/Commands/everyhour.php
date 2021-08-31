@@ -47,27 +47,26 @@ class everyhour extends Command
        //$homecontroller->notifyAdmin();
        $html = "<ul style='list-style: none;'>";
        try {
-           $details1 =[
-               'title'=>"Notification de souscription",
-               'body'=> "La periode d'expiration de certain client arrive deja a expiration veillez consulter  les souscriptions clientes pour les notifiers"
-           ];
-           $current_date = date('Y-m-d');
-           $subscription  = DB::table('subscription')
-                    ->select('alert as notification','email as client_email','subscription.id as subscription_id','paye as payement','nom as client_name','titre as logiciel_name','prix as prix_logiciel','date_debut','date_fin','type_payement')
-                    ->join('client','subscription.client_id',"=","client.id")
-                    ->join('logiciel','subscription.logiciel_id','=','logiciel.id')
-                    ->get();
-             foreach($subscription as $subscriptions){
-                   $start_time = Carbon::parse($current_date);
-                   $finish_time = Carbon::parse($subscriptions->date_fin);
-                   $result = $start_time->diffInDays($finish_time, false);
-                   if($result<=5 && $subscriptions->notification==0){
-                       Mail::to("nguimfackjunior2@gmail.com")->send(new TestMail($details1));     
-                   }
-               }
-         } catch (\Exception $e) {
-            // Alert::html('Veillez verifier Votre connexion internet', $html, 'error');
-         }
+        $details1 =[
+            'title'=>"Notification de souscription",
+            'body'=> "Bonjour Monsieur/Madame La periode d'expiration de certain client arrive deja a expiration veillez consulter  les souscriptions clientes pour les notifiers"
+        ];
+        $current_date = date('Y-m-d');
+        $subscription  = DB::table('users')
+                 ->select('alert as notification','email as commercial_email','subscription.id as subscription_id','paye as payement','date_debut','date_fin','type_payement')
+                 ->join('subscription','subscription.commercial_id',"=","users.id")->get();
+                 foreach($subscription as $subscriptions){
+                    $start_time = Carbon::parse($current_date);
+                    $finish_time = Carbon::parse($subscriptions->date_fin);
+                    $result = $start_time->diffInDays($finish_time, false);
+                    if($result<=5 && $subscriptions->notification==0 && $subscriptions->date_fin!=null){
+                        Mail::to("nguimfackjunior2@gmail.com")->send(new TestMail($details1));  
+                        Mail::to($subscriptions->commercial_email)->send(new TestMail($details1));  
+                    }
+                }
+      } catch (\Exception $e) {
+         // Alert::html('Veillez verifier Votre connexion internet', $html, 'error');
+      }
            //return redirect()->back();
     }
 }
