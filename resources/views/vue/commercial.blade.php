@@ -36,11 +36,11 @@
 
                         <div class="widget user-dashboard-menu">
                             <ul>
-                                <li class="active">
+                                <li class="">
                                     <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-desktop "></i> LOGICIELS <span>1</span></a>
                                 </li>
 
-                                <li class="">
+                                <li class="active">
                                     <div class="dropD">
                                             <div class="drop-down">
                                               <div id="dropDown" class="drop-down__button">
@@ -85,27 +85,7 @@
                         <!-- delete-account modal -->
                         <!-- delete account popup modal start-->
                         <!-- Modal -->
-                        <div class="modal fade" id="deleteaccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header border-bottom-0">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-                                    </div>
-                                    <div class="modal-body text-center">
-                                        <img src="images/account/Account1.png" class="img-fluid mb-2" alt="">
-                                        <h6 class="py-2">Are you sure you want to delete your account?</h6>
-                                        <p>Do you really want to delete these records? This process cannot be undone.</p>
-                                        <textarea class="form-control" name="message" id="" cols="40" rows="4" class="w-100 rounded"></textarea>
-                                    </div>
-                                    <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
-                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                                        <button type="button" class="btn btn-danger">Delete</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                      
                         <!-- delete account popup modal end-->
                         <!-- delete-account modal -->
 
@@ -116,15 +96,15 @@
                     <div class="widget dashboard-container my-adslist">
                         <h3 class="widget-header">
                             <div class="row">
-                                <div class="col-md-9 mt-4">
-                                    <strong>NOS LOGICIELS</strong><br>
+                                <div class="col-md-8 mt-4">
+                                    <strong>COMMERCIALS</strong><br>
                                     <div class="p-0">
 
                                     </div>
 
                                 </div>
-                                <div class="col-md-3  offset-md-10">
-                                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop">Add logiciel <i class="fa fa-plus-square" aria-hidden="true"></i></button>
+                                <div class="col-md-4  offset-md-10">
+                                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop">Ajouter  <i class="fa fa-plus-square" aria-hidden="true"></i></button>
                                 </div>
                             </div>
                         </h3>
@@ -132,25 +112,17 @@
                             <thead class="bg-primary text-white">
                                 <tr>
                                     <th>NUMERO</th>
-                                    <th>IMAGE</th>
-                                    <th> TITRE</th>
-                                    <th class="text-center">PRIX</th>
-                                    <th class="text-center">Date</th>
+                                    <th>Nom</th>
+                                    <th> Role</th>
                                     <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($logiciel as $logiciels)
+                                @foreach ($comm as $commercial)
                                 <tr>
-
-                                    <td class="product-category" id="id_logiciel"><span class="categories">{{$logiciels->id}} </span></td>
-                                    <td class="product-thumb font">
-                                        <input type="hidden" value="{{$logiciels->image_name}}" name="image_name" id="image_name">
-                                        <img class="slider-img img-responsive rounded" width="50" src="{{asset ('storage/images/'.$logiciels->image_name)}}" alt="Chania">
-                                        <td class="product-category text-left" id="titre_logiciel"><span class="categories font">{{$logiciels->titre}}</span></span>
-                                        </td>
-                                        <td class="product-category" id="prix_logiciel"><span class="categories font">{{$logiciels->prix}} </span></td>
-                                        <td class="product-category" id="date_creation"><span class="categories font">{{$logiciels->created_at}} </span></td>
+                                    <td class="product-category" id="id_commer"><span class="categories">{{$commercial->id}} </span></td>
+                                        <td class="product-category" id="noms"><span class="categories font">{{$commercial->name}} </span></td>
+                                        <td class="product-category" id="roles"><span class="categories font">{{$commercial->role}} </span></td>
 
                                         <td class="action" data-title="Action">
                                             <div class="">
@@ -167,7 +139,7 @@
                                                     </li>
                                                     <li class="list-inline-item">
 
-                                                        <form method="get" action="DeleteLogiciel/{{$logiciels->id}}">
+                                                        <form method="get" action="DeleteCommercial/{{$commercial->id}} ">
                                                             @csrf
                                                             <input name="_method" type="hidden" value="DELETE">
                                                             <a type="submit" data-placement="top" title="Delete show_confirm " class="delete show_confirm" href="">
@@ -207,45 +179,27 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Modal title <img width="100" src="{{  asset('images/software.jpg') }}" alt="" srcset=""></h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Nouveau Commercial <img width="70" src="{{  asset('images/user.png') }}" alt="" srcset=""></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
             </div>
             <div class="modal-body">
-                <form action="/newsoftware" method="POST" enctype="multipart/form-data">
+                <form action="/newcommercial" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <label for="Titre" class="text-black">Titre</label>
-                        <input type="text" name="titre" class="form-control p-4" required placeholder="Name of the software">
+                        <label for="Titre" class="text-black">Nom</label>
+                        <input type="text" name="nom" class="form-control p-4" required placeholder="Nom  du commercial">
                     </div>
 
                     <div class="form-group">
-                        <label for="Titre" class="text-black">Prix</label>
-                        <input type="number" name="prix" class="form-control p-4" required placeholder="Price of the software">
+                        <label for="Titre" class="text-black">Role</label>
+                        <textarea name="role" id="" class="form-control"></textarea>
                     </div>
-
-
-                    <div class="form-group">
-                        <div class="box">
-                            <input type="file" name="image_name" id="file-input">
-                        </div>
-                        <!-- leftbox -->
-                        <div class="box-2">
-                            <div class="result"></div>
-                        </div>
-                        <!--rightbox-->
-                        <div class="box-2 img-result hide">
-                            <!-- result of crop -->
-                            <img class="cropped" src="" alt="">
-                        </div>
-                        <!-- input file -->
-                    </div>
-
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Nouveau</button>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
                     </div>
                 </form>
             </div>
@@ -265,44 +219,23 @@
 		  </button>
             </div>
             <div class="modal-body">
-                <form class="text-left" action="/updatesoftware" method="POST" enctype="multipart/form-data">
+                <form class="text-left" action="/updatecommercial" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <input type="hidden" id="id" name="id" class="form-control p-4" required placeholder="titre of the software">
                     </div>
                     <div class="form-group">
-                        <label for="Titre" class="text-black">Titre</label>
-                        <input type="text" id="titre" name="titre" class="form-control p-4" required placeholder="titre of the software">
+                        <label for="Titre" class="text-black">Nom</label>
+                        <input type="text" id="nom" name="nom" class="form-control p-4" required>
                     </div>
                     <div class="form-group">
-                        <label for="Titre" class="text-black">Prix</label>
-                        <input type="text" id="prix" name="prix" class="form-control p-4" required placeholder="Price of the software">
+                        <label for="Titre" class="text-black">Role</label>
+                        <input type="text" id="role" name="role" class="form-control p-4" required>
                     </div>
-                    <div class="form-group">
-                        <label for="created_at" class="text-black">created_at</label>
-                        <input type="text" id="created_at" name="created_at" class="form-control p-4" required placeholder="date of the software">
-                    </div>
-
-                    <div class="form-group">
-                        <div class="box">
-                            <input type="file" name="image_name" value="optimus cash" id="file-input">
-                        </div>
-                        <!-- leftbox -->
-                        <div class="box-2">
-                            <div class="result"></div>
-                        </div>
-                        <!--rightbox-->
-                        <div class="box-2 img-result hide">
-                            <!-- result of crop -->
-                            <img class="cropped" src="" alt="">
-                        </div>
-                        <!-- input file -->
-                    </div>
-
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Nouveau</button>
+                        <button type="submit" class="btn btn-primary">Modifier</button>
                     </div>
                 </form>
             </div>
@@ -365,10 +298,9 @@
 <script>
     $(document).on('click', '#edit', function() {
         var _this = $(this).parents('tr');
-        $('#id').val(_this.find('#id_logiciel').text());
-        $('#titre').val(_this.find('#titre_logiciel').text());
-        $('#prix').val(_this.find('#prix_logiciel').text());
-        $('#created_at').val(_this.find('#date_creation').text());
+        $('#id').val(_this.find('#id_commer').text());
+        $('#nom').val(_this.find('#noms').text());
+        $('#role').val(_this.find('#roles').text());
     });
 </script>
 

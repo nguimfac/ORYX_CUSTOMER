@@ -21,7 +21,7 @@
         <div id="details" class="clearfix">
             <div id="client">
                 <div class="to" style="margin-left:190px;font-size:20px" > <strong>RECU DE PAIEMENT CLIENT: </strong>  </div><br>
-                <div class="name">CLient :{{$client_name}}</div><br>
+                <div class="name">CLient : {{$client_name}}</div><br>
                 <div class="address">ADRESS : {{$client_address}}, {{$client_ville}}</div><br>
                 <div class="email"><a href="mailto:john@example.com">Email:{{$client_email}}</a></div><br>
                 <div class="date">Date : {{$invoice_date}}</div><br>
@@ -35,6 +35,7 @@
                         <th class="no">N°</th>
                         <th class="desc">DESCRIPTION</th>
                         <th class="unit">MONTANT</th>
+                        <th class="no">MODE DE PAYEMENT</th>
                         <th class="total">PAYE</th>
                     </tr>
                 </thead>
@@ -45,6 +46,15 @@
                             <h3>Logiciel</h3>{{$logiciel}}
                         </td>
                         <td class="unit">{{$mont_paye}}fcfa</td>
+                        <td> @if($method=="V")
+                             VIREMENT
+                             @elseif($method=="OM")
+                               Orange Money
+                               @elseif($method=="MM")
+                               MTN Money
+                               @else
+                               {{$method}}
+                        @endif </td>
                         <td class="total">{{$paye}}fcfa</td>
                     </tr>
                 </tbody> 

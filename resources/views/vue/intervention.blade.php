@@ -12,12 +12,29 @@
                         <div class="widget user-dashboard-menu">
                             <ul>
                                 <li class="">
-                                    <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-desktop "></i> LOGICIELS <span>1</span></a></li>
-                                <li class="">
-                                    <a href="{{url('souscription/')}}" class="souscription"><i class="fa fa-bookmark-o"></i> Souscription<span>2</span></a>
+                                    <a href="{{url('software/')}}" class="logiciel"><i class="fa fa-desktop "></i> LOGICIELS <span>1</span></a>
                                 </li>
-                                <li class="active">
-                                    <a href="{{url('sav/')}}" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente (intervention)<span>3</span></a>
+
+                                <li class="">
+                                    <div class="dropD">
+                                            <div class="drop-down">
+                                              <div id="dropDown" class="drop-down__button">
+                                                <a href="#" class="souscription"><i class="fa fa-bookmark-o"></i> Souscription<span class="change"></span></a>
+                                            </div>
+                                              <div class="drop-down__menu-box">
+                                                <ul class="drop-down__menu">
+                                                  <li data-name="profile" class="drop-down__item text-black"> <a class="bg-white text-black" href="{{url('prospect')}}"></a> <span class="fa fa-user"></span>  Prospect </li>
+                                                  <li data-name="dashboard" class="drop-down__item">  <a href="{{url('souscription')}}" class="bg-white"></a>   <span class="fa fa-user-o"></span>  Client </li>
+                                                  <li data-name="dashboard" class="drop-down__item">  <a href="{{url('commercial')}}" class="bg-white"></a>   <span class="fa fa-user-o"></span>  Commercial </li>
+
+                                                </ul>
+                                              </div>
+                                            </div>
+                                          </div> 
+                                    </li>
+
+								<li class="active">
+                                    <a href="{{url('sav/')}}" class="sav"><i class="fa fa-file-archive-o"></i>Service Apres vente<span>3</span></a>
                                 </li>
                                 <li class="">
                                     <a href="{{url('user/')}}" class="sav"><i class="fa fa-user-circle"></i>User<span>4</span></a>
@@ -73,12 +90,14 @@
                                 <form action="saveintervention" method="POST">
                                     @csrf
                                     <div class="form-group">
-                                        <input type="hidden" name="id_reclammation" value={{$intervent->id}} class="form-control shadow-lg p-3 mb-5 bg-white rounded p-4 " name="reclammation_id" id="reclammation" >
+                                        @foreach($intervent as $intervents)
+                                        <input type="hidden" name="id_reclammation" value="{{$intervents->reclammation_id}}" class="form-control shadow-lg p-3 mb-5 bg-white rounded p-4 " name="reclammation_id" id="reclammation">
                                     </div>
-
                                     <div class="form-group">
-                                        <label for="email" class="text-black"> RECLAMMATION <i class="fa fa-exclamation-circle" aria-hidden="true"></i> : <span class="text-primary">{{$intervent->titre_rec}}</span></label>
+                                        <label for="email" class="text-black"> RECLAMMATION <i class="fa fa-exclamation-circle" aria-hidden="true"></i> <span class="text-primary"> : {{$intervents->titre_rec}} du client <strong style="text-decoration: underline;">{{$intervents->nom}}</strong></span></label>
                                     </div>
+                                    @endforeach
+
                                     <div class="form-group">
                                         <label for="email">Tache effectuée</label>
                                         <textarea name="tache" required class="form-control shadow-lg p-3 mb-5 bg-white rounded" id="tache"></textarea>
@@ -278,170 +297,8 @@
 </script>
 <!------Modal 1 for save------>
 
-<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg  modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Creez une Reclammation <img width="80" src="{{  asset('images/sav.jpg') }}" alt="" srcset=""></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-            </div>
-
-            <div class="modal-body">
-                <form action="/savereclammation" autocomplete="off" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="">
-                        <div class="form-group">
-                            <label for="nom" class="text-black">Client Concerné</label>
-                            <input type="text" id="client_name" name="client_name" class="form-control p-4" required placeholder="titre ce probleme">
-                            <div id="clientList"></div><br>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="probleme" class="text-black">Titre du Probleme</label>
-                            <input type="text" name="titrepb" class="form-control p-4" required placeholder="titre ce probleme">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email" class="text-black">Description du probleme</label>
-                            <textarea name="descpd" id="descpb" class="form-control " placeholder="Decrivez le probleme de votre client"></textarea>
-                        </div>
-                        <label for="email" class="text-black">Avez vous une solution a proposé</label><br>
-                        <div class="row ">
-                            <div class="col-md-2 ">
-                                <span class="ml-3">Oui</span><br><input class="ml-4" id="method1" type="radio" value="1" name="reponse">
-                            </div>
-                            <div class="col-md-3">
-                                <span class="ml-4">Non<br></span><input type="radio" id="NPmethod" class="ml-4" value="0" name="reponse"><br>
-                            </div>
-                        </div><br>
-                        <div class="form-group payeform">
-                            <label for="date_fin" class="text-black">Entrez votre solution</label>
-                            <textarea name="solution" class="form-control "></textarea>
-
-                        </div>
-
-                        <select name="etat" id="etat" class="form-control" style="height:46px">
-                                <option value="2">ouvert</option>
-                                <option value="1">Resolu</option>
-                                <option value="0">Non resolu</option>
-                            </select>
 
 
-
-                        <script>
-                            $(document).ready(function() {
-                                $(".payeform").hide()
-                                $("#method1").click(function() {
-                                    $(".payeform").fadeIn(250);
-                                })
-                                $("#method2").click(function() {
-                                    $(".payeform").fadeIn(250);
-                                })
-                                $("#method3").click(function() {
-                                    $(".payeform").fadeIn(250);
-                                })
-                                $("#cash").click(function() {
-                                    $(".payeform").fadeIn(250);
-                                })
-                                $("#NPmethod").click(function() {
-                                    $(".payeform").hide();
-                                })
-                            })
-                        </script>
-
-
-                    </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Nouveau</button>
-            </div>
-            </form>
-        </div>
-
-    </div>
-</div>
-</div>
-
-<!-----Modal 2 for edti-->
-<div class="modal fade" id="staticBackdropEdit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelEdit" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Renouvelle Votre solution<img width="100" src="{{  asset('images/sav.jpg') }}" alt="" srcset=""></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		  </button>
-            </div>
-            <div class="modal-body">
-                <div class="modal-body">
-                    <div>
-                        <!-- <div class="tab">
-                            <button class="tablinks" onclick="openSubscription(event, 'renewSubs')">Modifier La solution precedente</button>
-                            <button class="tablinks" onclick="openSubscription(event, 'payement')">Continuer Payement</button>
-                        </div>-!-->
-                    </div>
-                    <div id="renewSubs" class="tabcontent">
-                        <form class="text-left" action="/updatereclammtion" method="POST" enctype="multipart/form-data">
-                            @csrf
-
-
-                            <div class="form-group">
-                                <input type="hidden" id="id_reclammation" name="reclammation" class="form-control p-4" required placeholder="date of the software">
-                            </div>
-                            <div class="form-group">
-                                <label for="date_exp" class="text-black">Nouvelle Solution</label>
-                                <textarea name="solution" id="contain_reclammation" class="form-control" placeholder="Modifier l'ancienne solution"></textarea>
-                            </div>
-
-                            <label for="email" class="text-black">Est-elle effective</label><br>
-                            <div class="row ">
-                                <div class="col-md-2 ">
-                                    <span class="ml-3">Oui</span><br><input class="ml-4" id="method1" type="radio" value="1" name="reponse">
-                                </div>
-                                <div class="col-md-3">
-                                    <span class="ml-4">Non<br></span><input type="radio" id="NPmethod" class="ml-4" value="0" name="reponse"><br>
-                                </div>
-                            </div><br>
-
-
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Nouveau</button>
-                            </div>
-                    </div>
-
-                    </form>
-                    <div id="payement" class="tabcontent">
-                        <form class="text-left" action="/updatepayement" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="form-group">
-                                <input type="hidden" id="id_montant" name="id_subscription" class="form-control p-4" required placeholder="date of the software">
-                            </div>
-                            <div class="form-group">
-                                <input type="hidden" id="a_payer" name="a_payer" class="form-control p-4" required placeholder="date of the software">
-                            </div>
-                            <div class="">
-                                <div class="form-group">
-                                    <label for="Montant" class="text-black">Nouveau Montant</label>
-                                    <input type="text" id="montant_paye" name="montant" class="form-control p-4" required placeholder="entrez le nouveu montant">
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-block btn-primary">Enregistrer</button>
-                            </div>
-                    </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
-</div>
 
 <style>
     .page {

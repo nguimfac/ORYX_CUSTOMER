@@ -29,6 +29,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/software',[HomeController::class,'ManageSoft']);
 Route::post('/newsoftware',[HomeController::class,'AddSoftware']);
 Route::get('DeleteLogiciel/{id_logiciel}',[HomeController::class,'DeleteLogiciel']);
+Route::get('DeleteCommercial/{id_logiciel}',[HomeController::class,'DeleteCommercial']);
 Route::post('updatesoftware', [HomeController::class, 'EditLogiciel']);
 Route::get('/souscription',[HomeController::class,'Souscription']);
 Route::post('/newsouscription',[HomeController::class,'NewSouscription']);
@@ -65,6 +66,9 @@ Route::post('newsolution',[HomeController::class,'NewSolution']);
 Route::get('deletesolution/{id}',[HomeController::class,'DeleteSolution']);
 Route::post('updatesolution',[HomeController::class,'UpdateSolution']);
 Route::post('printinvoice',[HomeController::class,'PrintFacture']);
+Route::get('commercial',[HomeController::class,'Commercial']);
+Route::post('newcommercial',[HomeController::class,'NewCommercial']);
+Route::post('updatecommercial',[HomeController::class,'UpdateCommercial']);
 
 
 

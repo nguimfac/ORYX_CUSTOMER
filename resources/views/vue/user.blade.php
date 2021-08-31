@@ -49,6 +49,8 @@
                                                 <ul class="drop-down__menu">
                                                   <li data-name="profile" class="drop-down__item text-black"> <a class="bg-white text-black" href="{{url('prospect')}}"></a> <span class="fa fa-user"></span>  Prospect </li>
                                                   <li data-name="dashboard" class="drop-down__item">  <a href="{{url('souscription')}}" class="bg-white"></a>   <span class="fa fa-user-o"></span>  Client </li>
+                                                  <li data-name="dashboard" class="drop-down__item">  <a href="{{url('commercial')}}" class="bg-white"></a>   <span class="fa fa-user-o"></span>  Commercial </li>
+
                                                 </ul>
                                               </div>
                                             </div>
@@ -117,6 +119,7 @@
                                 <tbody class="jsTableBody">
                                     @foreach ($users as $user)
                                     <tr>
+                                        @if ($user->is_admin!=0)
                                         <td id="userid">{{$user->id}}</td> 
                                         <td>{{$user->name}}</td> 
                                         <td>{{$user->email}}</td>
@@ -125,8 +128,6 @@
                                              Agent / Admin
                                             @elseif($user->is_admin==2)
                                             Agent / Utilisateur
-                                            @else
-                                            Agent
                                             @endif
                                             </td>
                                             <td class="action" data-title="Action">
@@ -163,6 +164,7 @@
                                             </div>
                                         </td>
                                             </td>
+                                        @endif
                                     </tr> 
                                     @endforeach
                                    

@@ -54,6 +54,8 @@ $(document).ready(function(){
                                             <ul class="drop-down__menu">
                                               <li data-name="profile" class="drop-down__item text-black"> <a class="bg-white text-black" href="{{url('prospect')}}"></a> <span class="fa fa-user"></span>  Prospect </li>
                                               <li data-name="dashboard" class="drop-down__item">  <a href="{{url('souscription')}}" class="bg-white"></a>   <span class="fa fa-user-o"></span>  Client </li>
+                                              <li data-name="dashboard" class="drop-down__item">  <a href="{{url('commercial')}}" class="bg-white"></a>   <span class="fa fa-users"></span>  Commercial </li>
+
                                             </ul>
                                           </div>
                                         </div>
@@ -541,7 +543,7 @@ window.onresize = function(event) {
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="date_fin " class="text-black">Periode</label>
-                                    <input type="number" list="number" name="nombre" class="form-control p-4" placeholder="periode">
+                                    <input type="number" list="number" id="nombrerenew" required name="nombre" class="form-control p-4" placeholder="periode">
                                     <datalist id="number">
                                         <option value="1">
                                         <option value="2">
@@ -556,7 +558,7 @@ window.onresize = function(event) {
                             </div>
                                 <div class="col-md-6">
                                     <label for="date_fin"  class="text-black">Mois/ans</label>
-                                    <select name="date_fin" class="form-control " style="height:46px" id="">
+                                    <select name="date_fin" id="perioderenew" class="form-control " style="height:46px" id="">
                                         <option value="1">mensuelle</option>
                                         <option value="2">annuelle</option>
                                     </select>
@@ -569,14 +571,9 @@ window.onresize = function(event) {
                                     <input type="number" id="newmont" name="newmont" class="form-control p-4" required placeholder="Entrez le montant payé">
                                 </div>
                             </div>
-                                <div class="">
-                                    <div class="form-group">
-                                        <label for="date_exp" class="text-black">Montant payé</label>
-                                        <input type="number" id="Mpaye" name="Mpaye" class="form-control p-4" required placeholder="Entrez le montant payé">
-                                    </div>
-                                </div>
+                               
 <style>
-    .fa-print {
+    #fa{
         color: white;
     }
 </style>
@@ -590,17 +587,12 @@ $buttons.click(function() {
     $(this).prop('disabled', true); //disable clicked button
 });
 </script>
-                                <div class="">
-                                    <div class="form-group">
-                                            <button  id="p" class="fa fa-print btn btn-info" value="Print" name="Print" title="imprimer la facture"></button>
-                                    </div>
-                                </div>
-                                
                              
+                                
                                 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary" id="renew" name="Enregistrer" value="Enregistrer">Enregistrer</button>
+                                <button type="submit" class="btn btn-primary" id="renew" name="Print" value="Print"> <li class="fa fa-print" id="fa"></li>  Enregistrer</button>
                             </div>
                     </div>
 
@@ -626,6 +618,25 @@ $buttons.click(function() {
                                     <input type="number" id="montant_paye" name="montant" class="form-control p-4" required placeholder="entrez le nouveu montant">
                                 </div>
                             </div>
+
+                            <div class="row ">
+                                <div class="col-md-4 mt-4 ">
+                                    <span>Orange money</span><br><input required class="ml-4"  type="radio" value="OM" name="type_payement">
+                                </div>
+
+                                <div class="col-md-4 mt-4">
+                                    <span>Mtn money<br></span><input required type="radio"  class="ml-4" value="MM" name="type_payement"><br>
+                                </div> 
+                            </div><br>
+							<div class="row">
+								<div class="col-md-4 mt-4">
+                                    <span>Cash<br></span><input required  type="radio"  class="ml-4" value="CASH" name="type_payement"><br>
+                                </div>
+                                <div class="col-md-4 mt-4">
+                                    <span>virement</span><br><input required type="radio"  value="V" class="ml-4" name="type_payement"><br>
+                                </div>
+							</div>
+
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-block btn-primary">Enregistrer</button>
                             </div>
@@ -648,7 +659,7 @@ $buttons.click(function() {
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label for="date_fin " class="text-black">Periode</label>
-                                        <input type="number" list="number" name="nombre" class="form-control p-4" placeholder="periode">
+                                        <input type="number" id="nombremake" list="number" name="nombre" class="form-control p-4" placeholder="periode">
                                         <datalist id="number">
                                             <option value="1">
                                             <option value="2">
@@ -663,7 +674,7 @@ $buttons.click(function() {
                                 </div>
                                     <div class="col-md-6">
                                         <label for="date_fin"  class="text-black">Mois/ans</label>
-                                        <select name="date_fin" class="form-control " style="height:46px" id="">
+                                        <select name="date_fin" id="periodemake" class="form-control " style="height:46px" id="">
                                             <option value="1">mensuelle</option>
                                             <option value="2">annuelle</option>
                                         </select>
@@ -755,6 +766,7 @@ $buttons.click(function() {
         $('#id_payement').val(_this.find('#id_subs').text());
         $('#id_montant').val(_this.find('#id_subs').text());
         $('#a_payer').val(_this.find('#montant').text());
+        $('#montant_p').val(_this.find('#montant').text());
         $('#client').val(_this.find('#client_name').text());
         $('.payement_client_name').text(_this.find('#client_name').text())
         $('.renewsubs_client_name').text(_this.find('#client_name').text())
@@ -772,6 +784,16 @@ $buttons.click(function() {
             }
         });
     })
+
+
+    $(document).ready(function() {
+        $('#renew').click(function() {
+        $('#montant_p').val($('#newmont').val());
+        $('#nombremake').val($('#nombrerenew').val());
+        $('#periodemake ').val($('#perioderenew').val());
+      })
+     })
+
 /*
 	$(document).ready(function(){
 	 $("td").hover(function(){
