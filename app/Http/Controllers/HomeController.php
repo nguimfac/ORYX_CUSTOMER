@@ -524,7 +524,7 @@ class HomeController extends Controller
                 'client_address' => $subscriptions->client_address,
                 'client_ville' => $subscriptions->ville,
                 'client_email' => $subscriptions->client_email,
-                'invoice_date' => $curent_date,
+                'invoice_date' => $subscriptions->date_debut,
                 'method' => $subscriptions->type_payement,
                 'logiciel' => $subscriptions->logiciel_name,
                 'mont_paye' => $subscriptions->a_payer,

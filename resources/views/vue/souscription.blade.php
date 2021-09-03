@@ -464,7 +464,6 @@ $(document).ready(function(){
                         </div>
 
                         <script>
-
                             $(document).ready(function() {
                                 $(".payeform").hide()
                                 $("#method1").click(function() {
@@ -572,9 +571,12 @@ $(document).ready(function(){
                 <div class="modal-body">
                     <div>
                         <div class="tab">
-                            <button class="tablinks" onclick="openSubscription(event, 'renewSubs')">Renouveller Souscription</button>
-                            <button class="tablinks" onclick="openSubscription(event, 'creerpayement')">Creer un Payement</button>
-                            <button class="tablinks" onclick="openSubscription(event, 'payement')">Continuer Payement</button>
+                            <button id="tab1" class="tablinks" onclick="openSubscription(event, 'renewSubs')">Renouveller Souscription <i class="fa fa-refresh" aria-hidden="true"></i>
+                            </button>
+                            <button id="tab2" class="tablinks" onclick="openSubscription(event, 'creerpayement')">Creer un Payement <i class="fa fa-money" aria-hidden="true"></i>
+                            </button>
+                            <button id="tab3" class="tablinks" onclick="openSubscription(event, 'payement')">Continuer Payement <i class="fa fa-wheelchair" aria-hidden="true"></i>
+                            </button>
 
                         </div>
                     </div>
@@ -893,10 +895,34 @@ $buttons.click(function() {
         }
         document.getElementById(subscriptionvalue).style.display = "block";
         evt.currentTarget.className += " active";
-        $('.tablinks').click(function() {
-            $('.tablinks').css('color', 'white');
-        });
+       
     }
+</script>
+
+
+<script>
+
+$(document).ready(function() {
+    $('#tab1').click(function() {
+     $('#tab2').css('color','black')
+     $('#tab3').css('color','black')
+     $(this).css('color','white')
+
+
+    })
+    $('#tab2').click(function() {
+        $('#tab1').css('color','black')
+     $('#tab3').css('color','black')
+     $(this).css('color','white')
+    })
+    $('#tab3').click(function() {
+        $('#tab2').css('color','black')
+     $('#tab1').css('color','black')
+     $(this).css('color','white')
+    })
+
+})
+
 </script>
 
 <script>
