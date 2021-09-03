@@ -28,7 +28,7 @@ class TestMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Test Mail from Oryx consulting')
+        return $this->subject('ORYX CONSULTING')
         ->attach(public_path('images/img_oryx.png'))
         ->view('emails.TestMail');
     }

@@ -97,7 +97,7 @@
                         <h3 class="widget-header">
                             <div class="row">
                                 <div class="col-md-8 mt-4">
-                                    <strong>COMMERCIALES</strong><br>
+                                    <strong>LISTE DE COMMERCIALES</strong><br>
                                     <div class="p-0">
 
                                     </div>
@@ -113,7 +113,8 @@
                                 <tr>
                                     <th>NUMERO</th>
                                     <th>Nom</th>
-                                    <th> Role</th>
+                                    <th>Role</th>
+                                    <th> Email</th>
                                     <th class="text-center">Action</th>
                                 </tr>
                             </thead>
@@ -124,6 +125,7 @@
                                     <td class="product-category" id="id_commer"><span class="categories">{{$commercial->id}} </span></td>
                                     <td class="product-category" id="noms"><span class="categories font">{{$commercial->name}} </span></td>
                                     <td class="product-category" id="roles"><span class="categories font">{{$commercial->role}} </span></td>
+                                    <td class="product-category" id="email_val"><span class="categories font">{{$commercial->email}} </span></td>
 
                                     <td class="action" data-title="Action">
                                         <div class="">
@@ -195,6 +197,11 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="Email" class="text-black"> Email</label>
+                        <input type="email" name="email" id="email" class="form-control p-4" required >
+                    </div>
+
+                    <div class="form-group">
                         <label for="Titre" class="text-black">Role</label>
                         <textarea name="role" id="" class="form-control"></textarea>
                     </div>
@@ -230,6 +237,11 @@
                         <label for="Titre" class="text-black">Nom</label>
                         <input type="text" id="nom" name="nom" class="form-control p-4" required>
                     </div>
+                    <div class="form-group">
+                        <label for="Email" class="text-black"> Email</label>
+                        <input type="email" name="email" id="email_e" class="form-control p-4" required >
+                    </div>
+
                     <div class="form-group">
                         <label for="Titre" class="text-black">Role</label>
                         <input type="text" id="role" name="role" class="form-control p-4" required>
@@ -303,6 +315,7 @@
         $('#id').val(_this.find('#id_commer').text());
         $('#nom').val(_this.find('#noms').text());
         $('#role').val(_this.find('#roles').text());
+        $('#email_e').val(_this.find('#email_val').text());
     });
 </script>
 

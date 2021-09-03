@@ -193,12 +193,18 @@ class HomeController extends Controller
             Alert::html($validator->errors()->first(), 'warning', 'warning');
             return redirect()->back();
         } else {
+            if (!(User::where('name', $request->nom)->exists())) {
             $comm = new User();
             $comm->name = $request->nom;
             $comm->role = $request->role;
+            $comm->email = $request->email;
             $comm->is_admin = 0;
             $comm->save();
             Alert::success('Comercial enregistré avec success', "success", 'success');
+            }else{
+                Alert::html('Un commercial avec se nom existe deja', "alert", 'error');
+            }
+
         }
         return redirect()->back();
     }
@@ -230,7 +236,7 @@ class HomeController extends Controller
             'prix.required' => 'prix is required'
         ]);
 
-        if ($request->image_name) {
+        if ($request->image_name!=null) {
             $imgname = $request->file('image_name')->getClientOriginalName();
             $request->file('image_name')->storeAs('public/images/', $imgname);
             $logiciel = logiciel::find($request->id);
@@ -326,7 +332,7 @@ class HomeController extends Controller
                     $client_prospect->logiciel_id = $request->logiciel_id;
                     if($request->commercial_id=="")$request->commercial_id = 11;
                     $client_prospect->users_id = $request->commercial_id;
-                    $client_prospect->etat = 1;
+                    $client_prospect->etat = 0;
                     $client_prospect->created_at = $request->$current_date;
                     $client_prospect->save();
                     Alert::success('Prospect enregistré avec success', "success", 'success');    
@@ -342,7 +348,7 @@ class HomeController extends Controller
                             'telephone' => $request->telephone_client,
                             'ville' => $request->ville_client,
                             'users_id'=>11,
-                            'etat'=>1,
+                            'etat'=>0,
                             'created_at' => $current_date
                         ]
                     );
@@ -351,7 +357,8 @@ class HomeController extends Controller
                     $subcript->commercial_id = 11;
                     $subcript->logiciel_id = $request->logiciel_id;
                     $subcript->save();
-                   
+                    Alert::success('Client enregistré avec success', "success", 'success');    
+
                 }
             }
         
@@ -465,6 +472,7 @@ class HomeController extends Controller
             $subs->date_debut = null;
             $subs->date_fin = null;
             $subs->paye = 0;
+            $subs->alert=0;
             $subs->save();
             $pdf = PDF::loadView('facture', $data);
             return $pdf->download("facture " . $client_prospects->nom . ".pdf");
@@ -476,13 +484,14 @@ class HomeController extends Controller
 
     public function UpdatePayement(Request $request)
     {
-        $html = "Vous ne povez  plus continuer";
+        $html = "Veillez reéssayer! ";
         $subs = subscription::find($request->id_subscription);
 
         if (($request->montant + $subs->paye > $subs->a_payer)) {
-            Alert::warning('Ce client a deja fini son payement!', $html, 'warning');
+            Alert::warning('le Montant que vous avez entrez est superieure a montan à payer par le client!', $html, 'warning');
             return redirect()->back();
-        } elseif ($subs->a_payer == 0) {
+        }
+        elseif ($subs->a_payer == 0) {
             Alert::warning('Ce client n a pas encore commencer le payement!', $html, 'warning');
             return redirect()->back();
         } else {
@@ -891,7 +900,8 @@ class HomeController extends Controller
     public function UpdateCommercial(Request $request){
         $validator = Validator::make($request->all(), [
             'nom' => 'required',
-            'role'=> 'required'
+            'role'=> 'required',
+            'email'=> 'required'
         ]);
 
         if ($validator->fails()) {
@@ -901,6 +911,7 @@ class HomeController extends Controller
             $comm =User::find($request->id);
             $comm->name = $request->nom;
             $comm->role = $request->role;
+            $comm->email = $request->email;
             $comm->save();
             Alert::success('Comercial Modifié avec success', "success", 'success');
         }

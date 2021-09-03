@@ -131,7 +131,7 @@ $(document).ready(function(){
                                     </div>
                                 </div>
                                 <div class="col-md-2 offset-md-12 mr-4 col-xs-6 col-sm-6">
-                                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop"> New Prospect <i class="fa fa-plus-square" aria-hidden="true"></i></button>
+                                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop"> ajouter Prospect <i class="fa fa-plus-square" aria-hidden="true"></i></button>
                                 </div>
                             </div>
                         </h3>

@@ -19,7 +19,7 @@
 			<div class="bg-white mb-4 shadow p-3 mb-5 bg-white rounded">
                 <div class="container">
                 </div>
-				<style>
+				<style>/*
 					#hidesmall{ 
 						max-width: 100%; 
 						 height: auto;
@@ -30,6 +30,7 @@
 					@media (max-width: 1050px) {
 						#hidesmall { display: none; }
 												} 
+												*/
 			   </style>
 
 				<div class="row">

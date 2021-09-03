@@ -94,7 +94,7 @@
                         <h3 class="widget-header">
                             <div class="row">
                                 <div class="col-md-8 mt-4">
-                                    <strong>List des Agents/Users</strong><br>
+                                    <strong>Liste des Users</strong><br>
                                     <div class="p-0">
                                     </div>
                                 </div>

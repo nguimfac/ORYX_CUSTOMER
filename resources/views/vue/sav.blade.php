@@ -118,13 +118,13 @@
                         <div id="tsum-tabs">
                             <main>
                                 <input id="tab1" class="inputs" type="radio" name="tabs" checked>
-                                <label for="tab1"><strong> <a href="#tabs1"> RECLAMMATION </a></strong></label>
+                                <label for="tab1"><strong> RECLAMMATION </strong></label>
 
                                 <input id="tab2" class="inputs" type="radio" name="tabs">
-                                <label for="tab2"><strong><a href="#tabs2">SUGGESTION</a>  </strong></label>
+                                <label for="tab2"><strong>SUGGESTION </strong></label>
 
                                 <input id="tab3" class="inputs" type="radio" name="tabs">
-                                <label for="tab3"><strong> <a href="#tabs3">SOLUTION</a> </strong></label>
+                                <label for="tab3"><strong> SOLUTION </strong></label>
 
                               
                                 <section id="content1"><br>
@@ -133,7 +133,7 @@
 
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdropR"> Add Reclammations <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdropR"> Ajouter Reclammation <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
                                         </div>
                                        
                                     </div>
@@ -218,7 +218,7 @@
                                 <section  id="content2">
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop"> Add Suggestion <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop"> Ajouter Suggestion <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
                                         </div>
                                        
                                     </div>
@@ -298,7 +298,7 @@
                                 <section id="content3">
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdropSolution"> Add solution <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdropSolution"> Ajouter solution <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
                                         </div>
                                        
                                     </div>
@@ -487,7 +487,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Nouveau</button>
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
             </div>
             </form>
         </div>
@@ -514,7 +514,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Nouveau</button>
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
             </div>
             </form>
         </div>
@@ -593,7 +593,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Nouveau</button>
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
             </div>
             </form>
         </div>
@@ -647,7 +647,7 @@
                            
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Nouveau</button>
+                                <button type="submit" class="btn btn-primary">Modifier</button>
                             </div>
                     </div>
 
@@ -702,7 +702,7 @@
                             
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Nouveau</button>
+                                <button type="submit" class="btn btn-primary">Modifier</button>
                             </div>
                     </div>
 
@@ -768,7 +768,7 @@
             
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Nouveau</button>
+                            <button type="submit" class="btn btn-primary">Modifier</button>
                         </div>
                         </form>
                 

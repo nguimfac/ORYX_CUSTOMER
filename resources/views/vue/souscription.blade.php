@@ -117,12 +117,10 @@ $(document).ready(function(){
                         <h3 class="widget-header">
                             <div class="row">
                                 <div class="col-md-4  mt-4">
-                                    <strong>SUBSCRIPTION REALISEES</strong><br>
+                                    <strong>SUBSCRIPTIONS REALISEES</strong><br>
                                     <div class="p-0">
                                     </div>
                                 </div>
-
-                                
 
                                 <div class="col-md-3 col-lg-2">
                                     <a class="btn btn-success  ml-5" type="button" href="/sendmail"> Notifier vos clients <i class="fa fa-bell" aria-hidden="true"></i></a>
@@ -698,13 +696,30 @@ $buttons.click(function() {
                     </div>
 
                     <div id="creerpayement" class="tabcontent">
-                        <form class="text-left" action="{{url('makepayement')}}" method="POST" enctype="multipart/form-data">
+                        <form class="text-left" id="form" action="{{url('makepayement')}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <input type="hidden" id="id_payement" name="id_payement" class="form-control p-4" required placeholder="date of the software">
                             </div>
                             <label for="text-black" class="text-black text-center offset-md-4 text-uppercase"> Payement  du client <strong class="payement_client_name"></strong> </label>
                             
+                                <script>
+                                    $(document).ready(function() {
+                                        $('#info').hide();
+                                        $('#paye').keyup(function() {
+                                           if(parseInt($(this).val())>parseInt($('#montant_p').val())){
+                                                    $('#info').show();
+                                                    $('#bout').attr("disabled",true);
+
+                                        }else{
+                                            $('#info').hide();
+                                            $('#bout').attr("disabled",false);
+
+                                        }
+                                        })
+                                    })
+                                </script>
+
                             <div class="form-group">
                                 <label for="address" class="text-black">Montant du forfait</label>
                                 <input type="text" required id="montant_p" onkeyup="envoi(this.value)"  name="montant_paye" class="form-control p-4" placeholder="Entrez le montant à payer">
@@ -756,11 +771,13 @@ $buttons.click(function() {
                                 </div>
 							</div>
                             <div i class="form-group payeform mt-4">
-                                <label for="date_fin" class="text-black">Somme  payé</label>
+                                <label for="date_fin" class="text-black">Somme  payé</label><br>
+                                <label for="error" class="text-danger" id="info" style="font-size:12px">Vous etes en train d'entrer un montant superieure au montant à payer par ce client</label>
+
                                 <input type="number" id="paye" required name="paye" class="form-control p-4">
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-block btn-primary">Enregistrer</button>
+                                <button type="submit" id="bout" class="btn btn-block btn-primary">Enregistrer</button>
                             </div>
                     </div>
                     </form>
