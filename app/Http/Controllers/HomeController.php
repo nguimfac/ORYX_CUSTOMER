@@ -215,7 +215,7 @@ class HomeController extends Controller
     {
         try {
             logiciel::destroy($id_logiciel);
-            Alert::success('Do you want to delete this record', 'Confirmation');
+            Alert::success('Ce logiciel a été supprimé', 'Confirmation');
             //permet de supprimer un element du panier avec id passe en paramatre
         } catch (\Exception $e) {
 

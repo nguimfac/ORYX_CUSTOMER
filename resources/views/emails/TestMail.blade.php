@@ -7,7 +7,9 @@
     <title>Test Mail</title>
 </head>
 <body>
-    <img src="{{public_path('images/img_oryx.png')}}" alt="">
+    <div>
+        <img style="margin-right:25px" src="{{asset('images/OpClient.png')}}" alt="">
+    </div>
     <h1 style="color:rgb(235, 63, 41)">{{$details['title']}}</h1>
     <p>{{$details['body']}}</p>
 
