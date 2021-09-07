@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Optimus clients</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -108,11 +108,11 @@
                         </li>
                         @endif @else
                         <li class="nav-item active ">
-                            <a class="nav-link " href="home ">Home</a>
+                            <a class="nav-link " href="home ">Acceuil</a>
                         </li>
 
                         <li class="nav-item dropdown dropdown-slide @@dashboard ">
-                            <a class="nav-link dropdown-toggle " data-toggle=" " href="#! ">Dashboard</span>
+                            <a class="nav-link dropdown-toggle " data-toggle=" " href="#! ">Menu</span>
 								</a>
 
                             <!-- Dropdown list -->

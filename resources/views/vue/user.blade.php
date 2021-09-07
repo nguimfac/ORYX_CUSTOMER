@@ -24,6 +24,47 @@
       })
     </script>
 
+<script>
+    $(document).ready(function() {
+$('.myTable').DataTable( {
+    "language": {
+        "sEmptyTable":     "Aucune donnée disponible dans le tableau",
+        "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
+        "sInfoEmpty":      "Affichage de l'élément 0 à 0 sur 0 élément",
+        "sInfoFiltered":   "(filtré à partir de _MAX_ éléments au total)",
+        "sInfoPostFix":    "",
+        "sInfoThousands":  ",",
+        "sLengthMenu":     "Afficher _MENU_ éléments",
+        "sLoadingRecords": "Chargement...",
+        "sProcessing":     "Traitement...",
+        "sSearch":         "Rechercher :",
+        "sZeroRecords":    "Aucun élément correspondant trouvé",
+        "oPaginate": {
+            "sFirst":    "Premier",
+            "sLast":     "Dernier",
+            "sNext":     "Suivant",
+            "sPrevious": "Précédent"
+        },
+        "oAria": {
+            "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+            "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
+        },
+        "select": {
+            "rows": {
+                "_": "%d lignes sélectionnées",
+                "0": "Aucune ligne sélectionnée",
+                "1": "1 ligne sélectionnée"
+            }
+        }
+    },
+} );    });
+</script>
+
+<style>
+    @media (max-width: 1026px) {
+      #notdisplayed { display: none; }
+
+  }    </style>
 <div class="container-fluid">
     <section class="dashboard section">
         <!-- Container Start -->
@@ -73,7 +114,7 @@
                                 <img src="images/user/user-thumb.jpg" alt="" class="rounded-circle">
                             </div>
                             <!-- User Name -->
-                            <img src="{{ asset ('images/userimg.png')}}" alt="100" width="150" srcset="">
+                            <img id="notdisplayed" src="{{ asset ('images/userimg.png')}}" alt="100" width="150" srcset="">
                         </div>
                         <!-- Dashboard Links -->
 
@@ -94,7 +135,7 @@
                         <h3 class="widget-header">
                             <div class="row">
                                 <div class="col-md-8 mt-4">
-                                    <strong>Liste des Users</strong><br>
+                                    <strong>Liste des Utilisateurs</strong><br>
                                     <div class="p-0">
                                     </div>
                                 </div>
@@ -106,7 +147,7 @@
                         </h3>
 
                         <div>
-                            <table id="myTable" class="table table-striped table-hover table-borderless table-responsive-sm">
+                            <table id="myTable" class="table myTable table-striped table-hover table-borderless table-responsive-sm">
                                 <thead class="bg-primary text-white">
                                     <tr>
                                         <th scope="col">Numero</th>
@@ -476,14 +517,9 @@
         })
     })
 
- 
 </script>
 
-<script>
-    $(document).ready(function() {
-        $('#myTable').DataTable();
-    });
-</script>
+
 
 <script>
     $(document).on('click', '#edit', function() {

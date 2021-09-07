@@ -332,7 +332,7 @@ class HomeController extends Controller
                     $client_prospect->logiciel_id = $request->logiciel_id;
                     if($request->commercial_id=="")$request->commercial_id = 11;
                     $client_prospect->users_id = $request->commercial_id;
-                    $client_prospect->etat = 0;
+                    $client_prospect->etat = 1;
                     $client_prospect->created_at = $request->$current_date;
                     $client_prospect->save();
                     Alert::success('Prospect enregistré avec success', "success", 'success');    
@@ -758,6 +758,10 @@ class HomeController extends Controller
         } else {
             $request->periode = "Ans";
         }
+        $subs = subscription::find($request->id_fact);
+        $subs->a_payer = $request->montant;
+        $subs->save();
+
         foreach ($client_prospect as $client_prospects) {
             $data = [
                 'title' => 'nguimfack',
@@ -842,11 +846,18 @@ class HomeController extends Controller
         } else {
             $subcript->paye  = $request->paye;
         }
+        
+         if($subcript->a_payer== 0){
+            Alert::html('Vous n avez pas encore crée la facture de ce client', "Veillez le faire avant de passer au payement", 'warning');
+        }else{
+            
         $subcript->a_payer = $request->montant_paye;
         $subcript->date_fin = $effectiveDate;
         $subcript->type_payement = $request->type_payement;
         $subcript->save();
         Alert::html('Payement realisé  avec success', "client" . $request->nom_client, 'success');
+        }
+
         return redirect()->back();
     }
 
