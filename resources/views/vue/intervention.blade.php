@@ -182,7 +182,7 @@
                                                             <tbody id="myTable3">
                                                                 @foreach ($users as $user)
                                                                 <tr>
-                                                                   @if ($user->is_admin==0 && $user->name!="aucun")
+                                                                   @if ($user->is_admin==0 || $user->is_admin==4 && $user->name!="aucun")
                                                                    <td>{{$user->name}}</td>
                                                                    <td><label><input  type="checkbox" name="agent[]" value="{{$user->name}}"></label><br></td>
                                                                

@@ -116,18 +116,22 @@ $(document).ready(function(){
                     <div class="widget dashboard-container my-adslist">
                         <h3 class="widget-header">
                             <div class="row">
-                                <div class="col-md-4  mt-4">
-                                    <strong>SUBSCRIPTIONS REALISEES</strong><br>
+                                <div class="col-md-3  mt-4">
+                                    <strong>SOUSCRIPTIONS REALISEES</strong><br>
                                     <div class="p-0">
                                     </div>
                                 </div>
 
                                 <div class="col-md-3 col-lg-2">
-                                    <a class="btn btn-success  ml-5" type="button" href="/sendmail"> Notifier vos clients <i class="fa fa-bell" aria-hidden="true"></i></a>
+                                    <a class="btn btn-success " type="button" href="/sendmail"> Notifier vos clients <i class="fa fa-bell" aria-hidden="true"></i></a>
                                 </div>
 
                                 <div class="col-md-3  col-lg-2">
                                     <a class="btn btn-primary text-white ml-5" type="button" data-toggle="modal" data-target="#staticBackdrop"> Creer un client <i class="fa fa-user" aria-hidden="true"></i></a>
+                                </div>
+                                
+                                <div class="col-md-3 col-lg-2">
+                                        <a class="btn btn-secondary ml-5 text-white" type="button" data-toggle="modal" data-target="#staticBackdropexisting"> Souscription <i class="fa fa-plus-square" aria-hidden="true"></i></a>
                                 </div>
 
 
@@ -142,6 +146,209 @@ $(document).ready(function(){
                         </h3>
           
 
+
+
+
+<div class="modal fade" id="staticBackdropexisting" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Enregistrer subscription existante <img width="80" src="{{  asset('images/subscription.png') }}" alt="" srcset=""></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div class="modal-body">
+                <form action="/newsouscription" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row">
+
+                      
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="nom" class="text-black">Nom du client</label>
+                                <input type="text" name="nom_client" class="form-control p-4" required placeholder="Name of the client">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="civilite" class="text-black">Civilité</label>
+                                <input type="text" name="civilite_client" class="form-control p-4" required placeholder="Civilité">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="text-black">Email</label>
+                                <input type="email" name="email_client" class="form-control p-4" required placeholder="email du client">
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="address" class="text-black">Address</label>
+                                <input type="text" name="address_client" class="form-control p-4" required placeholder="address du client">
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="address" class="text-black">Code Postal</label>
+                                <input type="text" name="codepostal_client" class="form-control p-4" placeholder="code postal du client">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="address" class="text-black">Montant du forfait</label>
+                                <input type="text" required id="valmontant_p" onkeyup="envoidata(this.value)"  name="montant_p" class="form-control p-4" placeholder="Entrez le montant à payer">
+                            </div>
+
+                           
+
+                            <div class="form-group">
+                                <label for="logiciel" class="text-black">Logiciel</label>
+                                <select type="text" name="logiciel" class="form-control  text-black" style="height:46px">
+								@foreach ($logiciel as $logiciels)
+								<option value="{{$logiciels->id}}">{{$logiciels->titre}}</option>
+								@endforeach
+							</select>
+                            </div>
+                            <div class="form-group ">
+                                <label for="date_fin" class="text-black">Date fin</label>
+                                <input type="date" name="date_fin" class="form-control p-4" required>
+                            </div>
+                            
+                        </div>
+
+                        
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="ville" class="">Ville</label>
+                                <input type="text" required list="browsers" class="form-control p-4" name="ville_client">
+                                <datalist id="browsers">
+									<option value="Douala">
+									<option value="Yaoundé">
+									<option value="Limbe">
+									<option value="Edea">
+									<option value="Kribi">
+									<option value="Dschand">
+							</datalist>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="address" class="text-black">Telephone</label>
+                                <input type="number" required name="telephone_client" class="form-control p-4" placeholder="telephone du client">
+                            </div>
+                            <div class="form-group">
+                                <label for="commercial" class="text-black">Commercial enchargé</label>
+                                <select name="commercial_id" required id="commercial_id" class="form-control " style="height:46px">
+                                    <option value="">Pas de commercial concerné</option>
+                                  @foreach ($commercial as $c )
+                                     @if ($c->name !="aucun")
+                                     <option value="{{$c->id}}">{{$c->name}}</option>
+                                     @endif
+                                  @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 ml-3">
+                          <div class="row" >
+                                <fieldset class="fieldset_color_red">
+                                     <legend class="legend_color_red"> Methode</legend>
+                                    <div class="col-md-12 col-12">
+                                        <div class="row ">
+                                            <div class="col-md-2">
+                                                <span>Orange money</span><br><input class="ml-4" id="methods1" type="radio" value="OM" name="type_payement">
+                                            </div>
+                
+                                            <div class="col-md-2">
+                                                <span>Mtn money<br></span><input type="radio" id="methods2" class="ml-4" value="MM" name="type_payement"><br>
+                                            </div>
+                                            
+                                    
+                                            <div class="col-md-2">
+                                                <br><span>Cash</span><input type="radio" id="cashs" class="ml-4" value="CASH" name="type_payement"><br>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <br><span>virement</span><input type="radio" id="methods3" value="V" class="ml-4" name="type_payement"><br>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <span>Non payé<br></span><input type="radio" id="NPmethods" class="ml-4" value="NP" name="type_payement"><br>
+                                            </div> 
+                                        
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            </div>
+                        </div>
+
+<style>
+  legend {
+    float: none;
+    position: absolute;
+    display: block;
+    margin: 0 100% 10px 13px;
+    padding: 3px 9px;
+    width: auto !important;
+    /* background: #f5f5f5; */
+    /* border-right: 1px solid #ddd; */
+    border-bottom: 1px solid #ddd;
+    border-radius: 5px 5px 0px 0;
+    font-size: 12px;
+    color: #999;
+    top: 3px;
+  }
+
+  .fieldset_color_red {
+    border-color: rgb(64, 110, 196) !important;
+  }
+
+  .legend_color_red {
+    background-color: rgb(64, 110, 196);
+    color: white;
+    border-color: rgb(64, 110, 196);
+  }
+
+  fieldset {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 0;
+    background-color: transparent;
+    margin-top: 28px;
+  }
+</style>
+                    </div>
+
+                    <div i class="form-group payeform mt-4">
+                        <label for="date_fin" class="text-black">Somme  payé</label>
+                        <input type="number"  id="valpaye" name="paye" class="form-control p-4">
+                    </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        
 <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-md  modal-dialog-centered">
         <div class="modal-content">
@@ -452,6 +659,9 @@ $(document).ready(function(){
                                 <label for="address" class="text-black">Telephone</label>
                                 <input type="number" name="telephone_client" class="form-control p-4" placeholder="telephone du client">
                             </div>
+
+
+
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -669,27 +879,38 @@ $buttons.click(function() {
                             <div class="">
                                 <div class="form-group">
                                     <label for="Montant" class="text-black">Nouveau Montant</label>
-                                    <input type="number" id="montant_paye" name="montant" class="form-control p-4" required placeholder="entrez le nouveu montant">
+                                    <input type="number" id="montant_paye" name="montant" class="form-control p-4" required placeholder="entrez le nouveau montant">
                                 </div>
                             </div>
 
-                            <div class="row ">
-                                <div class="col-md-4 mt-4 ">
-                                    <span>Orange money</span><br><input required class="ml-4"  type="radio" value="OM" name="type_payement">
-                                </div>
-
-                                <div class="col-md-4 mt-4">
-                                    <span>Mtn money<br></span><input required type="radio"  class="ml-4" value="MM" name="type_payement"><br>
-                                </div> 
-                            </div><br>
-							<div class="row">
-								<div class="col-md-4 mt-4">
-                                    <span>Cash<br></span><input required  type="radio"  class="ml-4" value="CASH" name="type_payement"><br>
-                                </div>
-                                <div class="col-md-4 mt-4">
-                                    <span>virement</span><br><input required type="radio"  value="V" class="ml-4" name="type_payement"><br>
-                                </div>
-							</div>
+                            <div class="col-md-12 ml-3">
+                                <div class="row" >
+                                      <fieldset class="fieldset_color_red">
+                                           <legend class="legend_color_red"> payement</legend>
+                                          <div class="col-md-12 col-12">
+                                            <div class="row ">
+                                                <div class="col-md-2">
+                                                    <span>Orange money</span><br><input required class="ml-4" id="" type="radio" value="OM" name="type_payement">
+                                                </div>
+                
+                                                <div class="col-md-2">
+                                                    <span>Mtn money<br></span><input required type="radio" id="" class="ml-4" value="MM" name="type_payement"><br>
+                                                </div>
+                                              
+                                           
+                                                <div class="col-md-2">
+                                                   <br> <span>Cash<br></span><input required  type="radio" id="" class="ml-4" value="CASH" name="type_payement"><br>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <br><span>virement</span><br><input required type="radio" id="" value="V" class="ml-4" name="type_payement"><br>
+                                                </div>
+                                            </div>
+                                            
+                                      </div>
+                                  </fieldset>
+            
+                                  </div>
+                              </div>
 
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-block btn-primary">Enregistrer</button>
@@ -752,26 +973,39 @@ $buttons.click(function() {
                                     </div>
                                 </div>
                             </div>
-                            <div class="row ">
-                                <div class="col md-4 mt-4 ">
-                                    <span>Orange money</span><br><input required class="ml-4" id="method1" type="radio" value="OM" name="type_payement">
+                                   
+                   <div class="col-md-12 ml-3">
+                    <div class="row" >
+                          <fieldset class="fieldset_color_red">
+                               <legend class="legend_color_red"> Methode</legend>
+                              <div class="col-md-12 col-12">
+                                <div class="row ">
+                                    <div class="col-md-2">
+                                        <span>Orange money</span><br><input required class="ml-4" id="method1" type="radio" value="OM" name="type_payement">
+                                    </div>
+    
+                                    <div class="col-md-2">
+                                        <span>Mtn money<br></span><input required type="radio" id="method2" class="ml-4" value="MM" name="type_payement"><br>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <span>Non payé<br></span><input  type="radio" id="NPmethod" class="ml-4" value="NP" name="type_payement"><br>
+                                    </div> 
+                               
+                                    <div class="col-md-2">
+                                       <br> <span>Cash<br></span><input required  type="radio" id="cash" class="ml-4" value="CASH" name="type_payement"><br>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <br><span>virement</span><br><input required type="radio" id="method3" value="V" class="ml-4" name="type_payement"><br>
+                                    </div>
                                 </div>
+                                
+                          </div>
+                      </fieldset>
 
-                                <div class="col-md-4 mt-4">
-                                    <span>Mtn money<br></span><input required type="radio" id="method2" class="ml-4" value="MM" name="type_payement"><br>
-                                </div>
-                                <div class="col-md-4 mt-4">
-                                    <span>Non payé<br></span><input  type="radio" id="NPmethod" class="ml-4" value="NP" name="type_payement"><br>
-                                </div> 
-                            </div><br>
-							<div class="row">
-								<div class="col-md-4 mt-4">
-                                    <span>Cash<br></span><input required  type="radio" id="cash" class="ml-4" value="CASH" name="type_payement"><br>
-                                </div>
-                                <div class="col-md-4 mt-4">
-                                    <span>virement</span><br><input required type="radio" id="method3" value="V" class="ml-4" name="type_payement"><br>
-                                </div>
-							</div>
+                      </div>
+                  </div>
+
+
                             <div i class="form-group payeform mt-4">
                                 <label for="date_fin" class="text-black">Somme  payé</label><br>
                                 <label for="error" class="text-danger" id="info" style="font-size:12px">Vous etes en train d'entrer un montant superieure au montant à payer par ce client</label>
@@ -854,6 +1088,31 @@ $buttons.click(function() {
             },
     } );    });
 </script>
+
+
+<script>
+
+    $(document).ready(function() {
+        $(".payeform").hide()
+        $("#methods1").click(function() {
+            $(".payeform").fadeIn(250);
+        })
+        $("#methods2").click(function() {
+            $(".payeform").fadeIn(250);
+        })
+        $("#methods3").click(function() {
+            $(".payeform").fadeIn(250);
+        })
+        $("#cashs").click(function() {
+            $(".payeform").fadeIn(250);
+        })
+        $("#NPmethods").click(function() {
+            $('#paye').val(0)
+            $(".payeform").hide();
+        })
+    })
+</script>
+
 
 <script>
      $(document).on('click', '#edit_facture', function() {
@@ -968,6 +1227,16 @@ $(document).ready(function() {
         } else {
             var p = parseInt(document.getElementById('montant_p').value);
             document.getElementById('paye').value =p        }
+    }
+
+    function envoidata(value) 
+    {
+  
+        if($("#NPmethod").is(':checked')){
+           $('#valpaye').val(0)
+        } else {
+            var p = parseInt(document.getElementById('valmontant_p').value);
+            document.getElementById('valpaye').value =p        }
     }
 </script>
 

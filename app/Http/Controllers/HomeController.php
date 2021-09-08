@@ -56,7 +56,7 @@ class HomeController extends Controller
     public function index()
     {
         $role = Auth::user()->is_admin;
-        if ($role == 1 || $role == 2) {
+        if ($role == 1 || $role == 2 || $role==4) {
             return view('home');
         }
         if ($role == 0 || $role==3) {
@@ -66,7 +66,9 @@ class HomeController extends Controller
     }
 
     public function Commercial(){
-        $commercials = User::where('is_admin',0)->get();
+        $commercials = User::where('is_admin',0)
+        ->orWhere('is_admin',4)
+        ->get();
         return view('vue.commercial',['comm'=>$commercials]);
     }
 
@@ -74,13 +76,15 @@ class HomeController extends Controller
     {
         // DB::enableQueryLog();
 
-        $commercials = User::where('is_admin', '=', 0)->get();
+        $commercials = User::where('is_admin', '=', 0)
+        ->orWhere('is_admin','=',4)
+        ->get();
         $prospect = DB::table('client')
             ->select('client.created_at as date_c','name', 'telephone', 'titre', 'client.id as client_id', 'client.email as email', 'address', 'code_postal', 'logiciel.id as logiciel_id', 'address', 'nom', 'ville')
             ->join('logiciel', 'client.logiciel_id', '=', 'logiciel.id')
             ->join('users', 'client.users_id', '=', 'users.id')
             ->where('etat', 1)
-            ->orderBy('date_c', 'desc')
+            ->orderBy('client.id', 'desc')
             ->get();
         $logiciels = logiciel::all();
         return view('vue.prospect', ['prospects' => $prospect, 'logiciel' => $logiciels, 'commercial' => $commercials]);
@@ -122,7 +126,7 @@ class HomeController extends Controller
             ->join('logiciel', 'reclammation.logiciel_id', '=', 'logiciel.id')
             ->get();
         $role = Auth::User()->is_admin;
-        if ($role == 1 || $role == 2) {
+        if ($role == 1 || $role == 2 || $role == 4) {
             return view('vue.sav', ['reclammation' => $reclammations, 'software' => $logiciel, 'solutions' => $solution, 'suggestion' => $suggest]);
         } else {
             return view('auth.login');
@@ -148,9 +152,9 @@ class HomeController extends Controller
 
     public function ManageSoft()
     {
-        $data = logiciel::orderBy('id', 'desc')->get();
+        $data = logiciel::orderBy('id' , 'desc')->get();
         $role = Auth::User()->is_admin;
-        if ($role == 1 || $role == 2) {
+        if ($role == 1 || $role == 2 || $role == 4) {
             return view('vue.logiciel', ['logiciel' => $data]);
         } else {
             return view('auth.login');
@@ -167,17 +171,27 @@ class HomeController extends Controller
             'titre.required' => 'titre is required',
             'prix.required' => 'prix is required'
         ]);
-        $name = $request->file('image_name')->getClientOriginalName();
-        $request->file('image_name')->storeAs('public/images/', $name);
-
         if (!(logiciel::where('titre', $request->titre)->exists())) {
-            $logiciel = new logiciel;
-            $logiciel->titre = $request->titre;
-            $logiciel->prix = $request->prix;
-            $logiciel->image_name = $request->image_name->getClientOriginalName();
-            $logiciel->save();
-            Alert::success('success', 'Ce logiciel a étét enregistré avec success');
-            return redirect()->back();
+            if($request->image_name){
+                $name = $request->file('image_name')->getClientOriginalName();
+                $request->file('image_name')->storeAs('public/images/', $name);
+
+                $logiciel = new logiciel;
+                $logiciel->titre = $request->titre;
+                $logiciel->prix = $request->prix;
+                $logiciel->image_name = $request->image_name->getClientOriginalName();
+                $logiciel->save();
+                Alert::success('success', 'Ce logiciel a étét enregistré avec success');
+                return redirect()->back();
+            }
+            else{
+                $logiciel = new logiciel;
+                $logiciel->titre = $request->titre;
+                $logiciel->prix = $request->prix;
+                $logiciel->save();
+                Alert::success('success', 'Ce logiciel a étét enregistré avec success');
+                return redirect()->back();
+            }
         } else if (((logiciel::where('titre', $request->titre)->exists()))) {
             Alert::success('success', 'Ce logiciel existe deja!');
             return redirect()->back();
@@ -258,16 +272,19 @@ class HomeController extends Controller
 
     public function Souscription()
     {
+        $commercials = User::where('is_admin', '=', 0)
+        ->orWhere('is_admin', '=',4)
+        ->get();
         $subscription  = DB::table('subscription')
             ->select('name', 'users_id', 'a_payer', 'telephone', 'subscription.updated_at as date_up', 'client.id as client_id', 'subscription.id as subscription_id', 'paye as payement', 'nom as client_name', 'titre as logiciel_name', 'prix as prix_logiciel', 'date_debut', 'date_fin', 'type_payement')
             ->join('client', 'subscription.client_id', "=", "client.id")
             ->join('logiciel', 'subscription.logiciel_id', '=', 'logiciel.id')
             ->join('users', 'subscription.commercial_id', '=', 'users.id')
-            ->orderBy('date_up', 'desc')
+            ->orderBy('subscription.id', 'desc')
             ->get();
         $logiciel = logiciel::all();
         $number_subs = subscription::count();
-        return view('vue.souscription', ['logiciel' => $logiciel, 'subscription' => $subscription, 'number_subs' => $number_subs]);
+        return view('vue.souscription', ['logiciel' => $logiciel, 'commercial'=>$commercials,'subscription' => $subscription, 'number_subs' => $number_subs]);
     }
 
 
@@ -285,18 +302,21 @@ class HomeController extends Controller
                 'code_postal' => $request->codepostal_client,
                 'telephone' => $request->telephone_client,
                 'ville' => $request->ville_client,
-                'created_at' => $current_date
+                'created_at' => $current_date,
+                'users_id'=>$request->commercial_id,
+                'logiciel_id'=>$request->logiciel
             ]
         );
         //dd($id);
         $subcript = new subscription();
         $subcript->client_id = $id;
-        $subcript->logiciel_id = $request->software;
+        $subcript->logiciel_id = $request->logiciel;
         $subcript->date_debut = $current_date;
         $subcript->date_fin = $request->date_fin;
         $subcript->type_payement = $request->type_payement;
         $subcript->a_payer = $request->montant_p;
         $subcript->paye = $request->paye;
+        $subcript->commercial_id  =$request->commercial_id;
         $subcript->save();
 
 

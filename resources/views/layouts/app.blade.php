@@ -111,7 +111,7 @@
                             <a class="nav-link " href="home ">Acceuil</a>
                         </li>
 
-                        <li class="nav-item dropdown dropdown-slide @@dashboard ">
+                        <li class="nav-item dropdown active dropdown-slide @@dashboard ">
                             <a class="nav-link dropdown-toggle " data-toggle=" " href="#! ">Menu</span>
 								</a>
 
@@ -142,7 +142,7 @@
                             </ul>
                         </li>
 
-                        <li class="dropdown dropdown-slide @@dashboard ">
+                        <li class="dropdown active dropdown-slide @@dashboard ">
                             <a class="nav-link dropdown-toggle " data-toggle=" " href=" ">{{Auth::user()->name}} </span>
                                 <img src="{{asset( 'images/user.png')}} " width="25 " />	</a>
 

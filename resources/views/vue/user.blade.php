@@ -160,7 +160,7 @@ $('.myTable').DataTable( {
                                 <tbody class="jsTableBody">
                                     @foreach ($users as $user)
                                     <tr>
-                                        @if ($user->is_admin!=0)
+                                        @if ($user->password!=NULL)
                                         <td id="userid">{{$user->id}}</td> 
                                         <td>{{$user->name}}</td> 
                                         <td>{{$user->email}}</td>
@@ -177,7 +177,7 @@ $('.myTable').DataTable( {
                                                 
                                             <div class="">
                                                 <ul class="list-inline justify-content-center">
-                                                    @if ($user->is_admin!=1 && $user->is_admin!=2)
+                                                    @if ($user->is_admin!=1 && $user->is_admin!=2 && $user->is_admin!=4 )
                                                     <li class="list-inline-item">
                                                         <a id="edit" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEdit" title="Edit" class="edit">
                                                             <i class="fa fa-refresh"></i>
@@ -195,7 +195,7 @@ $('.myTable').DataTable( {
                                                         </form>
                                                     </li>
                                                   
-                                                    @if ($user->is_admin==2)
+                                                    @if ($user->is_admin==2 || $user->is_admin==4)
                                                     <li class="list-inline-item">
                                                         <a id="editdenied" data-placement="top" type="button" data-toggle="modal" data-target="#staticBackdropEditUser" title="Enlever les droits a cette utilisateur" class="edit">
                                                             <i class="fa fa-user-times"></i>

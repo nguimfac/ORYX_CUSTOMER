@@ -116,7 +116,7 @@
                     <div class="widget dashboard-container my-adslist">
                         <h3 class="widget-header">
                             <div class="row">
-                                <div class="col-md-9 mt-4">
+                                <div class="col-md-6 mt-4">
                                     <strong>NOS LOGICIELS</strong><br>
                                     <div class="p-0">
 
@@ -124,7 +124,7 @@
 
                                 </div>
                                 <div class="col-md-3  offset-md-10">
-                                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop">Ajouter logiciel <i class="fa fa-plus-square" aria-hidden="true"></i></button>
+                                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#staticBackdrop">Ajouter  <i class="fa fa-plus-square" aria-hidden="true"></i></button>
                                 </div>
                             </div>
                         </h3>
@@ -217,12 +217,12 @@
                     @csrf
                     <div class="form-group">
                         <label for="Titre" class="text-black">Titre</label>
-                        <input type="text" name="titre" class="form-control p-4" required placeholder="Name of the software">
+                        <input type="text" name="titre" class="form-control p-4" required placeholder="Nom du logiciel">
                     </div>
 
                     <div class="form-group">
                         <label for="Titre" class="text-black">Prix</label>
-                        <input type="number" name="prix" class="form-control p-4" required placeholder="Price of the software">
+                        <input type="number" name="prix" class="form-control p-4" required placeholder="Prix moyen">
                     </div>
 
 
@@ -279,7 +279,7 @@
                         <input type="text" id="prix" name="prix" class="form-control p-4" required placeholder="Price of the software">
                     </div>
                     <div class="form-group">
-                        <label for="created_at" class="text-black">created_at</label>
+                        <label for="created_at" class="text-black">date creation</label>
                         <input type="text" id="created_at" name="created_at" class="form-control p-4" required placeholder="date of the software">
                     </div>
 
